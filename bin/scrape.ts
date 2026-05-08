@@ -8,13 +8,13 @@
  * Run indirectly via `yarn update` (bin/update.ts).
  */
 
-import { parse } from 'node-html-parser';
+import { parse } from "node-html-parser";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-export type SignCategory = 'emergency' | 'fire' | 'mandatory' | 'prohibition' | 'warning';
+export type SignCategory = "emergency" | "fire" | "mandatory" | "prohibition" | "warning";
 
 /** A single scraped ISO 7010 sign entry. */
 export interface ScrapedSign {
@@ -44,49 +44,41 @@ const CATEGORIES: Array<{
   headingIds: string[];
 }> = [
   {
-    category: 'emergency',
-    letter: 'E',
-    headingIds: ['E:_Emergency_signs', 'Emergency_signs', 'E_-_Emergency_signs'],
+    category: "emergency",
+    letter: "E",
+    headingIds: ["E:_Emergency_signs", "Emergency_signs", "E_-_Emergency_signs"],
   },
   {
-    category: 'fire',
-    letter: 'F',
+    category: "fire",
+    letter: "F",
     headingIds: [
-      'F:_Fire_equipment_signs',
-      'F:_Fire_safety_signs',
-      'Fire_equipment_signs',
-      'Fire_safety_signs',
-      'F_-_Fire_equipment_signs',
+      "F:_Fire_equipment_signs",
+      "F:_Fire_safety_signs",
+      "Fire_equipment_signs",
+      "Fire_safety_signs",
+      "F_-_Fire_equipment_signs",
     ],
   },
   {
-    category: 'mandatory',
-    letter: 'M',
+    category: "mandatory",
+    letter: "M",
     headingIds: [
-      'M:_Mandatory_action_signs',
-      'M:_Mandatory_signs',
-      'Mandatory_action_signs',
-      'Mandatory_signs',
-      'M_-_Mandatory_action_signs',
+      "M:_Mandatory_action_signs",
+      "M:_Mandatory_signs",
+      "Mandatory_action_signs",
+      "Mandatory_signs",
+      "M_-_Mandatory_action_signs",
     ],
   },
   {
-    category: 'prohibition',
-    letter: 'P',
-    headingIds: [
-      'P:_Prohibition_signs',
-      'Prohibition_signs',
-      'P_-_Prohibition_signs',
-    ],
+    category: "prohibition",
+    letter: "P",
+    headingIds: ["P:_Prohibition_signs", "Prohibition_signs", "P_-_Prohibition_signs"],
   },
   {
-    category: 'warning',
-    letter: 'W',
-    headingIds: [
-      'W:_Warning_signs',
-      'Warning_signs',
-      'W_-_Warning_signs',
-    ],
+    category: "warning",
+    letter: "W",
+    headingIds: ["W:_Warning_signs", "Warning_signs", "W_-_Warning_signs"],
   },
 ];
 
@@ -113,9 +105,9 @@ const extractCode = (text: string): string | null => {
  */
 const cleanName = (text: string, code: string): string =>
   text
-    .replace(new RegExp(`^${code}\\s*[–—-]?\\s*`, 'i'), '')
-    .replace(/\[\d+\]/g, '')
-    .replace(/\s+/g, ' ')
+    .replace(new RegExp(`^${code}\\s*[–—-]?\\s*`, "i"), "")
+    .replace(/\[\d+\]/g, "")
+    .replace(/\s+/g, " ")
     .trim();
 
 // ---------------------------------------------------------------------------
@@ -144,21 +136,21 @@ const scrapeSection = (
     const tag = node.tagName?.toLowerCase();
 
     // Stop at the next H2 section.
-    if (tag === 'h2') break;
+    if (tag === "h2") break;
 
     // Process gallery lists.
-    if (tag === 'ul' && node.classNames?.includes('gallery')) {
-      for (const li of node.querySelectorAll('li.gallerybox')) {
+    if (tag === "ul" && node.classNames?.includes("gallery")) {
+      for (const li of node.querySelectorAll("li.gallerybox")) {
         // Image link.
-        const imgLink = li.querySelector('.thumb a, .gallery-image-body a');
-        const href = imgLink?.getAttribute('href') ?? null;
+        const imgLink = li.querySelector(".thumb a, .gallery-image-body a");
+        const href = imgLink?.getAttribute("href") ?? null;
         const imageUrl = href ? `https://en.wikipedia.org${href}` : null;
 
         // Caption text.
-        const captionEl = li.querySelector('.gallerytext, figcaption');
-        const caption = captionEl?.textContent?.trim() ?? '';
+        const captionEl = li.querySelector(".gallerytext, figcaption");
+        const caption = captionEl?.textContent?.trim() ?? "";
 
-        const code = extractCode(caption) ?? extractCode(href ?? '');
+        const code = extractCode(caption) ?? extractCode(href ?? "");
         if (!code || !code.startsWith(letter)) continue;
 
         const name = cleanName(caption, code) || code;
@@ -184,7 +176,7 @@ const scrapeSection = (
  * @throws When the Wikipedia page cannot be fetched (non-200 HTTP status).
  */
 const scrape = async (): Promise<ScrapedData> => {
-  const ISO_7010_URL = 'https://en.wikipedia.org/wiki/ISO_7010';
+  const ISO_7010_URL = "https://en.wikipedia.org/wiki/ISO_7010";
   const response = await fetch(ISO_7010_URL);
   if (response.status !== 200) {
     throw new Error(`Failed to fetch Wikipedia page: ${response.status}`);

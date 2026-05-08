@@ -7,7 +7,6 @@
 
 .pnp.*
 node_modules
-.yarnrc.yml
 dist/
 
 # Generated data cache (re-created by yarn update)

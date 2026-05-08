@@ -16,11 +16,11 @@
  * Run via: yarn generate
  */
 
-import fs from 'fs';
-import path from 'path';
-import { optimize } from 'svgo';
-import type { ScrapedData, SignCategory } from './scrape';
-import type { Sign } from '../packages/@iso-safety-signs/core/src/types';
+import fs from "fs";
+import path from "path";
+import { optimize } from "svgo";
+import type { ScrapedData, SignCategory } from "./scrape";
+import type { Sign } from "../packages/@iso-safety-signs/core/src/types";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -29,19 +29,19 @@ import type { Sign } from '../packages/@iso-safety-signs/core/src/types';
 const slugify = (str: string): string =>
   str
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 
 /** Converts a kebab-case slug to PascalCase component name. */
 const toComponentName = (id: string): string =>
   id
-    .split('-')
+    .split("-")
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('');
+    .join("");
 
 const IMAGE_SIZES = [240, 512, 768, 1024, 2048] as const;
 
-const buildAssets = (svgRelPath: string): Sign['assets'] => {
+const buildAssets = (svgRelPath: string): Sign["assets"] => {
   const dir = path.dirname(svgRelPath);
   const base = path.basename(svgRelPath, path.extname(svgRelPath));
   const makeRecord = (ext: string): Record<number, string> =>
@@ -49,28 +49,33 @@ const buildAssets = (svgRelPath: string): Sign['assets'] => {
       number,
       string
     >;
-  return { jpg: makeRecord('jpg'), png: makeRecord('png'), svg: svgRelPath, webp: makeRecord('webp') };
+  return {
+    jpg: makeRecord("jpg"),
+    png: makeRecord("png"),
+    svg: svgRelPath,
+    webp: makeRecord("webp"),
+  };
 };
 
 const cleanSvg = (svg: string): string =>
   svg
-    .replace(/<\?xml[^>]*\?>/g, '')
-    .replace(/<!DOCTYPE[^>]*>/g, '')
+    .replace(/<\?xml[^>]*\?>/g, "")
+    .replace(/<!DOCTYPE[^>]*>/g, "")
     .trim();
 
 const optimizeSvg = (svg: string): string =>
-  optimize(svg, { multipass: true, plugins: ['preset-default'] }).data;
+  optimize(svg, { multipass: true, plugins: ["preset-default"] }).data;
 
 const categoryFromCode = (code: string): SignCategory => {
   const letter = code.charAt(0).toUpperCase();
   const map: Record<string, SignCategory> = {
-    E: 'emergency',
-    F: 'fire',
-    M: 'mandatory',
-    P: 'prohibition',
-    W: 'warning',
+    E: "emergency",
+    F: "fire",
+    M: "mandatory",
+    P: "prohibition",
+    W: "warning",
   };
-  return map[letter] ?? 'warning';
+  return map[letter] ?? "warning";
 };
 
 // ---------------------------------------------------------------------------
@@ -89,7 +94,7 @@ const collectEntries = (scraped: ScrapedData, svgMap: Record<string, string>): S
   const findSvgKey = (code: string): string | undefined => {
     const lowerCode = code.toLowerCase();
     return svgKeys.find((k) => {
-      const base = path.basename(k, '.svg').toLowerCase();
+      const base = path.basename(k, ".svg").toLowerCase();
       return base.includes(lowerCode) || base === `iso_7010_${lowerCode}`;
     });
   };
@@ -158,7 +163,7 @@ const generateSignsFile = (signs: Sign[]): string => {
   }
 
   lines.push(`];`);
-  return lines.join('\n') + '\n';
+  return lines.join("\n") + "\n";
 };
 
 // ---------------------------------------------------------------------------
@@ -190,7 +195,7 @@ const generateReactPropsFile = (): string =>
     `  'aria-label'?: string;`,
     `}`,
     ``,
-  ].join('\n');
+  ].join("\n");
 
 // ---------------------------------------------------------------------------
 // Code generation — react/src/{ComponentName}.tsx
@@ -208,20 +213,20 @@ const generateReactComponentFile = (entry: ComponentEntry): string => {
   const componentName = toComponentName(id);
 
   const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
-  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
+  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : "";
   const svgBody = svgBodyMatch ? svgBodyMatch[2] : optimizedSvg;
 
   const esc = (s: string): string =>
-    s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+    s.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$/g, "\\$");
 
   const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
   const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = widthMatch ? widthMatch[1] : '100%';
-  const defaultHeight = heightMatch ? heightMatch[1] : '100%';
+  const defaultWidth = widthMatch ? widthMatch[1] : "100%";
+  const defaultHeight = heightMatch ? heightMatch[1] : "100%";
 
   const attrsWithoutSize = svgAttrs
-    .replace(/\s*\bwidth="[^"]*"/, '')
-    .replace(/\s*\bheight="[^"]*"/, '')
+    .replace(/\s*\bwidth="[^"]*"/, "")
+    .replace(/\s*\bheight="[^"]*"/, "")
     .trim();
 
   return [
@@ -267,7 +272,7 @@ const generateReactComponentFile = (entry: ComponentEntry): string => {
     `});`,
     `${componentName}.displayName = '${componentName}';`,
     ``,
-  ].join('\n');
+  ].join("\n");
 };
 
 // ---------------------------------------------------------------------------
@@ -285,7 +290,7 @@ const generateReactIndex = (componentNames: string[]): string =>
     ...componentNames.map((name) => `export { ${name} } from './${name}';`),
     `export type { Sign, SignAssets, SignCategory } from '@iso-safety-signs/core';`,
     ``,
-  ].join('\n');
+  ].join("\n");
 
 // ---------------------------------------------------------------------------
 // Code generation — vue/src/SignProps.ts
@@ -310,7 +315,7 @@ const generateVuePropsFile = (): string =>
     `  width: { type: [Number, String] as PropType<number | string> },`,
     `} as const;`,
     ``,
-  ].join('\n');
+  ].join("\n");
 
 // ---------------------------------------------------------------------------
 // Code generation — vue/src/{ComponentName}.ts
@@ -321,20 +326,20 @@ const generateVueComponentFile = (entry: ComponentEntry): string => {
   const componentName = toComponentName(id);
 
   const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
-  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
+  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : "";
   const svgBody = svgBodyMatch ? svgBodyMatch[2] : optimizedSvg;
 
   const esc = (s: string): string =>
-    s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+    s.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$/g, "\\$");
 
   const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
   const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = widthMatch ? widthMatch[1] : '100%';
-  const defaultHeight = heightMatch ? heightMatch[1] : '100%';
+  const defaultWidth = widthMatch ? widthMatch[1] : "100%";
+  const defaultHeight = heightMatch ? heightMatch[1] : "100%";
 
   const attrsWithoutSize = svgAttrs
-    .replace(/\s*\bwidth="[^"]*"/, '')
-    .replace(/\s*\bheight="[^"]*"/, '')
+    .replace(/\s*\bwidth="[^"]*"/, "")
+    .replace(/\s*\bheight="[^"]*"/, "")
     .trim();
 
   return [
@@ -379,7 +384,7 @@ const generateVueComponentFile = (entry: ComponentEntry): string => {
     `  },`,
     `});`,
     ``,
-  ].join('\n');
+  ].join("\n");
 };
 
 // ---------------------------------------------------------------------------
@@ -396,7 +401,7 @@ const generateVueIndex = (componentNames: string[]): string =>
     ...componentNames.map((name) => `export { ${name} } from './${name}';`),
     `export type { Sign, SignAssets, SignCategory } from '@iso-safety-signs/core';`,
     ``,
-  ].join('\n');
+  ].join("\n");
 
 // ---------------------------------------------------------------------------
 // Code generation — elements/src/{ComponentName}.ts
@@ -407,20 +412,20 @@ const generateElementFile = (entry: ComponentEntry): string => {
   const componentName = toComponentName(id);
 
   const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
-  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
+  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : "";
   const svgBody = svgBodyMatch ? svgBodyMatch[2] : optimizedSvg;
 
   const esc = (s: string): string =>
-    s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
+    s.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$/g, "\\$");
 
   const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
   const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = widthMatch ? widthMatch[1] : '100%';
-  const defaultHeight = heightMatch ? heightMatch[1] : '100%';
+  const defaultWidth = widthMatch ? widthMatch[1] : "100%";
+  const defaultHeight = heightMatch ? heightMatch[1] : "100%";
 
   const attrsWithoutSize = svgAttrs
-    .replace(/\s*\bwidth="[^"]*"/, '')
-    .replace(/\s*\bheight="[^"]*"/, '')
+    .replace(/\s*\bwidth="[^"]*"/, "")
+    .replace(/\s*\bheight="[^"]*"/, "")
     .trim();
 
   return [
@@ -457,7 +462,7 @@ const generateElementFile = (entry: ComponentEntry): string => {
     `  }`,
     `}`,
     ``,
-  ].join('\n');
+  ].join("\n");
 };
 
 // ---------------------------------------------------------------------------
@@ -498,7 +503,7 @@ const generateDefineCustomElements = (
     `  }`,
     `}`,
     ``,
-  ].join('\n');
+  ].join("\n");
 
 // ---------------------------------------------------------------------------
 // Code generation — elements/src/index.ts
@@ -514,17 +519,15 @@ const generateElementsIndex = (componentNames: string[]): string =>
     ...componentNames.map((name) => `export { ${name} } from './${name}';`),
     `export type { Sign, SignAssets, SignCategory } from '@iso-safety-signs/core';`,
     ``,
-  ].join('\n');
+  ].join("\n");
 
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
 export const generateSource = async (): Promise<void> => {
-  const scrapedPath = path.join('data', 'scraped.json');
-  const svgMapPath = path.join(
-    'packages', '@iso-safety-signs', 'assets', 'assets', 'svg-map.json',
-  );
+  const scrapedPath = path.join("data", "scraped.json");
+  const svgMapPath = path.join("packages", "@iso-safety-signs", "assets", "assets", "svg-map.json");
 
   if (!fs.existsSync(scrapedPath)) {
     throw new Error(`Missing ${scrapedPath}. Run 'yarn update' first.`);
@@ -533,8 +536,8 @@ export const generateSource = async (): Promise<void> => {
     throw new Error(`Missing ${svgMapPath}. Run 'yarn update' first.`);
   }
 
-  const scraped: ScrapedData = JSON.parse(fs.readFileSync(scrapedPath, 'utf-8'));
-  const svgMap: Record<string, string> = JSON.parse(fs.readFileSync(svgMapPath, 'utf-8'));
+  const scraped: ScrapedData = JSON.parse(fs.readFileSync(scrapedPath, "utf-8"));
+  const svgMap: Record<string, string> = JSON.parse(fs.readFileSync(svgMapPath, "utf-8"));
 
   console.log(`Loaded ${Object.keys(svgMap).length} SVGs from svg-map.json`);
 
@@ -550,46 +553,54 @@ export const generateSource = async (): Promise<void> => {
   }));
 
   // core/src/signs.generated.ts
-  const coreOut = path.join('packages', '@iso-safety-signs', 'core', 'src', 'signs.generated.ts');
-  fs.writeFileSync(coreOut, generateSignsFile(signs), 'utf-8');
+  const coreOut = path.join("packages", "@iso-safety-signs", "core", "src", "signs.generated.ts");
+  fs.writeFileSync(coreOut, generateSignsFile(signs), "utf-8");
   console.log(`Written: ${coreOut}`);
 
   // react/src/
-  const reactDir = path.join('packages', '@iso-safety-signs', 'react', 'src');
+  const reactDir = path.join("packages", "@iso-safety-signs", "react", "src");
   fs.mkdirSync(reactDir, { recursive: true });
 
-  fs.writeFileSync(path.join(reactDir, 'SignProps.ts'), generateReactPropsFile(), 'utf-8');
-  console.log(`Written: ${path.join(reactDir, 'SignProps.ts')}`);
+  fs.writeFileSync(path.join(reactDir, "SignProps.ts"), generateReactPropsFile(), "utf-8");
+  console.log(`Written: ${path.join(reactDir, "SignProps.ts")}`);
 
   const componentNames: string[] = [];
   for (const entry of componentEntries) {
     const componentName = toComponentName(entry.id);
     componentNames.push(componentName);
-    fs.writeFileSync(path.join(reactDir, `${componentName}.tsx`), generateReactComponentFile(entry), 'utf-8');
+    fs.writeFileSync(
+      path.join(reactDir, `${componentName}.tsx`),
+      generateReactComponentFile(entry),
+      "utf-8",
+    );
     console.log(`Written: ${path.join(reactDir, `${componentName}.tsx`)}`);
   }
 
-  fs.writeFileSync(path.join(reactDir, 'index.ts'), generateReactIndex(componentNames), 'utf-8');
-  console.log(`Written: ${path.join(reactDir, 'index.ts')}`);
+  fs.writeFileSync(path.join(reactDir, "index.ts"), generateReactIndex(componentNames), "utf-8");
+  console.log(`Written: ${path.join(reactDir, "index.ts")}`);
 
   // vue/src/
-  const vueDir = path.join('packages', '@iso-safety-signs', 'vue', 'src');
+  const vueDir = path.join("packages", "@iso-safety-signs", "vue", "src");
   fs.mkdirSync(vueDir, { recursive: true });
 
-  fs.writeFileSync(path.join(vueDir, 'SignProps.ts'), generateVuePropsFile(), 'utf-8');
-  console.log(`Written: ${path.join(vueDir, 'SignProps.ts')}`);
+  fs.writeFileSync(path.join(vueDir, "SignProps.ts"), generateVuePropsFile(), "utf-8");
+  console.log(`Written: ${path.join(vueDir, "SignProps.ts")}`);
 
   for (const entry of componentEntries) {
     const componentName = toComponentName(entry.id);
-    fs.writeFileSync(path.join(vueDir, `${componentName}.ts`), generateVueComponentFile(entry), 'utf-8');
+    fs.writeFileSync(
+      path.join(vueDir, `${componentName}.ts`),
+      generateVueComponentFile(entry),
+      "utf-8",
+    );
     console.log(`Written: ${path.join(vueDir, `${componentName}.ts`)}`);
   }
 
-  fs.writeFileSync(path.join(vueDir, 'index.ts'), generateVueIndex(componentNames), 'utf-8');
-  console.log(`Written: ${path.join(vueDir, 'index.ts')}`);
+  fs.writeFileSync(path.join(vueDir, "index.ts"), generateVueIndex(componentNames), "utf-8");
+  console.log(`Written: ${path.join(vueDir, "index.ts")}`);
 
   // elements/src/
-  const elementsDir = path.join('packages', '@iso-safety-signs', 'elements', 'src');
+  const elementsDir = path.join("packages", "@iso-safety-signs", "elements", "src");
   fs.mkdirSync(elementsDir, { recursive: true });
 
   const elementEntries: Array<{ id: string; componentName: string }> = [];
@@ -599,32 +610,32 @@ export const generateSource = async (): Promise<void> => {
     fs.writeFileSync(
       path.join(elementsDir, `${componentName}.ts`),
       generateElementFile(entry),
-      'utf-8',
+      "utf-8",
     );
     console.log(`Written: ${path.join(elementsDir, `${componentName}.ts`)}`);
   }
 
   fs.writeFileSync(
-    path.join(elementsDir, 'defineCustomElements.ts'),
+    path.join(elementsDir, "defineCustomElements.ts"),
     generateDefineCustomElements(elementEntries),
-    'utf-8',
+    "utf-8",
   );
-  console.log(`Written: ${path.join(elementsDir, 'defineCustomElements.ts')}`);
+  console.log(`Written: ${path.join(elementsDir, "defineCustomElements.ts")}`);
 
   fs.writeFileSync(
-    path.join(elementsDir, 'index.ts'),
+    path.join(elementsDir, "index.ts"),
     generateElementsIndex(elementEntries.map((e) => e.componentName)),
-    'utf-8',
+    "utf-8",
   );
-  console.log(`Written: ${path.join(elementsDir, 'index.ts')}`);
+  console.log(`Written: ${path.join(elementsDir, "index.ts")}`);
 
-  console.log('\nDone.');
+  console.log("\nDone.");
 };
 
 const isMain =
   process.argv[1] &&
-  (process.argv[1].endsWith('generate-source.ts') ||
-    process.argv[1].endsWith('generate-source.js'));
+  (process.argv[1].endsWith("generate-source.ts") ||
+    process.argv[1].endsWith("generate-source.js"));
 
 if (isMain) {
   generateSource().catch((err) => {
