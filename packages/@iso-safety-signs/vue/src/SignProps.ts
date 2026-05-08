@@ -1,3 +1,6 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
 import type { PropType } from 'vue';
 
 /** Reusable Vue prop definitions shared by every generated ISO 7010 safety sign component. */

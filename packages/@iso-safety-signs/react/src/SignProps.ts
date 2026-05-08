@@ -1,3 +1,6 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
 import type * as React from 'react';
 
 /** Props accepted by every generated ISO 7010 safety sign React component. */

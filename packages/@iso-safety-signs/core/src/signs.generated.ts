@@ -3,4 +3,5 @@
 
 import type { Sign } from './types';
 
-export const signs: Sign[] = [];
+export const signs: Sign[] = [
+];
