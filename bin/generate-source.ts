@@ -69,7 +69,10 @@ const optimizeSvg = (svg: string): string =>
 /** Prefix every internal SVG id with the sign slug to prevent DOM collisions. */
 const scopeBodyIds = (body: string, prefix: string): string => {
   const ids = new Set<string>();
-  body.replace(/\bid="([^"]+)"/g, (_, id: string) => { ids.add(id); return _; });
+  body.replace(/\bid="([^"]+)"/g, (_, id: string) => {
+    ids.add(id);
+    return _;
+  });
   if (ids.size === 0) return body;
   let out = body;
   for (const id of ids) {

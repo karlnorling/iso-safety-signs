@@ -207,7 +207,9 @@ const createSVGSprite = async (): Promise<void> => {
     const codeMatch = basename.match(/ISO_7010_([EFMPW]\d{3}[a-z]?)/i);
     const id = codeMatch
       ? codeMatch[1].toLowerCase()
-      : sanitize(path.relative(ASSETS_ROOT, file).replace(/\\/g, '/')).replace(/\.svg$/, '').replace(/[._]/g, '-');
+      : sanitize(path.relative(ASSETS_ROOT, file).replace(/\\/g, '/'))
+          .replace(/\.svg$/, '')
+          .replace(/[._]/g, '-');
 
     if (seen.has(id)) continue;
     seen.add(id);
@@ -242,7 +244,10 @@ const createSVGSprite = async (): Promise<void> => {
 
     // Scope internal IDs to prevent collisions across symbols in the shared document
     const internalIds = new Set<string>();
-    innerContent.replace(/\bid="([^"]+)"/g, (_: string, iid: string) => { internalIds.add(iid); return _; });
+    innerContent.replace(/\bid="([^"]+)"/g, (_: string, iid: string) => {
+      internalIds.add(iid);
+      return _;
+    });
     for (const iid of internalIds) {
       const esc = iid.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       innerContent = innerContent
