@@ -66,14 +66,14 @@ element.className = cls;
 
 CSS class names follow the pattern `iso-{code}` where `{code}` is the lowercase ISO 7010 code:
 
-| Sign | CSS class |
-| ---- | --------- |
-| E001 Emergency exit | `iso-e001` |
-| E002 Emergency exit — left | `iso-e002` |
-| W001 Flammable material | `iso-w001` |
-| P001 No smoking | `iso-p001` |
+| Sign                          | CSS class  |
+| ----------------------------- | ---------- |
+| E001 Emergency exit           | `iso-e001` |
+| E002 Emergency exit — left    | `iso-e002` |
+| W001 Flammable material       | `iso-w001` |
+| P001 No smoking               | `iso-p001` |
 | M001 General mandatory action | `iso-m001` |
-| F001 Fire extinguisher | `iso-f001` |
+| F001 Fire extinguisher        | `iso-f001` |
 
 ---
 

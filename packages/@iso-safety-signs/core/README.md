@@ -20,11 +20,7 @@ yarn add @iso-safety-signs/core
 ## Usage
 
 ```ts
-import {
-  getAllSigns,
-  getSign,
-  getSignsByCategory,
-} from '@iso-safety-signs/core';
+import { getAllSigns, getSign, getSignsByCategory } from '@iso-safety-signs/core';
 
 // All signs
 const all = getAllSigns();
@@ -64,17 +60,17 @@ type SignCategory = 'emergency' | 'fire' | 'mandatory' | 'prohibition' | 'warnin
 interface Sign {
   assets: SignAssets;
   category: SignCategory;
-  code: string;        // e.g. "E001"
+  code: string; // e.g. "E001"
   description: string; // accessible description
-  id: string;          // e.g. "e001-emergency-exit"
-  name: string;        // e.g. "Emergency exit"
-  svg: string;         // inline SVG markup
+  id: string; // e.g. "e001-emergency-exit"
+  name: string; // e.g. "Emergency exit"
+  svg: string; // inline SVG markup
 }
 
 interface SignAssets {
-  jpg: Record<number, string>;   // size → relative path (240, 512, 768, 1024, 2048)
+  jpg: Record<number, string>; // size → relative path (240, 512, 768, 1024, 2048)
   png: Record<number, string>;
-  svg: string;                   // relative path to original SVG
+  svg: string; // relative path to original SVG
   webp: Record<number, string>;
 }
 ```

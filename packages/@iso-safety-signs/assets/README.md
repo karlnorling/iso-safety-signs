@@ -60,8 +60,8 @@ import { getSign } from '@iso-safety-signs/core';
 
 const sign = getSign('e001-emergency-exit');
 if (sign) {
-  console.log(sign.assets.svg);       // 'emergency/e001/ISO_7010_E001.svg'
-  console.log(sign.assets.png[512]);  // 'emergency/e001/ISO_7010_E001_512x512.png'
+  console.log(sign.assets.svg); // 'emergency/e001/ISO_7010_E001.svg'
+  console.log(sign.assets.png[512]); // 'emergency/e001/ISO_7010_E001_512x512.png'
   console.log(sign.assets.webp[240]); // 'emergency/e001/ISO_7010_E001_240x240.webp'
 }
 ```
@@ -72,13 +72,13 @@ if (sign) {
 
 Each raster format is generated at five sizes:
 
-| Size | Pixels |
-| ---- | ------ |
-| xs | 240 × 240 |
-| sm | 512 × 512 |
-| md | 768 × 768 |
-| lg | 1024 × 1024 |
-| xl | 2048 × 2048 |
+| Size | Pixels      |
+| ---- | ----------- |
+| xs   | 240 × 240   |
+| sm   | 512 × 512   |
+| md   | 768 × 768   |
+| lg   | 1024 × 1024 |
+| xl   | 2048 × 2048 |
 
 ---
 

@@ -9,27 +9,27 @@ Accessible, framework-agnostic packages for all **ISO 7010** workplace safety si
 
 ## Packages
 
-| Package | Version | Description |
-| ------- | ------- | ----------- |
-| [`@iso-safety-signs/core`](packages/@iso-safety-signs/core) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/core)](https://www.npmjs.com/package/@iso-safety-signs/core) | Typed sign data and lookup functions |
-| [`@iso-safety-signs/react`](packages/@iso-safety-signs/react) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/react)](https://www.npmjs.com/package/@iso-safety-signs/react) | React components (inline SVG) |
-| [`@iso-safety-signs/vue`](packages/@iso-safety-signs/vue) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/vue)](https://www.npmjs.com/package/@iso-safety-signs/vue) | Vue 3 components (inline SVG) |
-| [`@iso-safety-signs/elements`](packages/@iso-safety-signs/elements) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/elements)](https://www.npmjs.com/package/@iso-safety-signs/elements) | Web Components / Custom Elements |
-| [`@iso-safety-signs/css`](packages/@iso-safety-signs/css) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/css)](https://www.npmjs.com/package/@iso-safety-signs/css) | CSS background-image sprite |
-| [`@iso-safety-signs/sprite`](packages/@iso-safety-signs/sprite) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/sprite)](https://www.npmjs.com/package/@iso-safety-signs/sprite) | SVG `<symbol>` sprite |
-| [`@iso-safety-signs/assets`](packages/@iso-safety-signs/assets) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/assets)](https://www.npmjs.com/package/@iso-safety-signs/assets) | Static SVG, PNG, JPG, WebP assets |
+| Package                                                             | Version                                                                                                                     | Description                          |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
+| [`@iso-safety-signs/core`](packages/@iso-safety-signs/core)         | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/core)](https://www.npmjs.com/package/@iso-safety-signs/core)         | Typed sign data and lookup functions |
+| [`@iso-safety-signs/react`](packages/@iso-safety-signs/react)       | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/react)](https://www.npmjs.com/package/@iso-safety-signs/react)       | React components (inline SVG)        |
+| [`@iso-safety-signs/vue`](packages/@iso-safety-signs/vue)           | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/vue)](https://www.npmjs.com/package/@iso-safety-signs/vue)           | Vue 3 components (inline SVG)        |
+| [`@iso-safety-signs/elements`](packages/@iso-safety-signs/elements) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/elements)](https://www.npmjs.com/package/@iso-safety-signs/elements) | Web Components / Custom Elements     |
+| [`@iso-safety-signs/css`](packages/@iso-safety-signs/css)           | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/css)](https://www.npmjs.com/package/@iso-safety-signs/css)           | CSS background-image sprite          |
+| [`@iso-safety-signs/sprite`](packages/@iso-safety-signs/sprite)     | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/sprite)](https://www.npmjs.com/package/@iso-safety-signs/sprite)     | SVG `<symbol>` sprite                |
+| [`@iso-safety-signs/assets`](packages/@iso-safety-signs/assets)     | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/assets)](https://www.npmjs.com/package/@iso-safety-signs/assets)     | Static SVG, PNG, JPG, WebP assets    |
 
 ---
 
 ## ISO 7010 Sign Categories
 
-| Category | Code prefix | Background | Example |
-| -------- | ----------- | ---------- | ------- |
-| Emergency | E001–E068+ | Green | Emergency exit, first aid |
-| Fire equipment | F001–F017+ | Red | Fire extinguisher, fire hose |
-| Mandatory | M001–M058+ | Blue | Wear hard hat, use handrail |
-| Prohibition | P001–P071+ | Red/white | No smoking, no entry |
-| Warning | W001–W073+ | Yellow | Flammable, high voltage |
+| Category       | Code prefix | Background | Example                      |
+| -------------- | ----------- | ---------- | ---------------------------- |
+| Emergency      | E001–E068+  | Green      | Emergency exit, first aid    |
+| Fire equipment | F001–F017+  | Red        | Fire extinguisher, fire hose |
+| Mandatory      | M001–M058+  | Blue       | Wear hard hat, use handrail  |
+| Prohibition    | P001–P071+  | Red/white  | No smoking, no entry         |
+| Warning        | W001–W073+  | Yellow     | Flammable, high voltage      |
 
 ---
 
@@ -124,11 +124,7 @@ npm install @iso-safety-signs/sprite
 ### Programmatic API
 
 ```ts
-import {
-  getAllSigns,
-  getSign,
-  getSignsByCategory,
-} from '@iso-safety-signs/core';
+import { getAllSigns, getSign, getSignsByCategory } from '@iso-safety-signs/core';
 
 const allSigns = getAllSigns();
 const sign = getSign('e001-emergency-exit');
@@ -161,6 +157,7 @@ yarn update
 ```
 
 This runs three steps in sequence:
+
 1. **scrape** — fetches sign codes, names, and image URLs from the ISO 7010 Wikipedia article
 2. **create-assets** — downloads SVGs and converts them to PNG, JPG, and WebP at 240/512/768/1024/2048 px
 3. **generate** — generates TypeScript source for all packages

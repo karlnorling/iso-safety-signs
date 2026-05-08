@@ -12,29 +12,29 @@
 
 /* oxlint-disable no-await-in-loop */
 
-import fs from "fs";
-import path from "path";
-import { parse } from "node-html-parser";
-import { globSync } from "glob";
-import { optimize } from "svgo";
-import sharp from "sharp";
-import type { ScrapedData } from "./scrape";
+import fs from 'fs';
+import path from 'path';
+import { parse } from 'node-html-parser';
+import { globSync } from 'glob';
+import { optimize } from 'svgo';
+import sharp from 'sharp';
+import type { ScrapedData } from './scrape';
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
 const USER_AGENT =
-  "iso-safety-signs/0.0.0 (https://github.com/karlnorling/iso-safety-signs; build-script)";
+  'iso-safety-signs/0.0.0 (https://github.com/karlnorling/iso-safety-signs; build-script)';
 
 const IMAGE_TYPES_MAP = [
-  { sizes: [240, 512, 768, 1024, 2048], type: "svg" },
-  { sizes: [240, 512, 768, 1024, 2048], type: "jpg" },
-  { sizes: [240, 512, 768, 1024, 2048], type: "png" },
-  { sizes: [240, 512, 768, 1024, 2048], type: "webp" },
+  { sizes: [240, 512, 768, 1024, 2048], type: 'svg' },
+  { sizes: [240, 512, 768, 1024, 2048], type: 'jpg' },
+  { sizes: [240, 512, 768, 1024, 2048], type: 'png' },
+  { sizes: [240, 512, 768, 1024, 2048], type: 'webp' },
 ] as const;
 
-const ASSETS_ROOT = path.join("packages", "@iso-safety-signs", "assets", "assets");
+const ASSETS_ROOT = path.join('packages', '@iso-safety-signs', 'assets', 'assets');
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -42,8 +42,8 @@ const ASSETS_ROOT = path.join("packages", "@iso-safety-signs", "assets", "assets
 
 export const sanitize = (str: string): string =>
   str
-    .replace(/[/\\?%*:|"<>]/g, "_")
-    .replace(/\s/g, "_")
+    .replace(/[/\\?%*:|"<>]/g, '_')
+    .replace(/\s/g, '_')
     .toLowerCase();
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
@@ -59,7 +59,7 @@ const fetchWithRetry = async (
   delayMs = 1000,
 ): Promise<Response> => {
   const headers = {
-    "User-Agent": USER_AGENT,
+    'User-Agent': USER_AGENT,
     ...(options.headers as Record<string, string>),
   };
 
@@ -85,7 +85,7 @@ const downloadImagePage = async (url: string): Promise<string | undefined> => {
     const res = await fetchWithRetry(url);
     const data = await res.text();
     const htmlData = parse(data);
-    const imageSrcUrl = htmlData.querySelector(".fullImageLink a")?.getAttribute("href");
+    const imageSrcUrl = htmlData.querySelector('.fullImageLink a')?.getAttribute('href');
     return imageSrcUrl ? `https:${imageSrcUrl}` : undefined;
   } catch (err) {
     console.error(`  Error fetching image page ${url}:`, (err as Error).message);
@@ -95,7 +95,7 @@ const downloadImagePage = async (url: string): Promise<string | undefined> => {
 
 const downloadImage = async (dest: string, url: string): Promise<void> => {
   try {
-    const res = await fetchWithRetry(url, { headers: { Accept: "image/svg+xml,image/*" } });
+    const res = await fetchWithRetry(url, { headers: { Accept: 'image/svg+xml,image/*' } });
     const data = await res.text();
     await fs.promises.writeFile(dest, data);
     console.log(`  Downloaded: ${path.basename(dest)}`);
@@ -127,14 +127,14 @@ const convertImages = async (image: string): Promise<void> => {
 
       const pipeline = sharp(inputBuffer).resize(size, size);
 
-      if (typeObj.type === "svg") {
-        if (inputExt !== ".svg") continue;
+      if (typeObj.type === 'svg') {
+        if (inputExt !== '.svg') continue;
         await fs.promises.copyFile(image, outputFile);
-      } else if (typeObj.type === "jpg") {
+      } else if (typeObj.type === 'jpg') {
         await pipeline.jpeg({ quality: 90 }).toFile(outputFile);
-      } else if (typeObj.type === "png") {
+      } else if (typeObj.type === 'png') {
         await pipeline.png({ quality: 90 }).toFile(outputFile);
-      } else if (typeObj.type === "webp") {
+      } else if (typeObj.type === 'webp') {
         await pipeline.webp({ quality: 90 }).toFile(outputFile);
       }
     }
@@ -148,7 +148,7 @@ const convertImages = async (image: string): Promise<void> => {
 const processImage = async (destDir: string, imagePageUrl: string): Promise<void> => {
   await fs.promises.mkdir(destDir, { recursive: true });
 
-  const imgName = decodeURIComponent(path.basename(imagePageUrl)).replace(/^File:/, "");
+  const imgName = decodeURIComponent(path.basename(imagePageUrl)).replace(/^File:/, '');
   const dest = path.join(destDir, imgName);
 
   try {
@@ -176,47 +176,47 @@ const processImage = async (destDir: string, imagePageUrl: string): Promise<void
 
 const createSVGMap = async (): Promise<void> => {
   const svgMap: Record<string, string> = {};
-  const svgFiles = globSync(path.join(ASSETS_ROOT, "**", "*.svg"));
+  const svgFiles = globSync(path.join(ASSETS_ROOT, '**', '*.svg'));
 
   for (const file of svgFiles) {
-    const svgContent = await fs.promises.readFile(file, "utf-8");
-    const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, "/");
+    const svgContent = await fs.promises.readFile(file, 'utf-8');
+    const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, '/');
     svgMap[key] = svgContent;
   }
 
-  const mapFile = path.join(ASSETS_ROOT, "svg-map.json");
-  await fs.promises.writeFile(mapFile, JSON.stringify(svgMap, null, 2), "utf-8");
+  const mapFile = path.join(ASSETS_ROOT, 'svg-map.json');
+  await fs.promises.writeFile(mapFile, JSON.stringify(svgMap, null, 2), 'utf-8');
   console.log(`SVG map written to ${mapFile}`);
 };
 
 const createSVGSprite = async (): Promise<void> => {
-  const spriteDir = path.join("packages", "@iso-safety-signs", "sprite");
+  const spriteDir = path.join('packages', '@iso-safety-signs', 'sprite');
   await fs.promises.mkdir(spriteDir, { recursive: true });
 
-  const svgFiles = globSync(path.join(ASSETS_ROOT, "**", "*.svg")).filter(
-    (f) => !f.includes("sprites") && !/_\d+x\d+\.svg$/.test(f),
+  const svgFiles = globSync(path.join(ASSETS_ROOT, '**', '*.svg')).filter(
+    (f) => !f.includes('sprites') && !/_\d+x\d+\.svg$/.test(f),
   );
 
   const ids: string[] = [];
   const symbols: string[] = [];
 
   for (const file of svgFiles) {
-    const raw = await fs.promises.readFile(file, "utf-8");
-    const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, "/");
+    const raw = await fs.promises.readFile(file, 'utf-8');
+    const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, '/');
     const id = sanitize(key)
-      .replace(/\.svg$/, "")
-      .replace(/[._]/g, "-");
+      .replace(/\.svg$/, '')
+      .replace(/[._]/g, '-');
     ids.push(id);
 
-    const optimized = optimize(raw, { multipass: true, plugins: ["preset-default"] });
+    const optimized = optimize(raw, { multipass: true, plugins: ['preset-default'] });
     const svgContent = optimized.data
-      .replace(/<\?xml[^>]*\?>/g, "")
-      .replace(/<!DOCTYPE[^>]*>/g, "")
+      .replace(/<\?xml[^>]*\?>/g, '')
+      .replace(/<!DOCTYPE[^>]*>/g, '')
       .trim();
 
     const viewBoxMatch = svgContent.match(/viewBox="([^"]*)"/);
-    const viewBox = viewBoxMatch ? ` viewBox="${viewBoxMatch[1]}"` : "";
-    const innerContent = svgContent.replace(/<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+    const viewBox = viewBoxMatch ? ` viewBox="${viewBoxMatch[1]}"` : '';
+    const innerContent = svgContent.replace(/<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
 
     symbols.push(`  <symbol id="${id}"${viewBox}>${innerContent}</symbol>`);
   }
@@ -225,46 +225,46 @@ const createSVGSprite = async (): Promise<void> => {
     `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:none">`,
     ...symbols,
     `</svg>`,
-  ].join("\n");
+  ].join('\n');
 
-  const spriteFile = path.join(spriteDir, "sprite.svg");
-  await fs.promises.writeFile(spriteFile, sprite, "utf-8");
+  const spriteFile = path.join(spriteDir, 'sprite.svg');
+  await fs.promises.writeFile(spriteFile, sprite, 'utf-8');
   console.log(`SVG sprite written to ${spriteFile} (${ids.length} symbols)`);
 
-  const idMapFile = path.join(spriteDir, "sprite-ids.json");
-  await fs.promises.writeFile(idMapFile, JSON.stringify(ids, null, 2), "utf-8");
+  const idMapFile = path.join(spriteDir, 'sprite-ids.json');
+  await fs.promises.writeFile(idMapFile, JSON.stringify(ids, null, 2), 'utf-8');
   console.log(`SVG sprite ID map written to ${idMapFile}`);
 };
 
 const createCSSSprite = async (): Promise<void> => {
-  const cssPkgDir = path.join("packages", "@iso-safety-signs", "css");
+  const cssPkgDir = path.join('packages', '@iso-safety-signs', 'css');
   await fs.promises.mkdir(cssPkgDir, { recursive: true });
 
-  const svgFiles = globSync(path.join(ASSETS_ROOT, "**", "*.svg"))
-    .filter((f) => !f.includes("sprites"))
+  const svgFiles = globSync(path.join(ASSETS_ROOT, '**', '*.svg'))
+    .filter((f) => !f.includes('sprites'))
     .filter((f) => !/_\d+x\d+\.svg$/.test(f));
 
   const seen = new Set<string>();
   const cssRules: string[] = [
-    "/* ISO 7010 Safety Signs — CSS Sprite",
+    '/* ISO 7010 Safety Signs — CSS Sprite',
     "   Generated by 'yarn update'. Do not edit manually.",
-    "   Import this file and apply the class to a sized block element to display the sign. */",
+    '   Import this file and apply the class to a sized block element to display the sign. */',
   ];
 
   for (const file of svgFiles) {
-    const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, "/");
+    const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, '/');
     // Derive class name: iso-e001, iso-w073, etc. from the filename
-    const basename = path.basename(key, ".svg");
+    const basename = path.basename(key, '.svg');
     const codeMatch = basename.match(/ISO_7010_([EFMPW]\d{3}[a-z]?)/i);
     const className = codeMatch
       ? `iso-${codeMatch[1].toLowerCase()}`
-      : `iso-${sanitize(basename).replace(/[._]/g, "-")}`;
+      : `iso-${sanitize(basename).replace(/[._]/g, '-')}`;
 
     if (seen.has(className)) continue;
     seen.add(className);
 
     cssRules.push(
-      "",
+      '',
       `.${className} {`,
       `  background-image: url('../assets/assets/${key}');`,
       `  background-position: center;`,
@@ -274,8 +274,8 @@ const createCSSSprite = async (): Promise<void> => {
     );
   }
 
-  const cssFile = path.join(cssPkgDir, "sprite.css");
-  await fs.promises.writeFile(cssFile, cssRules.join("\n") + "\n", "utf-8");
+  const cssFile = path.join(cssPkgDir, 'sprite.css');
+  await fs.promises.writeFile(cssFile, cssRules.join('\n') + '\n', 'utf-8');
   console.log(`CSS sprite written to ${cssFile}`);
 };
 

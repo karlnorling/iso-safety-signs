@@ -53,17 +53,17 @@ Returns `null` for unrecognised IDs.
 
 ## Props
 
-| Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `width` | `number \| string` | SVG intrinsic width | Width of the `<svg>` element |
-| `height` | `number \| string` | SVG intrinsic height | Height of the `<svg>` element |
-| `title` | `string` | Sign name | Accessible title (`<title>` inside SVG) |
-| `description` | `string` | Sign description | Accessible description (`<desc>` inside SVG) |
+| Prop          | Type               | Default              | Description                                  |
+| ------------- | ------------------ | -------------------- | -------------------------------------------- |
+| `width`       | `number \| string` | SVG intrinsic width  | Width of the `<svg>` element                 |
+| `height`      | `number \| string` | SVG intrinsic height | Height of the `<svg>` element                |
+| `title`       | `string`           | Sign name            | Accessible title (`<title>` inside SVG)      |
+| `description` | `string`           | Sign description     | Accessible description (`<desc>` inside SVG) |
 
 `SignById` also requires:
 
-| Prop | Type | Description |
-| ---- | ---- | ----------- |
+| Prop | Type     | Description                                |
+| ---- | -------- | ------------------------------------------ |
 | `id` | `string` | Sign slug ID, e.g. `"e001-emergency-exit"` |
 
 ---

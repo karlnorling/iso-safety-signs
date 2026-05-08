@@ -52,13 +52,13 @@ defineCustomElements('safety');
 
 All elements and `<iso-sign>` accept the same attributes:
 
-| Attribute | Default | Description |
-| --------- | ------- | ----------- |
-| `sign-id` | — | Sign slug ID (`<iso-sign>` only), e.g. `"e001-emergency-exit"` |
-| `title` | Sign name | Accessible title (`<title>` inside SVG) |
-| `description` | Sign description | Accessible description (`<desc>` inside SVG) |
-| `width` | SVG intrinsic width | Forwarded to the `<svg>` width attribute |
-| `height` | SVG intrinsic height | Forwarded to the `<svg>` height attribute |
+| Attribute     | Default              | Description                                                    |
+| ------------- | -------------------- | -------------------------------------------------------------- |
+| `sign-id`     | —                    | Sign slug ID (`<iso-sign>` only), e.g. `"e001-emergency-exit"` |
+| `title`       | Sign name            | Accessible title (`<title>` inside SVG)                        |
+| `description` | Sign description     | Accessible description (`<desc>` inside SVG)                   |
+| `width`       | SVG intrinsic width  | Forwarded to the `<svg>` width attribute                       |
+| `height`      | SVG intrinsic height | Forwarded to the `<svg>` height attribute                      |
 
 All attributes are reactive — changing them re-renders the SVG.
 
@@ -72,11 +72,15 @@ All attributes are reactive — changing them re-renders the SVG.
 // React treats unknown elements as HTML. Add a JSX type declaration if needed.
 declare namespace JSX {
   interface IntrinsicElements {
-    'iso-sign': React.HTMLAttributes<HTMLElement> & { 'sign-id'?: string; width?: string | number; height?: string | number };
+    'iso-sign': React.HTMLAttributes<HTMLElement> & {
+      'sign-id'?: string;
+      width?: string | number;
+      height?: string | number;
+    };
   }
 }
 
-<iso-sign sign-id="e001-emergency-exit" width="64" />
+<iso-sign sign-id="e001-emergency-exit" width="64" />;
 ```
 
 ### Vue 3

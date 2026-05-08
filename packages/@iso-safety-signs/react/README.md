@@ -62,19 +62,19 @@ Returns `null` for unrecognised IDs — no error thrown.
 
 Every component and `SignById` accept the same props:
 
-| Prop | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| `width` | `number \| string` | SVG intrinsic width | Width of the `<svg>` element |
-| `height` | `number \| string` | SVG intrinsic height | Height of the `<svg>` element |
-| `title` | `string` | Sign name | Accessible title (`<title>` inside SVG) |
-| `description` | `string` | Sign description | Accessible description (`<desc>` inside SVG) |
-| `className` | `string` | — | CSS class forwarded to the root `<span>` wrapper |
-| `style` | `React.CSSProperties` | — | Inline styles forwarded to the root `<span>` wrapper |
+| Prop          | Type                  | Default              | Description                                          |
+| ------------- | --------------------- | -------------------- | ---------------------------------------------------- |
+| `width`       | `number \| string`    | SVG intrinsic width  | Width of the `<svg>` element                         |
+| `height`      | `number \| string`    | SVG intrinsic height | Height of the `<svg>` element                        |
+| `title`       | `string`              | Sign name            | Accessible title (`<title>` inside SVG)              |
+| `description` | `string`              | Sign description     | Accessible description (`<desc>` inside SVG)         |
+| `className`   | `string`              | —                    | CSS class forwarded to the root `<span>` wrapper     |
+| `style`       | `React.CSSProperties` | —                    | Inline styles forwarded to the root `<span>` wrapper |
 
 `SignById` also requires:
 
-| Prop | Type | Description |
-| ---- | ---- | ----------- |
+| Prop | Type     | Description                                |
+| ---- | -------- | ------------------------------------------ |
 | `id` | `string` | Sign slug ID, e.g. `"e001-emergency-exit"` |
 
 ---

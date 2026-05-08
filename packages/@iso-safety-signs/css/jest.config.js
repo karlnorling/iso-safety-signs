@@ -1,26 +1,26 @@
 /** @type {import('jest').Config} */
 const config = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  roots: ["<rootDir>/src"],
-  testMatch: ["**/__tests__/**/*.test.ts"],
-  moduleFileExtensions: ["ts", "js", "json"],
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/src'],
+  testMatch: ['**/__tests__/**/*.test.ts'],
+  moduleFileExtensions: ['ts', 'js', 'json'],
   transform: {
-    "^.+\\.ts$": [
-      "ts-jest",
+    '^.+\\.ts$': [
+      'ts-jest',
       {
         tsconfig: {
           esModuleInterop: true,
           skipLibCheck: true,
           paths: {
-            "@iso-safety-signs/core": ["../core/src/index.ts"],
+            '@iso-safety-signs/core': ['../core/src/index.ts'],
           },
         },
       },
     ],
   },
   moduleNameMapper: {
-    "^@iso-safety-signs/core$": "<rootDir>/../core/src/index.ts",
+    '^@iso-safety-signs/core$': '<rootDir>/../core/src/index.ts',
   },
 };
 

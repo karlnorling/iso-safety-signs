@@ -17,6 +17,8 @@
     "format": "oxfmt --write --ignore-path=.oxfmtignore .",
     "format:check": "oxfmt --check --ignore-path=.oxfmtignore .",
     "check": "manypkg check",
+    "storybook": "yarn workspace @iso-storybook/app storybook",
+    "build-storybook": "yarn workspace @iso-storybook/app build-storybook",
     "changeset": "changeset",
     "publish": "yarn changeset publish",
     "prepare": "lefthook install"

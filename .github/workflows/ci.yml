@@ -54,12 +54,13 @@ jobs:
     needs: quality
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    # Must match the environment name configured on npmjs.com as a Trusted Publisher.
     environment: main
 
     permissions:
-      contents: write
-      pull-requests: write
-      id-token: write
+      contents: write # push version-bump commits and create GitHub Releases
+      pull-requests: write # open and update the Version Packages PR
+      id-token: write # obtain OIDC token for npm Trusted Publishers
 
     steps:
       - name: Generate GitHub App token
@@ -72,6 +73,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          # Full history so changesets can compare package versions across tags.
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
@@ -94,6 +96,10 @@ jobs:
       - name: Create Version PR or Publish to npm
         uses: changesets/action@v1
         with:
+          # Yarn Berry's `yarn npm publish` uses its own HTTP client and does not
+          # invoke npm CLI, so it cannot pick up the OIDC token automatically.
+          # This script uses `npm publish` directly, which handles the OIDC token
+          # exchange with the npm registry natively (npm CLI v9+).
           publish: bash scripts/publish.sh
           createGithubReleases: true
         env:
