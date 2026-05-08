@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/sprite",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "SVG symbol sprite for all ISO 7010 safety signs — embed any sign inline with <use href='#id'>",
   "keywords": [
     "emergency",

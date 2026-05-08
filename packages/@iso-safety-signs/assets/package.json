@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/assets",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Static image assets for all ISO 7010 safety signs — SVG, PNG, JPG, and WebP at five sizes (240–2048 px)",
   "keywords": [
     "assets",

@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/react",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Accessible React components for all ISO 7010 safety signs — fully typed, zero runtime dependencies beyond React",
   "keywords": [
     "accessible",

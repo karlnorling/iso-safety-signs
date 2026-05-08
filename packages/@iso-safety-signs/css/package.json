@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/css",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CSS background-image sprite for ISO 7010 safety signs — class-based display, no JavaScript required",
   "keywords": [
     "background-image",
