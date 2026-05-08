@@ -1,0 +1,44 @@
+{
+  "name": "@iso-safety-signs/assets",
+  "version": "1.0.0",
+  "description": "Static image assets for all ISO 7010 safety signs — SVG, PNG, JPG, and WebP at five sizes (240–2048 px)",
+  "keywords": [
+    "assets",
+    "emergency",
+    "fire",
+    "icons",
+    "images",
+    "iso",
+    "iso-7010",
+    "jpg",
+    "mandatory",
+    "pictogram",
+    "png",
+    "prohibition",
+    "safety",
+    "safety-signs",
+    "signs",
+    "svg",
+    "warning",
+    "webp",
+    "workplace-safety"
+  ],
+  "homepage": "https://karlnorling.github.io/iso-safety-signs/",
+  "bugs": {
+    "url": "https://github.com/karlnorling/iso-safety-signs/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karlnorling/iso-safety-signs",
+    "directory": "packages/@iso-safety-signs/assets"
+  },
+  "files": [
+    "assets/",
+    "package.json",
+    "README.md"
+  ],
+  "exports": {
+    "./assets/*": "./assets/*"
+  }
+}

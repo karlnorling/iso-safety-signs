@@ -1,0 +1,19 @@
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+.pnp.*
+node_modules
+.yarnrc.yml
+dist/
+
+# Generated data cache (re-created by yarn update)
+data/
+
+*storybook.log
+storybook-static
+
+.DS_Store

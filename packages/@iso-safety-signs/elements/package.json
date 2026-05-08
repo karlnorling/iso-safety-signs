@@ -1,0 +1,64 @@
+{
+  "name": "@iso-safety-signs/elements",
+  "version": "1.0.0",
+  "description": "Accessible Web Components (Custom Elements) for all ISO 7010 safety signs — framework-agnostic, zero runtime dependencies",
+  "keywords": [
+    "accessible",
+    "custom-elements",
+    "emergency",
+    "fire",
+    "iso",
+    "iso-7010",
+    "mandatory",
+    "pictogram",
+    "prohibition",
+    "safety",
+    "safety-signs",
+    "signs",
+    "svg",
+    "typescript",
+    "warning",
+    "web-components",
+    "workplace-safety"
+  ],
+  "homepage": "https://karlnorling.github.io/iso-safety-signs/",
+  "bugs": {
+    "url": "https://github.com/karlnorling/iso-safety-signs/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karlnorling/iso-safety-signs",
+    "directory": "packages/@iso-safety-signs/elements"
+  },
+  "files": [
+    "dist/",
+    "package.json",
+    "README.md"
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json && node -e \"require('fs').writeFileSync('dist/cjs/package.json', JSON.stringify({type:'commonjs'})); require('fs').writeFileSync('dist/esm/package.json', JSON.stringify({type:'module'}))\"",
+    "test": "jest",
+    "type-check": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@iso-safety-signs/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3"
+  }
+}
