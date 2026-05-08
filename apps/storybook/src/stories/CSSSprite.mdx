@@ -1,0 +1,68 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as CSSSpriteStories from './CSSSprite.stories';
+
+<Meta of={CSSSpriteStories} />
+
+# CSS Sprite
+
+Import `sprite.css` to get a set of `.iso-*` utility classes. Apply a class to any block element sized with `width`/`height` — no JavaScript required.
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/css
+```
+
+## Setup
+
+```js
+import '@iso-safety-signs/css/sprite.css';
+```
+
+```css
+@import '@iso-safety-signs/css/sprite.css';
+```
+
+## Usage
+
+```html
+<span
+  class="iso-e001"
+  style="display:inline-block; width:64px; height:64px"
+  role="img"
+  aria-label="Emergency exit"
+></span>
+```
+
+### CSS helper
+
+```ts
+import { getCssClassName } from '@iso-safety-signs/css';
+
+const cls = getCssClassName('e001-emergency-exit'); // → 'iso-e001'
+element.className = cls;
+```
+
+---
+
+## Class name pattern
+
+Classes follow the pattern `iso-{code}` — e.g. `iso-e001`, `iso-w073`, `iso-p001`.
+
+---
+
+## Emergency signs
+
+<Canvas of={CSSSpriteStories.Emergency} />
+
+---
+
+## Warning signs
+
+<Canvas of={CSSSpriteStories.Warning} />
+
+---
+
+## All signs
+
+<Canvas of={CSSSpriteStories.AllSigns} />

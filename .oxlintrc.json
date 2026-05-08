@@ -1,0 +1,36 @@
+{
+  "plugins": ["typescript"],
+  "rules": {
+    "no-console": "off",
+    "no-await-in-loop": "warn",
+    "no-undef": "off",
+    "typescript/no-explicit-any": "warn",
+    "typescript/consistent-type-imports": ["error", { "prefer": "type-imports" }],
+    "typescript/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ]
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "coverage",
+    "data",
+    "**/storybook-static",
+    "packages/@iso-safety-signs/assets/assets",
+    "packages/@iso-safety-signs/core/src/signs.generated.ts",
+    "packages/@iso-safety-signs/react/src/SignProps.ts",
+    "packages/@iso-safety-signs/react/src/E*.tsx",
+    "packages/@iso-safety-signs/react/src/F*.tsx",
+    "packages/@iso-safety-signs/react/src/M*.tsx",
+    "packages/@iso-safety-signs/react/src/P*.tsx",
+    "packages/@iso-safety-signs/react/src/W*.tsx",
+    "packages/@iso-safety-signs/react/src/index.ts",
+    "packages/@iso-safety-signs/css/sprite.css",
+    ".storybook",
+    "src"
+  ]
+}

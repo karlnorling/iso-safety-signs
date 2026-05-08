@@ -1,0 +1,94 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as SVGSpriteStories from './SVGSprite.stories';
+
+<Meta of={SVGSpriteStories} />
+
+# SVG Sprite
+
+A single `sprite.svg` contains all ISO 7010 safety signs as `<symbol>` elements. Reference any symbol with `<use href="#id">` — one HTTP request serves every sign.
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/sprite
+```
+
+## When to use
+
+| Approach | Best for |
+| -------- | -------- |
+| **SVG sprite** | Plain HTML, no framework, single network request |
+| React components | React/JSX — richer props, TypeScript, tree-shakeable |
+| CSS sprite | Class-name driven usage, CMS output, no JavaScript |
+
+---
+
+## Usage
+
+### External file reference (recommended)
+
+```html
+<svg width="64" height="64" role="img" aria-label="Emergency exit">
+  <title>Emergency exit</title>
+  <use href="/assets/sprites/sprite.svg#e001-emergency-exit" />
+</svg>
+```
+
+### Inline sprite
+
+```html
+<div aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <!-- paste contents of sprite.svg here -->
+</div>
+
+<svg width="64" height="64" role="img" aria-label="Emergency exit">
+  <title>Emergency exit</title>
+  <use href="#e001-emergency-exit" />
+</svg>
+```
+
+### React with bundler import
+
+```tsx
+import spriteUrl from '@iso-safety-signs/sprite/sprite.svg';
+
+<svg width={64} height={64} role="img" aria-label="Emergency exit">
+  <title>Emergency exit</title>
+  <use href={`${spriteUrl}#e001-emergency-exit`} />
+</svg>
+```
+
+---
+
+## Symbol ID pattern
+
+Symbol IDs match the sign slug IDs: `e001-emergency-exit`, `w001-flammable-material`, `p001-no-smoking`, etc. Enumerate all IDs from `sprite-ids.json`:
+
+```ts
+import ids from '@iso-safety-signs/sprite/sprite-ids.json';
+```
+
+---
+
+## Emergency signs
+
+<Canvas of={SVGSpriteStories.Emergency} />
+
+---
+
+## Warning signs
+
+<Canvas of={SVGSpriteStories.Warning} />
+
+---
+
+## All signs
+
+<Canvas of={SVGSpriteStories.AllSigns} />
+
+---
+
+## Single icon with controls
+
+<Canvas of={SVGSpriteStories.SingleIcon} />
+<Controls of={SVGSpriteStories.SingleIcon} />

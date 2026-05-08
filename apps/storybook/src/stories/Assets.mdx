@@ -1,0 +1,139 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="ISO 7010/Assets & API" />
+
+# Assets & Programmatic API
+
+The `@iso-safety-signs/core` package exposes typed data for all ISO 7010 safety signs alongside helper functions for filtering and lookup. The `@iso-safety-signs/assets` package provides pre-built image files at multiple resolutions.
+
+---
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/core @iso-safety-signs/assets
+```
+
+---
+
+## Programmatic API
+
+```ts
+import {
+  getAllSigns,
+  getSign,
+  getSignsByCategory,
+} from '@iso-safety-signs/core';
+```
+
+### `getAllSigns()`
+
+Returns all ISO 7010 signs.
+
+```ts
+const all = getAllSigns();
+// → Sign[]
+```
+
+### `getSign(id)`
+
+Look up a single sign by its slug ID.
+
+```ts
+const exit = getSign('e001-emergency-exit');
+// → Sign | undefined
+
+const flammable = getSign('w001-flammable-material');
+```
+
+### `getSignsByCategory(category)`
+
+Filter signs by ISO 7010 category.
+
+```ts
+const emergency   = getSignsByCategory('emergency');    // E-series (green)
+const fire        = getSignsByCategory('fire');         // F-series (red)
+const mandatory   = getSignsByCategory('mandatory');    // M-series (blue)
+const prohibition = getSignsByCategory('prohibition');  // P-series (red/white)
+const warning     = getSignsByCategory('warning');      // W-series (yellow)
+```
+
+---
+
+## `Sign` type
+
+```ts
+interface Sign {
+  id: string;          // e.g. 'e001-emergency-exit'
+  code: string;        // e.g. 'E001'
+  name: string;        // e.g. 'Emergency exit'
+  category: SignCategory;
+  description: string; // accessible description
+  svg: string;         // inline SVG markup
+  assets: SignAssets;
+}
+
+interface SignAssets {
+  svg: string;                    // relative path to original SVG
+  png: Record<number, string>;    // size → relative path (240, 512, 768, 1024, 2048)
+  jpg: Record<number, string>;    // same sizes
+  webp: Record<number, string>;   // same sizes
+}
+
+type SignCategory = 'emergency' | 'fire' | 'mandatory' | 'prohibition' | 'warning';
+```
+
+---
+
+## ISO 7010 Categories
+
+| Category | Code range | Background | Meaning |
+| -------- | ---------- | ---------- | ------- |
+| Emergency | E001–E068+ | Green | Emergency routes, first aid, eye wash |
+| Fire | F001–F017+ | Red | Fire-fighting equipment location |
+| Mandatory | M001–M058+ | Blue | Required actions (PPE, procedures) |
+| Prohibition | P001–P071+ | Red/white | Forbidden actions |
+| Warning | W001–W073+ | Yellow | Hazard alerts |
+
+---
+
+## Asset files
+
+The `@iso-safety-signs/assets` package ships pre-converted raster images at five resolutions in PNG, JPG, and WebP formats alongside the original SVGs.
+
+### Directory layout
+
+```
+assets/
+  emergency/
+    e001/
+      ISO_7010_E001.svg
+      ISO_7010_E001_240x240.png
+      ISO_7010_E001_512x512.png
+      ISO_7010_E001_768x768.png
+      ISO_7010_E001_1024x1024.png
+      ISO_7010_E001_2048x2048.png
+      ISO_7010_E001_240x240.jpg
+      ISO_7010_E001_240x240.webp
+      …
+  fire/
+    f001/
+      ISO_7010_F001.svg
+      …
+  mandatory/
+  prohibition/
+  warning/
+```
+
+### Resolve asset paths via the API
+
+```ts
+import { getSign } from '@iso-safety-signs/core';
+
+const sign = getSign('e001-emergency-exit');
+if (sign) {
+  console.log(sign.assets.svg);       // 'emergency/e001/ISO_7010_E001.svg'
+  console.log(sign.assets.png[512]);  // 'emergency/e001/ISO_7010_E001_512x512.png'
+  console.log(sign.assets.webp[240]); // 'emergency/e001/ISO_7010_E001_240x240.webp'
+}
+```
