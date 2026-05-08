@@ -46,12 +46,15 @@ const CATEGORIES: Array<{
   {
     category: 'emergency',
     letter: 'E',
-    headingIds: ['E:_Emergency_signs', 'Emergency_signs', 'E_-_Emergency_signs'],
+    // 'Safe_condition' is the current Wikipedia heading ID (as of 2025).
+    // Legacy IDs are kept as fallbacks in case the page is edited.
+    headingIds: ['Safe_condition', 'E:_Emergency_signs', 'Emergency_signs', 'E_-_Emergency_signs'],
   },
   {
     category: 'fire',
     letter: 'F',
     headingIds: [
+      'Fire_protection',
       'F:_Fire_equipment_signs',
       'F:_Fire_safety_signs',
       'Fire_equipment_signs',
@@ -63,6 +66,7 @@ const CATEGORIES: Array<{
     category: 'mandatory',
     letter: 'M',
     headingIds: [
+      'Mandatory',
       'M:_Mandatory_action_signs',
       'M:_Mandatory_signs',
       'Mandatory_action_signs',
@@ -73,12 +77,17 @@ const CATEGORIES: Array<{
   {
     category: 'prohibition',
     letter: 'P',
-    headingIds: ['P:_Prohibition_signs', 'Prohibition_signs', 'P_-_Prohibition_signs'],
+    headingIds: [
+      'Prohibition',
+      'P:_Prohibition_signs',
+      'Prohibition_signs',
+      'P_-_Prohibition_signs',
+    ],
   },
   {
     category: 'warning',
     letter: 'W',
-    headingIds: ['W:_Warning_signs', 'Warning_signs', 'W_-_Warning_signs'],
+    headingIds: ['Warning', 'W:_Warning_signs', 'Warning_signs', 'W_-_Warning_signs'],
   },
 ];
 
@@ -135,8 +144,13 @@ const scrapeSection = (
   while (node) {
     const tag = node.tagName?.toLowerCase();
 
-    // Stop at the next H2 section.
-    if (tag === 'h2') break;
+    // Stop at the next H2 or H3 section boundary (bare elements or the
+    // div.mw-heading wrappers Wikipedia now uses).
+    if (tag === 'h2' || tag === 'h3') break;
+    if (tag === 'div') {
+      const cls = node.getAttribute('class') ?? '';
+      if (cls.includes('mw-heading2') || cls.includes('mw-heading3')) break;
+    }
 
     // Process gallery lists.
     if (tag === 'ul' && node.classNames?.includes('gallery')) {
