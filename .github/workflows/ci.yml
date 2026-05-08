@@ -25,8 +25,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
-          cache: "yarn"
+          node-version: '24'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --immutable
@@ -66,8 +66,8 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ secrets.ISO_APP_ID }}
-          private-key: ${{ secrets.ISO_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.ISO_SAFETY_SIGNS_APP_ID }}
+          private-key: ${{ secrets.ISO_SAFETY_SIGNS_PRIVATE_KEY }}
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,9 +81,9 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
-          registry-url: "https://registry.npmjs.org"
-          cache: "yarn"
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install --immutable
