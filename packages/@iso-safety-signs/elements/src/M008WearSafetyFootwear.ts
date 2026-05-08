@@ -1,0 +1,32 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" viewBox="0 0 265 265"`;
+const _Body = `<path fill="#005387" fill-rule="nonzero" d="M132.5 0C59.529 0 0 59.51 0 132.466S59.532 265 132.5 265 265 205.419 265 132.466 205.472 0 132.5 0"/><path fill="#fff" d="m105.862 55.133 5.414-28.444 65.392 15.392-16.28 62.008c-1.213 4.612-1.045 8.351 1.287 11.575l24.552 33.914c3.276 4.526 7.343 7.992 10.922 9.067 19.071 5.328 25.72 15.985 19.981 31.877l2.246.586-1.91 7.112-15.414-3.407 1.06-4.847 6.951 1.534c8.545-14.205 3.963-23.496-14.179-28.56-4.944-1.478-9.757-5.862-13.284-10.735l-24.556-33.914c-3.437-4.746-3.377-10.067-1.993-15.34l15.116-57.56-56.366-13.269-4.541 23.847zm66.537 126.318c-6.022-1.369-3.537-7.56 4.187-7.09 5.388.329 12.448 4.444 15.369 9.273 2.746 4.541-2.817 8.653-5.817 5.694-4.616-4.556-8.672-6.724-13.739-7.877m-114.347.056h46.265c14.817 0 25.944 13.716 38.239 13.716h47.426v4.481h-47.426c-13.795 0-24.187-13.713-38.239-13.713H58.052zM52.436 62.715h69.411l-2.19 63.944c-.187 5.392.899 9.739 4.429 12.634l30.302 24.832c3.119 2.556 5.925 4.534 9.082 5.198l14.604 3.063c12.638 2.649 18.254 8.952 16.523 20.672q-.704 3.804 1.911 3.832l.003 8.642h-64.534c-1.638 0-3.463-.672-5.597-1.634 0 0-21.739-12.922-25.758-12.97l-.549 14.605H54.895l-1.914-24.343c-5.549-6.739-4.642-21.616 2.735-44.631 2.978-9.295.25-39.56-3.28-73.844"/>`;
+const _DefaultDesc = `Wear safety footwear`;
+const _DefaultTitle = 'Wear safety footwear';
+const _DefaultWidth = `265`;
+const _DefaultHeight = `265`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export class M008WearSafetyFootwear extends HTMLElement {
+  static readonly tagName = 'iso-m008-wear-safety-footwear';
+  static readonly observedAttributes = ['title', 'description', 'width', 'height'];
+
+  connectedCallback(): void { this._render(); }
+  attributeChangedCallback(): void { this._render(); }
+
+  private _render(): void {
+    const descId = `iso-desc-m008-wear-safety-footwear`;
+    const titleId = `iso-title-m008-wear-safety-footwear`;
+    const _w = this.hasAttribute('width') ? _h(this.getAttribute('width')!) : _DefaultWidth;
+    const _ht = this.hasAttribute('height') ? _h(this.getAttribute('height')!) : _DefaultHeight;
+    const resolvedTitle = this.getAttribute('title') ?? _DefaultTitle;
+    const resolvedDesc = this.getAttribute('description') ?? _DefaultDesc;
+    this.style.display = 'contents';
+    this.innerHTML = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(resolvedTitle)}</title>
+  <desc id="${descId}">${_h(resolvedDesc)}</desc>
+  ${_Body}</svg>`;
+  }
+}

@@ -1,0 +1,138 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# ISO Safety Signs
+
+Accessible, framework-agnostic packages for all **ISO 7010** workplace safety signs.
+
+[![CI](https://github.com/karlnorling/iso-safety-signs/actions/workflows/ci.yml/badge.svg)](https://github.com/karlnorling/iso-safety-signs/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/karlnorling/iso-safety-signs/blob/main/LICENSE)
+
+---
+
+## What is ISO 7010?
+
+ISO 7010 is the international standard that defines graphical symbols for safety signs used in workplaces, public spaces, and on products worldwide. Signs are grouped into five categories, each with a distinct colour and purpose.
+
+| Category | Code range | Colour | Purpose |
+| -------- | ---------- | ------ | ------- |
+| Emergency | E001–E076+ | Green | Emergency exits, first aid, eye wash, evacuation |
+| Fire equipment | F001–F019+ | Red | Fire extinguisher, hose reel, alarm call point |
+| Mandatory | M001–M072+ | Blue | Required actions — PPE, handrails, procedures |
+| Prohibition | P001–P081+ | Red/white | Forbidden actions — no smoking, no entry |
+| Warning | W001–W089+ | Yellow | Hazard alerts — flammable, high voltage, biohazard |
+
+---
+
+## Packages
+
+| Package | Description |
+| ------- | ----------- |
+| [`@iso-safety-signs/react`](/?path=/docs/iso-7010-react-components--docs) | Inline SVG React components, tree-shakeable, fully typed |
+| [`@iso-safety-signs/vue`](https://www.npmjs.com/package/@iso-safety-signs/vue) | Inline SVG Vue 3 components |
+| [`@iso-safety-signs/elements`](https://www.npmjs.com/package/@iso-safety-signs/elements) | Web Components / Custom Elements (`<iso-sign>`) |
+| [`@iso-safety-signs/css`](/?path=/docs/iso-7010-css-sprite--docs) | CSS background-image sprite, zero JavaScript |
+| [`@iso-safety-signs/sprite`](/?path=/docs/iso-7010-svg-sprite--docs) | SVG `<symbol>` sprite, single network request |
+| [`@iso-safety-signs/assets`](/?path=/docs/iso-7010-assets-api--docs) | Pre-built SVG, PNG, JPG, WebP at 5 sizes |
+| [`@iso-safety-signs/core`](/?path=/docs/iso-7010-assets-api--docs) | Typed sign data and lookup API |
+
+---
+
+## Quick start
+
+### React
+
+```sh
+npm install @iso-safety-signs/react
+```
+
+```tsx
+import { SignById } from '@iso-safety-signs/react';
+
+<SignById id="e001-emergency-exit" width={64} />
+```
+
+Named components are also generated for each sign:
+
+```tsx
+import { E001EmergencyExit, W001FlammableMaterial } from '@iso-safety-signs/react';
+
+<E001EmergencyExit width={64} />
+<W001FlammableMaterial width={64} title="Flammable" />
+```
+
+### Vue 3
+
+```sh
+npm install @iso-safety-signs/vue
+```
+
+```vue
+<script setup>
+import { SignById } from '@iso-safety-signs/vue';
+</script>
+<template>
+  <SignById id="e001-emergency-exit" :width="64" />
+</template>
+```
+
+### Web Components
+
+```sh
+npm install @iso-safety-signs/elements
+```
+
+```ts
+import { defineCustomElements } from '@iso-safety-signs/elements';
+defineCustomElements();
+```
+
+```html
+<iso-sign sign-id="e001-emergency-exit" width="64"></iso-sign>
+<iso-e001-emergency-exit width="64"></iso-e001-emergency-exit>
+```
+
+### CSS sprite (no JavaScript)
+
+```sh
+npm install @iso-safety-signs/css
+```
+
+```js
+import '@iso-safety-signs/css/sprite.css';
+```
+
+```html
+<span class="iso-e001" style="display:inline-block;width:64px;height:64px"
+      role="img" aria-label="Emergency exit"></span>
+```
+
+### SVG sprite
+
+```sh
+npm install @iso-safety-signs/sprite
+```
+
+```html
+<svg width="64" height="64" role="img" aria-label="Emergency exit">
+  <title>Emergency exit</title>
+  <use href="/path/to/sprite.svg#e001-emergency-exit" />
+</svg>
+```
+
+### Programmatic API
+
+```ts
+import { getAllSigns, getSign, getSignsByCategory } from '@iso-safety-signs/core';
+
+const allSigns = getAllSigns();                          // Sign[]
+const sign     = getSign('e001-emergency-exit');        // Sign | undefined
+const warnings = getSignsByCategory('warning');         // Sign[]
+```
+
+---
+
+## License
+
+MIT. ISO 7010 safety sign graphics are published under free licences on Wikimedia Commons — see each sign's Wikimedia Commons page for the specific licence of its SVG artwork.

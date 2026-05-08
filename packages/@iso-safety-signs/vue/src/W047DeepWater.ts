@@ -1,0 +1,40 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+import { defineComponent, h } from 'vue';
+import { signProps } from './SignProps';
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" viewBox="0 0 685 600"`;
+const _Body = `<path d="M197.462 164.744 104.122 2.939l-.577-.863-.719-.649-.79-.574-.936-.43-.935-.289-1.007-.07-1.005.07-1.006.29-.864.43-.863.573-.65.65-.573.862L.857 164.744l-.434.933-.288.934-.07 1.008.07 1.008.288 1.004.435.863.573.863.645.648.863.574.864.434 1.008.29 1.007.07h186.684l1.007-.07.933-.29.935-.434.793-.574.718-.648.574-.863.435-.863.285-1.004.073-1.008-.073-1.008-.285-.934Zm0 0" style="fill-rule:evenodd;fill:#020505;fill-opacity:1;stroke-width:.127844;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:2.613" transform="scale(3.45262 3.45622)"/><path d="m99.158 18.11 82.699 143.396H16.458Zm0 0" style="fill-rule:evenodd;fill:#f9a800;fill-opacity:1;stroke-width:.127844;stroke-linecap:butt;stroke-linejoin:miter;stroke:#000303;stroke-opacity:1;stroke-miterlimit:2.613" transform="scale(3.45262 3.45622)"/><path d="M155.764 138.767H42.518l-8.493 12.73h130.23ZM114.47 93.752l-1.632 8.816-3.45-.653 1.637-8.777ZM98.939 69.634l-3.48.36.976 8.925 3.485-.398Zm5.515 31.446-2.394-3.336-9.18 6.64 2.395 3.336Zm0 0" style="fill-rule:evenodd;fill:#020505;fill-opacity:1;stroke-width:.027966;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:2.613" transform="scale(3.45262 3.45622)"/><path d="m96.111 106.303-4.067-.504-1.375 11.242 4.063.507Zm-3.739-14.434-6.422 9.32-3.375-2.32 6.422-9.32Zm20.501 10.374-.11-.546-.253-.473-.364-.398-.508-.254-.543-.07-.543.07-.473.254-.398.398-.253.473-.075.546.075.544.253.507.398.364.473.253.543.107.543-.107.508-.253.364-.364.253-.507Zm1.632-8.78-.07-.544-.254-.508-.402-.362-.468-.255-.548-.11-.543.11-.508.255-.363.362-.254.508-.07.544.07.547.254.469.363.397.508.22.543.108.548-.108.468-.22.402-.397.254-.47ZM99.92 78.736l-.075-.543-.254-.508-.398-.363-.473-.254-.543-.11-.543.11-.508.254-.363.363-.253.508-.11.543.11.547.253.469.363.402.508.25.543.074.543-.074.473-.25.398-.402.254-.469Zm-.981-8.922-.07-.542-.254-.474-.398-.398-.473-.254-.548-.075-.542.075-.473.254-.398.398-.254.474-.07.542.07.543.254.473.398.398.473.254.542.074.548-.074.473-.254.398-.398.254-.473Zm0 0" style="fill-rule:evenodd;fill:#020505;fill-opacity:1;stroke-width:.027966;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:2.613" transform="scale(3.45262 3.45622)"/><path d="m96.146 106.052-.11-.656-.288-.543-.473-.47-.543-.292-.656-.108-.613.108-.583.293-.472.469-.29.543-.11.656.11.652.29.544.472.472.583.29.613.11.656-.11.543-.29.473-.472.289-.544Zm-3.41-15.344-.074-.655-.289-.579-.473-.437-.578-.29-.618-.11-.651.11-.583.29-.437.437-.29.579-.109.655.11.614.29.582.436.472.583.29.651.11.618-.11.578-.29.473-.472.289-.582Zm8.743 7.18-.072-.617-.328-.578-.433-.473-.582-.289-.617-.11-.652.11-.578.29-.438.472-.29.578-.108.617.108.653.29.582.438.434.578.292.652.11.617-.11.582-.292.433-.434.328-.582Zm3.846 1.524-.108-.617-.29-.579-.473-.472-.542-.29-.653-.11-.656.11-.543.29-.468.472-.293.579-.11.617.11.652.293.582.468.434.543.293.656.11.653-.11.542-.293.473-.434.29-.582Zm-10.558 17.882-.11-.652-.288-.542-.473-.473-.543-.29-.656-.109-.613.11-.582.29-.473.472-.29.542-.108.652.108.617.29.582.473.47.582.289.613.11.656-.11.543-.29.473-.469.288-.582Zm-8.453-17.264-.074-.618-.29-.579-.471-.472-.583-.29-.617-.11-.653.11-.578.29-.438.472-.288.579-.11.617.11.652.288.543.438.473.578.288.653.115.617-.115.583-.288.471-.473.29-.543Zm-7.078 29.308h-3.59V94.876h3.59l-6.168-6.816-6.133 6.816h3.593v34.462h-3.593l6.133 6.855Zm46.738-46.211-1.234.035-1.234.253-1.161.399-1.816.762-1.414.507-1.488.33-1.524.108-1.523-.109-1.489-.329-1.414-.507-1.816-.762-1.27-.434-1.339-.218h-1.344l-1.344.218-1.305.434-1.78.762-1.45.507-1.489.33-1.522.108-1.49-.109-1.487-.329-1.45-.507-1.816-.762-1.27-.434-1.343-.218h-1.34l-1.343.218-1.27.434-1.817.762-1.45.547-1.522.29-1.562.108-1.56-.145-1.524-.328-1.452-.542-1.344-.727 1.418-2.465 1.195.652 1.31.473 1.339.214h1.379l1.344-.214L81.271 82l1.812-.797 1.415-.507 1.487-.293 1.524-.106 1.488.106 1.49.293 1.452.507 1.777.797 1.305.438 1.344.214h1.344l1.34-.214 1.304-.438 1.782-.797 1.45-.507 1.487-.293 1.488-.106 1.524.106 1.487.293 1.415.507 1.817.797 1.27.438 1.342.214h1.376l1.344-.214 1.27-.438 1.815-.797 1.56-.547 1.597-.288Zm0 0" style="fill-rule:evenodd;fill:#020505;fill-opacity:1;stroke-width:.027966;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:2.613" transform="scale(3.45262 3.45622)"/><path d="m99.267 77.357-2.214 2.723.87.691.872-.184.796-.29 1.816-.76.364-.149Zm13.208 2.468.108-.726v-.762l-.218-.722-.325-.657-.507-.577-.582-.438-.692-.324-.723-.145h-.764l-.723.18-.692.328-.578.469-.438.617-.328.652-.18.762h1.524l1.488.184 1.454.324 1.413.546Zm-1.743 6.349-1.594-.688-1.02-.328-1.015-.183h-1.05l-1.051.183-.981.328-1.816.796-.434.18-4.247 10.665 7.658 3.047 3.883-9.794 2.175 3.919 3.05-1.708Zm0 0" style="fill-rule:evenodd;fill:#020505;fill-opacity:1;stroke-width:.027966;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:2.613" transform="scale(3.45262 3.45622)"/><path d="m100.756 96.295-2.614 3.19-8.745-7.183 2.612-3.19Zm0 0" style="fill-rule:evenodd;fill:#020505;fill-opacity:1;stroke-width:.027966;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:2.613" transform="scale(3.45262 3.45622)"/>`;
+const _DefaultDesc = `Deep water`;
+const _DefaultTitle = 'Deep water';
+const _DefaultWidth = `685pt`;
+const _DefaultHeight = `800`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export const W047DeepWater = defineComponent({
+  name: 'W047DeepWater',
+  inheritAttrs: false,
+  props: {
+    ...signProps,
+  },
+  setup(props, { attrs }) {
+    return () => {
+      const descId = `iso-desc-w047-deep-water`;
+      const titleId = `iso-title-w047-deep-water`;
+      const _w = props.width !== undefined ? _h(String(props.width)) : _DefaultWidth;
+      const _ht = props.height !== undefined ? _h(String(props.height)) : _DefaultHeight;
+      const resolvedTitle = props.title ?? _DefaultTitle;
+      const resolvedDesc = props.description ?? _DefaultDesc;
+      const svgHtml = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(resolvedTitle)}</title>
+  <desc id="${descId}">${_h(resolvedDesc)}</desc>
+  ${_Body}</svg>`;
+      return h('span', {
+        ...attrs,
+        style: { display: 'contents', ...(typeof attrs.style === 'object' ? (attrs.style as Record<string, unknown>) : {}) },
+        innerHTML: svgHtml,
+      });
+    };
+  },
+});

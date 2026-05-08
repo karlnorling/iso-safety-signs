@@ -66,6 +66,22 @@ const cleanSvg = (svg: string): string =>
 const optimizeSvg = (svg: string): string =>
   optimize(svg, { multipass: true, plugins: ['preset-default'] }).data;
 
+/** Prefix every internal SVG id with the sign slug to prevent DOM collisions. */
+const scopeBodyIds = (body: string, prefix: string): string => {
+  const ids = new Set<string>();
+  body.replace(/\bid="([^"]+)"/g, (_, id: string) => { ids.add(id); return _; });
+  if (ids.size === 0) return body;
+  let out = body;
+  for (const id of ids) {
+    const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out
+      .replace(new RegExp(`\\bid="${esc}"`, 'g'), `id="${prefix}-${id}"`)
+      .replace(new RegExp(`url\\(#${esc}\\)`, 'g'), `url(#${prefix}-${id})`)
+      .replace(new RegExp(`href="#${esc}"`, 'g'), `href="#${prefix}-${id}"`);
+  }
+  return out;
+};
+
 const categoryFromCode = (code: string): SignCategory => {
   const letter = code.charAt(0).toUpperCase();
   const map: Record<string, SignCategory> = {
@@ -214,20 +230,27 @@ const generateReactComponentFile = (entry: ComponentEntry): string => {
 
   const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
   const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
-  const svgBody = svgBodyMatch ? svgBodyMatch[2] : optimizedSvg;
+  const svgBody = scopeBodyIds(svgBodyMatch ? svgBodyMatch[2] : optimizedSvg, id);
 
   const esc = (s: string): string =>
     s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
   const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
   const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = widthMatch ? widthMatch[1] : '100%';
-  const defaultHeight = heightMatch ? heightMatch[1] : '100%';
+  const defaultWidth = (widthMatch ? widthMatch[1] : '100%').replace(/px$/, '');
+  const defaultHeight = (heightMatch ? heightMatch[1] : '100%').replace(/px$/, '');
 
-  const attrsWithoutSize = svgAttrs
-    .replace(/\s*\bwidth="[^"]*"/, '')
-    .replace(/\s*\bheight="[^"]*"/, '')
-    .trim();
+  const hasViewBox = /\bviewBox="/.test(svgAttrs);
+  const syntheticViewBox =
+    !hasViewBox && /^\d+(\.\d+)?$/.test(defaultWidth) && /^\d+(\.\d+)?$/.test(defaultHeight)
+      ? ` viewBox="0 0 ${defaultWidth} ${defaultHeight}"`
+      : '';
+
+  const attrsWithoutSize =
+    svgAttrs
+      .replace(/\s*\bwidth="[^"]*"/, '')
+      .replace(/\s*\bheight="[^"]*"/, '')
+      .trim() + syntheticViewBox;
 
   return [
     `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
@@ -327,20 +350,27 @@ const generateVueComponentFile = (entry: ComponentEntry): string => {
 
   const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
   const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
-  const svgBody = svgBodyMatch ? svgBodyMatch[2] : optimizedSvg;
+  const svgBody = scopeBodyIds(svgBodyMatch ? svgBodyMatch[2] : optimizedSvg, id);
 
   const esc = (s: string): string =>
     s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
   const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
   const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = widthMatch ? widthMatch[1] : '100%';
-  const defaultHeight = heightMatch ? heightMatch[1] : '100%';
+  const defaultWidth = (widthMatch ? widthMatch[1] : '100%').replace(/px$/, '');
+  const defaultHeight = (heightMatch ? heightMatch[1] : '100%').replace(/px$/, '');
 
-  const attrsWithoutSize = svgAttrs
-    .replace(/\s*\bwidth="[^"]*"/, '')
-    .replace(/\s*\bheight="[^"]*"/, '')
-    .trim();
+  const hasViewBox = /\bviewBox="/.test(svgAttrs);
+  const syntheticViewBox =
+    !hasViewBox && /^\d+(\.\d+)?$/.test(defaultWidth) && /^\d+(\.\d+)?$/.test(defaultHeight)
+      ? ` viewBox="0 0 ${defaultWidth} ${defaultHeight}"`
+      : '';
+
+  const attrsWithoutSize =
+    svgAttrs
+      .replace(/\s*\bwidth="[^"]*"/, '')
+      .replace(/\s*\bheight="[^"]*"/, '')
+      .trim() + syntheticViewBox;
 
   return [
     `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
@@ -413,20 +443,27 @@ const generateElementFile = (entry: ComponentEntry): string => {
 
   const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
   const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
-  const svgBody = svgBodyMatch ? svgBodyMatch[2] : optimizedSvg;
+  const svgBody = scopeBodyIds(svgBodyMatch ? svgBodyMatch[2] : optimizedSvg, id);
 
   const esc = (s: string): string =>
     s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
   const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
   const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = widthMatch ? widthMatch[1] : '100%';
-  const defaultHeight = heightMatch ? heightMatch[1] : '100%';
+  const defaultWidth = (widthMatch ? widthMatch[1] : '100%').replace(/px$/, '');
+  const defaultHeight = (heightMatch ? heightMatch[1] : '100%').replace(/px$/, '');
 
-  const attrsWithoutSize = svgAttrs
-    .replace(/\s*\bwidth="[^"]*"/, '')
-    .replace(/\s*\bheight="[^"]*"/, '')
-    .trim();
+  const hasViewBox = /\bviewBox="/.test(svgAttrs);
+  const syntheticViewBox =
+    !hasViewBox && /^\d+(\.\d+)?$/.test(defaultWidth) && /^\d+(\.\d+)?$/.test(defaultHeight)
+      ? ` viewBox="0 0 ${defaultWidth} ${defaultHeight}"`
+      : '';
+
+  const attrsWithoutSize =
+    svgAttrs
+      .replace(/\s*\bwidth="[^"]*"/, '')
+      .replace(/\s*\bheight="[^"]*"/, '')
+      .trim() + syntheticViewBox;
 
   return [
     `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,

@@ -1,0 +1,32 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" viewBox="0 0 265 265"`;
+const _Body = `<path fill="#fff" d="M251.75 132.5c0-65.86-53.39-119.25-119.25-119.25S13.25 66.64 13.25 132.5 66.64 251.75 132.5 251.75s119.25-53.39 119.25-119.25"/><path d="M132.197 200.7h-65.33l7.727 6.667h50.682v19.48l6.921.26zm59.518-85-13.537-31.452a6.66 6.66 0 0 0-3.797-3.705l-31.289-13.216c-1.346-.571-2.839-.744-4.271-.423l-30.743 6.845a6.84 6.84 0 0 0-4.628 3.552l-14.628 28.251-29.046 12.681c-.019.004-.034.015-.051.019l-.034.015c-8.19 3.843-2.686 16.213 5.647 12.574l31.019-13.547c1.519-.668 2.839-1.758 3.608-3.247l11.942-23.093 8.323 37.456-34.255 12.14c-4.128 1.468-6.264 6.019-4.76 10.137l14.821 40.672c3.593 9.867 18.404 4.485 14.806-5.387l-12.11-33.225 33.327-11.809c2.645-.938 4.725-3.155 5.102-5.973l.087-.612 3.216 39.535a8 8 0 0 0 .102.815l7.987 42.568c1.937 10.306 17.415 7.431 15.479-2.895l-7.915-42.216-3.456-42.389c-.034-.469-.076-.933-.179-1.391l-10.326-46.482 24.469 10.331 12.431 28.909c3.624 8.44 16.289 3.002 12.66-5.438M105.86 53.062c0 7.594 6.147 13.746 13.746 13.746s13.776-6.152 13.776-13.746-6.182-13.776-13.776-13.776c-7.599 0-13.746 6.182-13.746 13.776"/><path fill="#b71f2e" d="M238.369 132.5c0-58.47-47.399-105.869-105.869-105.869a105.42 105.42 0 0 0-67.175 24.04l149.366 148.554c14.802-18.209 23.678-41.429 23.678-66.725M50.309 65.775c-14.801 18.21-23.678 41.429-23.678 66.725 0 58.47 47.399 105.869 105.869 105.869 25.503 0 48.899-9.019 67.175-24.04zM265 132.5C265 59.322 205.678 0 132.5 0S0 59.322 0 132.5 59.322 265 132.5 265 265 205.678 265 132.5"/>`;
+const _DefaultDesc = `No stepping on surface`;
+const _DefaultTitle = 'No stepping on surface';
+const _DefaultWidth = `265`;
+const _DefaultHeight = `265`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export class P019NoSteppingOnSurface extends HTMLElement {
+  static readonly tagName = 'iso-p019-no-stepping-on-surface';
+  static readonly observedAttributes = ['title', 'description', 'width', 'height'];
+
+  connectedCallback(): void { this._render(); }
+  attributeChangedCallback(): void { this._render(); }
+
+  private _render(): void {
+    const descId = `iso-desc-p019-no-stepping-on-surface`;
+    const titleId = `iso-title-p019-no-stepping-on-surface`;
+    const _w = this.hasAttribute('width') ? _h(this.getAttribute('width')!) : _DefaultWidth;
+    const _ht = this.hasAttribute('height') ? _h(this.getAttribute('height')!) : _DefaultHeight;
+    const resolvedTitle = this.getAttribute('title') ?? _DefaultTitle;
+    const resolvedDesc = this.getAttribute('description') ?? _DefaultDesc;
+    this.style.display = 'contents';
+    this.innerHTML = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(resolvedTitle)}</title>
+  <desc id="${descId}">${_h(resolvedDesc)}</desc>
+  ${_Body}</svg>`;
+  }
+}

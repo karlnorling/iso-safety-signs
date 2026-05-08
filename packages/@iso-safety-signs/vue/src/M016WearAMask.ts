@@ -1,0 +1,40 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+import { defineComponent, h } from 'vue';
+import { signProps } from './SignProps';
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" viewBox="0 0 265 265"`;
+const _Body = `<path fill="#005387" d="M265 132.5C265 59.322 205.678 0 132.5 0S0 59.322 0 132.5 59.322 265 132.5 265 265 205.678 265 132.5"/><path fill="#fff" d="M97.518 112.458c4.061-2.471 5.361-7.765 2.904-11.826s-7.741-5.348-11.802-2.878-5.361 7.765-2.904 11.826 7.741 5.348 11.802 2.878m19.487 68.005c.432 3.641.485 6.549-3.291 11.652-2.25 3.039-5.655 4.687-9.42 5.823v15.463c0 5.017 3.799 7.811 8.564 7.82l60.723.115c4.893.009 8.676-4.337 8.676-9.797v-15.71c0-5.388 1.15-10.74 1.742-15.91-4.444-.583-60.433.499-66.994.543zm-6.121-37.053 4.505 28.436 70.117-.729c2.894-17.779 19.091-32.398 21.142-56.029zm-45.797-21.142 26.332.88c8.945.299 12.396 4.12 17.06 10.666l98.007-28.837c.07-5.115-1.178-12.382-2.14-15.617-12.804-43.073-65.026-63.613-102.405-38.638-16.05 10.724-25.409 23.243-30.123 42.398zm-7.693-.376c-3.424.029-5.916-.214-7.029 2.416-7.694 26.174.541 61.473 12.503 76.769.755.966 1.513 1.675 2.216 1.899s1.866.483 3.316.265c7.177-1.076 20.001-3.169 28.454-4.082v14.111c0 9.476 7.506 15.278 16.459 15.278h63.737c7.399-1.637 12.658-8.104 12.866-15.868.418-15.621-.873-26.483 4.076-42.115 4.395-16.753 11.533-22.49 16.859-38.381 1.084-3.233 3.155-11.654 3.519-14.875 1.337-11.839-.053-21.786-3.267-33.105-3.81-13.413-16.112-28.813-27.542-36.93-15.216-10.227-31.347-16.177-50.034-14.646-14.567 1.193-28.538 6.099-40.363 14.822-14.268 10.525-25.203 26.905-29.056 44.753-2.206 9.139-4.662 20.352-6.712 29.69"/>`;
+const _DefaultDesc = `Wear a mask`;
+const _DefaultTitle = 'Wear a mask';
+const _DefaultWidth = `265`;
+const _DefaultHeight = `265`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export const M016WearAMask = defineComponent({
+  name: 'M016WearAMask',
+  inheritAttrs: false,
+  props: {
+    ...signProps,
+  },
+  setup(props, { attrs }) {
+    return () => {
+      const descId = `iso-desc-m016-wear-a-mask`;
+      const titleId = `iso-title-m016-wear-a-mask`;
+      const _w = props.width !== undefined ? _h(String(props.width)) : _DefaultWidth;
+      const _ht = props.height !== undefined ? _h(String(props.height)) : _DefaultHeight;
+      const resolvedTitle = props.title ?? _DefaultTitle;
+      const resolvedDesc = props.description ?? _DefaultDesc;
+      const svgHtml = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(resolvedTitle)}</title>
+  <desc id="${descId}">${_h(resolvedDesc)}</desc>
+  ${_Body}</svg>`;
+      return h('span', {
+        ...attrs,
+        style: { display: 'contents', ...(typeof attrs.style === 'object' ? (attrs.style as Record<string, unknown>) : {}) },
+        innerHTML: svgHtml,
+      });
+    };
+  },
+});

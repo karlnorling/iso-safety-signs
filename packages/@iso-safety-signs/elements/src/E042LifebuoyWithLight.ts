@@ -1,0 +1,32 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 200 200"`;
+const _Body = `<path d="M0 0h200v200H0z" style="fill:#fff"/><path d="M5 5h190v190H5z" style="fill:#237f52"/><g transform="translate(250.053 41.2)scale(.43122)"><rect width="8.132" height="39.952" x="-228.042" y="26.163" ry="4.066" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1"/><rect width="8.132" height="39.952" x="-248.157" y="-17.003" ry="4.066" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1" transform="rotate(-11.044)"/><rect width="8.132" height="39.952" x="-252.749" y="-95.732" ry="4.066" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1" transform="rotate(-29.75)"/><rect width="8.132" height="39.952" x="-249.421" y="-137.451" ry="4.066" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1" transform="rotate(-40.497)"/><rect width="8.132" height="39.952" x="191.119" y="68.089" ry="4.066" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1" transform="rotate(11.044)scale(-1 1)"/><rect width="8.132" height="39.952" x="136.031" y="125.75" ry="4.066" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1" transform="rotate(29.75)scale(-1 1)"/><rect width="8.132" height="39.952" x="91.239" y="152.644" ry="4.066" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1" transform="rotate(40.497)scale(-1 1)"/></g><g transform="translate(250.281 41.2)scale(.43122)"><rect width="24.393" height="8.839" x="-236.447" y="131.168" ry="4.419" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.105553;stroke-dasharray:none;stroke-opacity:1"/><circle cx="-224.25" cy="92.25" r="20" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1"/><rect width="14" height="20.25" x="-231.25" y="106.25" ry="0" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1"/></g><path d="M-445.078 97.992c21.258-21.259 55.852-21.259 77 0 21.276 21.277 21.276 55.76 0 77.018-21.148 21.147-55.742 21.147-77 0-21.147-21.259-21.147-55.74 0-77.018m18.283 139.25c-22.245 8.927-48.804 4.408-66.863-13.652-18.078-18.17-22.691-44.842-13.447-67.198 3.645 19.38 12.889 37.793 27.88 52.765 14.86 14.991 33.161 24.235 52.43 28.085m.111-201.593c-19.268 3.85-37.681 13.223-52.542 28.084-14.767 14.767-24.253 33.05-28.103 52.226-8.927-22.245-4.296-48.58 13.67-66.547 18.172-18.06 44.62-22.914 66.975-13.763m121.079 121.394c8.816 22.263 4.073 48.6-13.875 66.547-17.966 18.06-44.619 22.58-66.881 13.652 19.398-3.962 37.68-13.094 52.541-28.085 14.88-14.767 24.253-33.05 28.215-52.114M-406.188 30.794c29.517-20.384 70.285-17.52 96.51 8.704 26.336 26.448 29.181 67.31 8.592 96.845 20.813 29.516 17.837 70.62-8.592 96.937-26.225 26.336-67.105 29.312-96.51 8.816-29.646 20.83-70.955 17.632-97.29-8.816-26.43-26.317-29.405-67.42-8.705-97.049-20.477-29.535-17.725-70.285 8.704-96.733 26.448-26.447 67.756-29.85 97.291-8.704m20.161 4.855c22.245-8.705 48.58-4.185 66.547 13.763 18.171 18.078 22.914 44.73 13.763 67.198-3.738-19.492-13.224-37.886-28.103-52.877-14.86-14.768-33.05-24.123-52.207-28.084m0 0" style="fill:#fff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:4.76131" transform="translate(250.053 41.2)scale(.43122)"/><path d="M-307.415 144.427c4.07 1.209 8.538-.157 12.728.53 3.331.546 6.825 1.097 9.723 2.828 4.15 2.48 7.128 6.581 10.165 10.342 2.459 3.045 3.996 6.763 6.452 9.81 2.536 3.148 5.378 6.078 8.485 8.663 1.502 1.249 3.123 2.38 4.862 3.27 2.04 1.045 4.212 1.894 6.452 2.387 2.194.482 4.471.55 6.717.53 3.05-.027 6.126-.233 9.104-.884 2.285-.5 4.672-1.018 6.63-2.298 2.03-1.328 3.662-3.284 4.94-5.346.79-1.273 1.185-2.76 1.6-4.2.5-1.732.86-3.512 1.061-5.303.37-3.298.32-6.634.26-9.951-.042-2.344.213-4.767-.437-7.02a5 5 0 0 0-1.06-1.944c-.48-.536-1.072-1.056-1.768-1.238-1.753-.456-3.893-.327-5.834-.176-1.026.08-2.093.517-2.828 1.237-.603.59-.947 1.462-1.06 2.298-.432 3.153.09 7.19.159 11.29.037 2.16.173 4.473-.513 6.388-.482 1.343-1.432 2.62-2.652 3.359-1.434.868-3.268.835-4.941.935-2.007.12-4.072.096-6.02-.405a16.2 16.2 0 0 1-5.303-2.475c-2.001-1.428-3.521-3.44-5.126-5.303-1.454-1.688-2.735-3.517-4.066-5.304-1.26-1.691-2.44-3.443-3.712-5.126a114 114 0 0 0-2.785-3.536c-1.079-1.317-2.164-2.632-3.314-3.889-1.505-1.645-2.974-3.344-4.685-4.773-1.367-1.142-2.875-2.117-4.42-3.005-1.302-.749-2.654-1.428-4.065-1.944-1.315-.482-2.697-.764-4.066-1.061-2.688-.584-5.406-1.036-8.132-1.414-2.816-.392-5.643-.778-8.485-.884-2.003-.075-4.402-1.02-6.01.177-.748.555-.57 1.774-.884 2.651-.89 2.494-3.7 4.924-2.829 7.425.722 2.07 3.555 2.734 5.657 3.359" style="fill:#fff;fill-opacity:1;stroke:none;stroke-width:.25;stroke-dasharray:none;stroke-opacity:1" transform="translate(250.053 41.2)scale(.43122)"/>`;
+const _DefaultDesc = `Lifebuoy with light`;
+const _DefaultTitle = 'Lifebuoy with light';
+const _DefaultWidth = `400`;
+const _DefaultHeight = `400`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export class E042LifebuoyWithLight extends HTMLElement {
+  static readonly tagName = 'iso-e042-lifebuoy-with-light';
+  static readonly observedAttributes = ['title', 'description', 'width', 'height'];
+
+  connectedCallback(): void { this._render(); }
+  attributeChangedCallback(): void { this._render(); }
+
+  private _render(): void {
+    const descId = `iso-desc-e042-lifebuoy-with-light`;
+    const titleId = `iso-title-e042-lifebuoy-with-light`;
+    const _w = this.hasAttribute('width') ? _h(this.getAttribute('width')!) : _DefaultWidth;
+    const _ht = this.hasAttribute('height') ? _h(this.getAttribute('height')!) : _DefaultHeight;
+    const resolvedTitle = this.getAttribute('title') ?? _DefaultTitle;
+    const resolvedDesc = this.getAttribute('description') ?? _DefaultDesc;
+    this.style.display = 'contents';
+    this.innerHTML = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(resolvedTitle)}</title>
+  <desc id="${descId}">${_h(resolvedDesc)}</desc>
+  ${_Body}</svg>`;
+  }
+}

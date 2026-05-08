@@ -24,23 +24,28 @@ const SignGrid = ({ size = 96, category }: GridProps) => {
   return (
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
-        gap: '1.5rem',
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '0.75rem',
         padding: '1rem',
+        alignItems: 'flex-start',
       }}
     >
       {signs.map((sign) => (
         <div
           key={sign.id}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}
+          title={`${sign.code} — ${sign.name}`}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.25rem',
+            width: size + 16,
+          }}
         >
           <SignById id={sign.id} width={size} height={size} />
-          <span style={{ fontSize: '0.7rem', textAlign: 'center', color: '#555' }}>
+          <span style={{ fontSize: '0.6rem', textAlign: 'center', color: '#555', lineHeight: 1.2 }}>
             {sign.code}
-          </span>
-          <span style={{ fontSize: '0.65rem', textAlign: 'center', color: '#888' }}>
-            {sign.name}
           </span>
         </div>
       ))}

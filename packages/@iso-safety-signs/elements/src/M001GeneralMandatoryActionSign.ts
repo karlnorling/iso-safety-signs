@@ -1,0 +1,32 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" viewBox="0 0 265 265"`;
+const _Body = `<path fill="#005387" d="M0 132.5C0 59.325 59.319 0 132.496 0 205.681 0 265 59.324 265 132.5c0 73.183-59.319 132.5-132.504 132.5C59.319 265.001 0 205.683 0 132.5"/><path fill="#fff" fill-rule="evenodd" d="M148.558 216.313c0 8.857-7.201 16.058-16.054 16.058a16.07 16.07 0 0 1-16.047-16.058c0-8.85 7.197-16.047 16.047-16.047s16.054 7.197 16.054 16.047m5.349-176.987c4.611 5.188 6.876 11.422 6.209 17.032l-14.809 109.071c-1.266 8.337-6.046 13.32-12.804 13.32-6.75 0-11.534-4.982-12.789-13.255L104.896 56.398c-.696-5.642 1.519-11.844 6.083-17.01 5.592-6.335 13.637-10.112 21.523-10.112 7.811 0 15.812 3.759 21.404 10.051"/>`;
+const _DefaultDesc = `General mandatory action sign`;
+const _DefaultTitle = 'General mandatory action sign';
+const _DefaultWidth = `265`;
+const _DefaultHeight = `265`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export class M001GeneralMandatoryActionSign extends HTMLElement {
+  static readonly tagName = 'iso-m001-general-mandatory-action-sign';
+  static readonly observedAttributes = ['title', 'description', 'width', 'height'];
+
+  connectedCallback(): void { this._render(); }
+  attributeChangedCallback(): void { this._render(); }
+
+  private _render(): void {
+    const descId = `iso-desc-m001-general-mandatory-action-sign`;
+    const titleId = `iso-title-m001-general-mandatory-action-sign`;
+    const _w = this.hasAttribute('width') ? _h(this.getAttribute('width')!) : _DefaultWidth;
+    const _ht = this.hasAttribute('height') ? _h(this.getAttribute('height')!) : _DefaultHeight;
+    const resolvedTitle = this.getAttribute('title') ?? _DefaultTitle;
+    const resolvedDesc = this.getAttribute('description') ?? _DefaultDesc;
+    this.style.display = 'contents';
+    this.innerHTML = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(resolvedTitle)}</title>
+  <desc id="${descId}">${_h(resolvedDesc)}</desc>
+  ${_Body}</svg>`;
+  }
+}

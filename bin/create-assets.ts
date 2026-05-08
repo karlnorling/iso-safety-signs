@@ -197,15 +197,20 @@ const createSVGSprite = async (): Promise<void> => {
     (f) => !f.includes('sprites') && !/_\d+x\d+\.svg$/.test(f),
   );
 
+  const seen = new Set<string>();
   const ids: string[] = [];
   const symbols: string[] = [];
 
   for (const file of svgFiles) {
     const raw = await fs.promises.readFile(file, 'utf-8');
-    const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, '/');
-    const id = sanitize(key)
-      .replace(/\.svg$/, '')
-      .replace(/[._]/g, '-');
+    const basename = path.basename(file, '.svg');
+    const codeMatch = basename.match(/ISO_7010_([EFMPW]\d{3}[a-z]?)/i);
+    const id = codeMatch
+      ? codeMatch[1].toLowerCase()
+      : sanitize(path.relative(ASSETS_ROOT, file).replace(/\\/g, '/')).replace(/\.svg$/, '').replace(/[._]/g, '-');
+
+    if (seen.has(id)) continue;
+    seen.add(id);
     ids.push(id);
 
     const optimized = optimize(raw, { multipass: true, plugins: ['preset-default'] });
@@ -214,11 +219,39 @@ const createSVGSprite = async (): Promise<void> => {
       .replace(/<!DOCTYPE[^>]*>/g, '')
       .trim();
 
-    const viewBoxMatch = svgContent.match(/viewBox="([^"]*)"/);
-    const viewBox = viewBoxMatch ? ` viewBox="${viewBoxMatch[1]}"` : '';
-    const innerContent = svgContent.replace(/<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+    const svgAttrsMatch = svgContent.match(/<svg([^>]*)>/);
+    const svgAttrs = svgAttrsMatch ? svgAttrsMatch[1] : '';
 
-    symbols.push(`  <symbol id="${id}"${viewBox}>${innerContent}</symbol>`);
+    const viewBoxMatch = svgAttrs.match(/viewBox="([^"]*)"/);
+    let viewBox = viewBoxMatch ? ` viewBox="${viewBoxMatch[1]}"` : '';
+    if (!viewBox) {
+      // SVGO preset-default strips px units, so plain numeric match is sufficient here
+      const wm = svgAttrs.match(/\bwidth="(\d+(?:\.\d+)?)"/);
+      const hm = svgAttrs.match(/\bheight="(\d+(?:\.\d+)?)"/);
+      if (wm && hm) viewBox = ` viewBox="0 0 ${wm[1]} ${hm[1]}"`;
+    }
+
+    // Forward fill-rule and style from the <svg> root to the <symbol>
+    const fillRuleMatch = svgAttrs.match(/\bfill-rule="([^"]*)"/);
+    const styleMatch = svgAttrs.match(/\bstyle="([^"]*)"/);
+    const extraAttrs =
+      (fillRuleMatch ? ` fill-rule="${fillRuleMatch[1]}"` : '') +
+      (styleMatch ? ` style="${styleMatch[1]}"` : '');
+
+    let innerContent = svgContent.replace(/<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+
+    // Scope internal IDs to prevent collisions across symbols in the shared document
+    const internalIds = new Set<string>();
+    innerContent.replace(/\bid="([^"]+)"/g, (_: string, iid: string) => { internalIds.add(iid); return _; });
+    for (const iid of internalIds) {
+      const esc = iid.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      innerContent = innerContent
+        .replace(new RegExp(`\\bid="${esc}"`, 'g'), `id="${id}-${iid}"`)
+        .replace(new RegExp(`url\\(#${esc}\\)`, 'g'), `url(#${id}-${iid})`)
+        .replace(new RegExp(`href="#${esc}"`, 'g'), `href="#${id}-${iid}"`);
+    }
+
+    symbols.push(`  <symbol id="${id}"${viewBox}${extraAttrs}>${innerContent}</symbol>`);
   }
 
   const sprite = [

@@ -69,7 +69,7 @@ const SpriteGrid = ({ size = 96, category }: GridProps) => {
             key={sign.id}
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}
           >
-            <SpriteIcon id={sign.id} label={sign.name} size={size} />
+            <SpriteIcon id={sign.code.toLowerCase()} label={sign.name} size={size} />
             <span style={{ fontSize: '0.7rem', textAlign: 'center', color: '#555' }}>
               {sign.code}
             </span>
@@ -123,12 +123,12 @@ export const SingleIcon: StoryObj<SpriteIconProps> = {
   parameters: { layout: 'centered' },
   render: (args) => <SingleSpriteIcon {...args} />,
   args: {
-    id: 'e001-emergency-exit',
+    id: 'e001',
     label: 'Emergency exit',
     size: 200,
   },
   argTypes: {
-    id: { control: 'text', description: 'Symbol ID from sprite.svg' },
+    id: { control: 'text', description: 'Sign code in lowercase, e.g. e001, w027, p001' },
     label: { control: 'text', description: 'Accessible label' },
     size: { control: { type: 'number', min: 32, max: 512, step: 8 } },
   },

@@ -1,0 +1,41 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+import * as React from 'react';
+import type { SignProps } from './SignProps';
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" viewBox="0 0 688 600"`;
+const _Body = `<path d="M630.14 559.8 343.618 62.907 57.11 559.801Zm0 0" style="stroke:none;fill-rule:evenodd;fill:#f9a800;fill-opacity:1"/><path d="M667.555 600.992c10.972 0 19.695-8.734 19.695-19.476 0-3.989-1.246-7.73-3.238-10.985L359.832 8.734C356.336 3.242 350.105 0 343.617 0c-6.472 0-12.707 3.242-16.457 8.734L3.238 570.531C1.246 573.785 0 577.527 0 581.516c0 10.742 8.723 19.476 19.695 19.476Zm-37.414-41.191L343.617 62.906 57.11 559.801Zm0 0" style="stroke:none;fill-rule:evenodd;fill:#020505;fill-opacity:1"/><path d="m455.41 429.21-15.238 34.278a8.02 8.02 0 0 1-10.578 4.082 8.034 8.034 0 0 1-4.063-10.605l15.223-34.277c1.805-4.04 6.543-5.872 10.594-4.067 4.039 1.8 5.867 6.55 4.062 10.59" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m131.328 123.613-4.395 9.872a2.313 2.313 0 0 1-3.05 1.175 2.313 2.313 0 0 1-1.172-3.054l4.39-9.872a2.317 2.317 0 0 1 3.055-1.171 2.31 2.31 0 0 1 1.172 3.05Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="m438.02 421.469-15.239 34.273a8.03 8.03 0 0 1-10.582 4.07 8.04 8.04 0 0 1-4.062-10.605l15.238-34.262a8.02 8.02 0 0 1 10.582-4.082c4.047 1.801 5.863 6.551 4.063 10.606" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m126.313 121.383-4.395 9.87a2.316 2.316 0 0 1-3.051 1.173 2.314 2.314 0 0 1-1.172-3.054l4.395-9.868a2.315 2.315 0 0 1 3.051-1.175 2.313 2.313 0 0 1 1.172 3.054Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="M472.723 436.836 442 505.914c-11.742 7.281-.254.012-11.918 7.094-3.266-13.727.176.187-2.723-13.617l30.723-69.079c1.8-4.042 6.527-5.875 10.578-4.07s5.852 6.551 4.063 10.594" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m136.32 125.809-8.86 19.894c-3.386 2.097-.073.004-3.436 2.043-.942-3.953.05.054-.785-3.922l8.86-19.894a2.31 2.31 0 1 1 4.221 1.879Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="m390.758 441.367 30.722-69.078c11.743-7.285.258-.016 11.918-7.094 3.266 13.723-.175-.191 2.723 13.618l-30.707 69.09c-1.816 4.042-6.543 5.859-10.578 4.054-4.05-1.8-5.867-6.535-4.078-10.59" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m112.684 127.114 8.86-19.895c3.385-2.098.074-.004 3.436-2.043.942 3.952-.05-.055.785 3.922l-8.855 19.898a2.31 2.31 0 0 1-3.05 1.168 2.31 2.31 0 0 1-1.176-3.05Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="M387.941 440.715c-11.46-3.945-22 21.687-60.972 3.918-7.614-3.457-21.13-6.969-28.973-2.047l-8.156-20.7c12.922-8.093 30.656-4.855 43.644 1.075 30.102 13.726 29.801-4.34 48.942-5.629 5.094-.352 9.863.297 13.777 4.082 0 0-8.547 19.027-8.262 19.3m-121.222-17.456 13.422 35.02c1.586 4.136-.473 8.777-4.606 10.363a8 8 0 0 1-10.348-4.625l-13.437-35.008c-1.586-4.149.488-8.774 4.617-10.375 4.133-1.586 8.766.488 10.352 4.625" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m76.914 121.898 3.87 10.086a2.309 2.309 0 1 1-4.311 1.652l-3.875-10.082a2.312 2.312 0 1 1 4.317-1.656Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="m248.945 430.082 13.438 35.02c1.586 4.136-.473 8.789-4.617 10.375-4.133 1.586-8.766-.489-10.352-4.625l-13.422-35.02a8.037 8.037 0 0 1 4.606-10.375 8.02 8.02 0 0 1 10.347 4.625" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m71.789 123.864 3.875 10.085a2.311 2.311 0 1 1-4.317 1.656l-3.87-10.085a2.314 2.314 0 0 1 1.328-2.988 2.314 2.314 0 0 1 2.984 1.332Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="m284.438 416.285 27.062 70.598c-3.156 13.484-.176.203-3.426 13.457-12.004-7.395.27.027-11.543-7.703L269.47 422.05a8.04 8.04 0 0 1 4.605-10.375c4.145-1.574 8.778.472 10.363 4.61" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m82.024 119.89 7.804 20.332c-.91 3.884-.05.059-.988 3.876-3.462-2.13.078.008-3.329-2.219l-7.804-20.328a2.314 2.314 0 0 1 1.328-2.988 2.315 2.315 0 0 1 2.989 1.327Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="m229.684 477.527-27.067-70.597c3.156-13.47.18-.203 3.43-13.457 12 7.394-.274-.012 11.539 7.703l27.066 70.586c1.586 4.148-.472 8.789-4.62 10.375-4.13 1.586-8.762-.489-10.348-4.61" style="stroke:none;fill-rule:nonzero;fill:#020505;fill-opacity:1"/><path d="m66.234 137.528-7.805-20.332c.91-3.88.052-.059.99-3.876 3.46 2.13-.08-.003 3.327 2.219l7.805 20.328a2.313 2.313 0 0 1-4.317 1.66Zm0 0" style="fill:none;stroke-width:.729113;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/><path d="M152.383 128.528c-9.41-.809-7.75 4.026-12.984 5.816-1.392.476-4.641.82-6.012.059 0 0 2.836-6.098 2.73-6.153 2.984.207 5.265-5.516 13.055-5.28Zm-104.707-3.223c1.97.172 3.582.78 6.41 2.38 2.098 1.186 5.761 2.522 8.137 1.31l2.23 6.146c-3.914 1.995-9.203.625-12.781-1.395-4.836-2.265-5.489-2.52-7.414-2.554Zm0 0" style="fill-rule:nonzero;fill:#020505;fill-opacity:1;stroke-width:1.05572;stroke-linecap:butt;stroke-linejoin:miter;stroke:#020505;stroke-opacity:1;stroke-miterlimit:22.926" transform="scale(3.46774 3.47222)"/>`;
+const _DefaultDesc = `Barbed wire`;
+const _DefaultTitle = 'Barbed wire';
+const _DefaultWidth = `688pt`;
+const _DefaultHeight = `800`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export const W033BarbedWire = React.memo<SignProps>(({
+  'aria-label': ariaLabel,
+  className,
+  description = _DefaultDesc,
+  height,
+  style,
+  title = _DefaultTitle,
+  width,
+}) => {
+  const descId = `iso-desc-w033-barbed-wire`;
+  const titleId = `iso-title-w033-barbed-wire`;
+  const _w = width !== undefined ? _h(String(width)) : _DefaultWidth;
+  const _ht = height !== undefined ? _h(String(height)) : _DefaultHeight;
+  const svgHtml = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(title)}</title>
+  <desc id="${descId}">${_h(description)}</desc>
+  ${_Body}</svg>`;
+  return (
+    <span
+      aria-label={ariaLabel}
+      className={className}
+      dangerouslySetInnerHTML={{ __html: svgHtml }}
+      style={{ display: 'contents', ...style }}
+    />
+  );
+});
+W033BarbedWire.displayName = 'W033BarbedWire';

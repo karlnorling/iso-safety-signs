@@ -1,0 +1,40 @@
+// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
+// Run 'yarn generate' to regenerate.
+
+import { defineComponent, h } from 'vue';
+import { signProps } from './SignProps';
+
+const _Attrs = `xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" viewBox="0 0 265 265"`;
+const _Body = `<path fill="#005387" d="M265 132.5C265 59.322 205.677 0 132.5 0S0 59.322 0 132.5 59.323 265 132.5 265 265 205.678 265 132.5"/><path fill="#fff" d="M65.429 63.425v15.103h32.207c2.501 0 4.325 1.858 4.325 4.301v32.429c0 2.492-1.959 4.164-4.607 4.165l-31.925.003v67.495c0 14.848 9.771 21.184 24.321 21.184h21.96c.38 8.71 5.86 14.475 14.848 14.243h58.999c8.453-2.268 11.131-7.347 11.191-14.427l.144-17.145c.173-20.567 8.846-33.456 16.448-48.017 4.414-8.456 6.827-26.112 5.717-35.174-2.156-17.601-9.017-33.264-22.493-45.19-14.827-13.122-28.936-17.548-48.308-17.97-3.381-2.056-4.611-2.984-11.144-3.111l-47.363.065c-17.296.023-24.321 6.121-24.321 22.045zm92.66 123.223c-.001 12.079-9.063 21.406-22.432 21.457h-16.781c.27 4.299 2.431 7.398 6.955 7.582h56.619c3.85.008 6.792-1.738 7.2-6.079l.46-19.807c.649-28.011 12.548-35.884 19.659-57.415 2.108-6.385 2.335-8.605 2.483-16.456l-54.161.018zm0-125.25v37.337h52.123c-8.38-32.124-38.759-47.245-54.644-47.219.916 2.112 2.733 7.271 2.521 9.882M92.923 85.833v24.554H65.429v5.689H97.5c.62 0 1.112-.324 1.112-1.024v-32.46c0-.45-.252-.716-.759-.716H65.429v3.956zm-16.406 91.941a3.745 3.745 0 1 0-7.49 0 3.745 3.745 0 0 0 7.49 0m11.11 0a3.745 3.745 0 1 0-7.49 0 3.745 3.745 0 0 0 7.49 0m11.11 0a3.745 3.745 0 1 0-7.49 0 3.745 3.745 0 0 0 7.49 0"/>`;
+const _DefaultDesc = `Wear a welding mask`;
+const _DefaultTitle = 'Wear a welding mask';
+const _DefaultWidth = `265`;
+const _DefaultHeight = `265`;
+const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+
+export const M019WearAWeldingMask = defineComponent({
+  name: 'M019WearAWeldingMask',
+  inheritAttrs: false,
+  props: {
+    ...signProps,
+  },
+  setup(props, { attrs }) {
+    return () => {
+      const descId = `iso-desc-m019-wear-a-welding-mask`;
+      const titleId = `iso-title-m019-wear-a-welding-mask`;
+      const _w = props.width !== undefined ? _h(String(props.width)) : _DefaultWidth;
+      const _ht = props.height !== undefined ? _h(String(props.height)) : _DefaultHeight;
+      const resolvedTitle = props.title ?? _DefaultTitle;
+      const resolvedDesc = props.description ?? _DefaultDesc;
+      const svgHtml = `<svg ${_Attrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
+  <title id="${titleId}">${_h(resolvedTitle)}</title>
+  <desc id="${descId}">${_h(resolvedDesc)}</desc>
+  ${_Body}</svg>`;
+      return h('span', {
+        ...attrs,
+        style: { display: 'contents', ...(typeof attrs.style === 'object' ? (attrs.style as Record<string, unknown>) : {}) },
+        innerHTML: svgHtml,
+      });
+    };
+  },
+});

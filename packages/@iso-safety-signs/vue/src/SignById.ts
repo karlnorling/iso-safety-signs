@@ -21,15 +21,30 @@ interface ParsedSvg {
 const _cache = new Map<string, ParsedSvg>();
 
 function parseSvg(svg: string): ParsedSvg {
-  const viewBoxMatch = svg.match(/viewBox="([^"]+)"/);
-  const widthMatch = svg.match(/<svg[^>]*\swidth="([^"]+)"/);
-  const heightMatch = svg.match(/<svg[^>]*\sheight="([^"]+)"/);
-  const bodyMatch = svg.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
+  const svgAttrsMatch = svg.match(/<svg([^>]*)>/);
+  const svgAttrs = svgAttrsMatch ? svgAttrsMatch[1] : '';
+  const viewBoxMatch = svgAttrs.match(/\bviewBox="([^"]+)"/);
+  const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
+  const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
+  const bodyMatch = svg.match(/<svg[^>]*>([\s\S]*)<\/svg>/);
+  const w = (widthMatch ? widthMatch[1] : '100%').replace(/px$/, '');
+  const h = (heightMatch ? heightMatch[1] : '100%').replace(/px$/, '');
+  const syntheticViewBox =
+    !viewBoxMatch && /^\d+(\.\d+)?$/.test(w) && /^\d+(\.\d+)?$/.test(h)
+      ? ` viewBox="0 0 ${w} ${h}"`
+      : '';
+  const otherAttrs = svgAttrs
+    .replace(/\s*\bxmlns="[^"]*"/g, '')
+    .replace(/\s*\bwidth="[^"]*"/, '')
+    .replace(/\s*\bheight="[^"]*"/, '')
+    .replace(/\s*\bviewBox="[^"]*"/, '')
+    .trim();
+  const viewBoxStr = viewBoxMatch ? ` viewBox="${viewBoxMatch[1]}"` : syntheticViewBox;
   return {
-    attrs: `xmlns="http://www.w3.org/2000/svg"${viewBoxMatch ? ` viewBox="${viewBoxMatch[1]}"` : ''}`,
+    attrs: `xmlns="http://www.w3.org/2000/svg"${viewBoxStr}${otherAttrs ? ` ${otherAttrs}` : ''}`,
     body: bodyMatch ? bodyMatch[1] : '',
-    width: widthMatch ? widthMatch[1] : '100%',
-    height: heightMatch ? heightMatch[1] : '100%',
+    width: w,
+    height: h,
   };
 }
 
@@ -40,6 +55,21 @@ function getParsedSvg(svg: string): ParsedSvg {
     _cache.set(svg, parsed);
   }
   return parsed;
+}
+
+function scopeIds(body: string, prefix: string): string {
+  const ids = new Set<string>();
+  body.replace(/\bid="([^"]+)"/g, (_, id: string) => { ids.add(id); return _; });
+  if (ids.size === 0) return body;
+  let out = body;
+  for (const id of ids) {
+    const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    out = out
+      .replace(new RegExp(`\\bid="${esc}"`, 'g'), `id="${prefix}-${id}"`)
+      .replace(new RegExp(`url\\(#${esc}\\)`, 'g'), `url(#${prefix}-${id})`)
+      .replace(new RegExp(`href="#${esc}"`, 'g'), `href="#${prefix}-${id}"`);
+  }
+  return out;
 }
 
 /**
@@ -79,7 +109,7 @@ export const SignById = defineComponent({
       const svgHtml = `<svg ${svgAttrs} width="${_w}" height="${_ht}" role="img" aria-labelledby="${titleId} ${descId}">
   <title id="${titleId}">${_h(resolvedTitle)}</title>
   <desc id="${descId}">${_h(resolvedDesc)}</desc>
-  ${body}</svg>`;
+  ${scopeIds(body, props.id)}</svg>`;
 
       return h('span', {
         ...attrs,
