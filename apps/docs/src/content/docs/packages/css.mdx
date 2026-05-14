@@ -1,0 +1,79 @@
+---
+title: "@iso-safety-signs/css"
+description: CSS sprite classes for ISO 7010 safety signs — no JavaScript required.
+---
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/css
+```
+
+## Setup
+
+Import the stylesheet once in your project's entry point:
+
+```ts
+import '@iso-safety-signs/css/sprite.css';
+```
+
+Or link it in HTML:
+
+```html
+<link rel="stylesheet" href="node_modules/@iso-safety-signs/css/sprite.css" />
+```
+
+## Usage
+
+Add the class `iso-{code}` to any element to display that sign as a background image. Set explicit dimensions on the element.
+
+```html
+<span class="iso-e001" style="display:inline-block;width:64px;height:64px;"></span>
+```
+
+## Class name patterns
+
+| Class       | Sign                  | Category    |
+|-------------|-----------------------|-------------|
+| `iso-e001`  | Emergency exit        | Emergency   |
+| `iso-p001`  | No smoking            | Prohibition |
+| `iso-m001`  | Wear eye protection   | Mandatory   |
+| `iso-w001`  | Flammable material    | Warning     |
+| `iso-f001`  | Fire extinguisher     | Fire        |
+
+The full class list mirrors the sign codes in lowercase.
+
+## Accessibility
+
+Background images are invisible to assistive technologies and do not appear in the accessibility tree. Any usage of CSS sign classes must be accompanied by explicit ARIA attributes on the host element.
+
+```html
+<!-- Correct: role + aria-label on the element carrying the class -->
+<span
+  class="iso-e001"
+  role="img"
+  aria-label="Emergency exit"
+  style="display:inline-block;width:64px;height:64px;"
+></span>
+```
+
+Do not rely on surrounding text alone — screen readers will skip the visual entirely unless `role="img"` and `aria-label` (or `aria-labelledby`) are present.
+
+## Full example
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="node_modules/@iso-safety-signs/css/sprite.css" />
+  <style>
+    .sign { display: inline-block; width: 64px; height: 64px; }
+  </style>
+</head>
+<body>
+  <span class="sign iso-e001" role="img" aria-label="Emergency exit"></span>
+  <span class="sign iso-f001" role="img" aria-label="Fire extinguisher"></span>
+  <span class="sign iso-w001" role="img" aria-label="Flammable material"></span>
+</body>
+</html>
+```

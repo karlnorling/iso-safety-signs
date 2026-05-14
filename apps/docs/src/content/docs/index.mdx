@@ -1,0 +1,69 @@
+---
+title: ISO Safety Signs
+description: >-
+  Accessible ISO 7010 safety signs for React, Vue 3, Web Components, CSS, and static assets.
+  332 signs across 5 categories. Zero runtime dependencies.
+hero:
+  tagline: >-
+    332 ISO 7010 safety signs for React, Vue 3, Web Components, CSS, and more.
+    Tree-shakeable. Zero dependencies. Fully accessible.
+  actions:
+    - text: Get started
+      link: /iso-safety-signs/getting-started/
+      icon: right-arrow
+    - text: Browse all signs
+      link: /iso-safety-signs/gallery/
+      icon: seti:image
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/karlnorling/iso-safety-signs
+      icon: github
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Why ISO Safety Signs?
+
+ISO 7010 is the international standard for safety signs used in workplaces, public spaces, and
+product labelling worldwide. This library packages all 332 signs as accessible, fully typed
+components ready to drop into any project.
+
+<CardGrid>
+  <Card title="React & Vue 3" icon="puzzle">
+    Named components and a `SignById` helper for dynamic rendering. Tree-shakeable — only the
+    signs you import end up in your bundle.
+  </Card>
+  <Card title="Web Components" icon="laptop">
+    Framework-agnostic Custom Elements. Works with Angular, Svelte, plain HTML — anywhere.
+  </Card>
+  <Card title="CSS Sprite" icon="seti:css">
+    Zero JavaScript option. Display any sign with a single class and no JS runtime.
+  </Card>
+  <Card title="Accessible by default" icon="approve-check-circle">
+    Every component renders with `role="img"`, `aria-labelledby`, `<title>`, and `<desc>` inside
+    the SVG.
+  </Card>
+</CardGrid>
+
+## Packages
+
+| Package | Version | Description |
+| ------- | ------- | ----------- |
+| [`@iso-safety-signs/react`](./packages/react/) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/react)](https://www.npmjs.com/package/@iso-safety-signs/react) | React components (inline SVG) |
+| [`@iso-safety-signs/vue`](./packages/vue/) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/vue)](https://www.npmjs.com/package/@iso-safety-signs/vue) | Vue 3 components (inline SVG) |
+| [`@iso-safety-signs/elements`](./packages/elements/) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/elements)](https://www.npmjs.com/package/@iso-safety-signs/elements) | Web Components (Custom Elements) |
+| [`@iso-safety-signs/css`](./packages/css/) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/css)](https://www.npmjs.com/package/@iso-safety-signs/css) | CSS background-image sprite |
+| [`@iso-safety-signs/sprite`](./packages/sprite/) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/sprite)](https://www.npmjs.com/package/@iso-safety-signs/sprite) | SVG symbol sprite |
+| [`@iso-safety-signs/assets`](./packages/assets/) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/assets)](https://www.npmjs.com/package/@iso-safety-signs/assets) | Static SVG/PNG/JPG/WebP files |
+| [`@iso-safety-signs/core`](./packages/core/) | [![npm](https://img.shields.io/npm/v/@iso-safety-signs/core)](https://www.npmjs.com/package/@iso-safety-signs/core) | TypeScript data and lookup API |
+
+## ISO 7010 Categories
+
+| Category | Signs | Colour | Description |
+| -------- | ----- | ------ | ----------- |
+| Emergency | 73 | Green | Emergency exits, first aid, safe conditions |
+| Prohibition | 81 | Red | Prohibited actions (no smoking, no entry, etc.) |
+| Mandatory | 72 | Blue | Required actions and PPE |
+| Warning | 87 | Yellow | Hazard warnings |
+| Fire | 19 | Red | Fire equipment and fire extinguisher locations |
