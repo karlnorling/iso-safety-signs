@@ -151,7 +151,15 @@ const collectEntries = (scraped: ScrapedData, svgMap: Record<string, string>): S
 
       const optimizedSvg = cleanSvg(optimizeSvg(svgContent));
       entries.push({
-        sign: { assets, category, code, description: name, id, name, svg: normalizeSvg(svgContent) },
+        sign: {
+          assets,
+          category,
+          code,
+          description: name,
+          id,
+          name,
+          svg: scopeBodyIds(normalizeSvg(svgContent), id),
+        },
         optimizedSvg,
       });
 
