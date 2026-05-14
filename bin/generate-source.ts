@@ -63,6 +63,20 @@ const cleanSvg = (svg: string): string =>
     .replace(/<!DOCTYPE[^>]*>/g, '')
     .trim();
 
+/**
+ * Ensures the SVG has a `viewBox`. When `width`/`height` are present but
+ * `viewBox` is absent, synthesises `viewBox="0 0 {w} {h}"` so that CSS
+ * resizing scales the content rather than clipping it.
+ */
+const normalizeSvg = (svg: string): string => {
+  const cleaned = cleanSvg(svg);
+  if (/\bviewBox="/i.test(cleaned)) return cleaned;
+  const wm = cleaned.match(/\bwidth="([0-9.]+)(?:px)?"/);
+  const hm = cleaned.match(/\bheight="([0-9.]+)(?:px)?"/);
+  if (!wm || !hm) return cleaned;
+  return cleaned.replace(/<svg\b/, `<svg viewBox="0 0 ${wm[1]} ${hm[1]}"`);
+};
+
 const optimizeSvg = (svg: string): string =>
   optimize(svg, { multipass: true, plugins: ['preset-default'] }).data;
 
@@ -137,7 +151,15 @@ const collectEntries = (scraped: ScrapedData, svgMap: Record<string, string>): S
 
       const optimizedSvg = cleanSvg(optimizeSvg(svgContent));
       entries.push({
-        sign: { assets, category, code, description: name, id, name, svg: svgContent },
+        sign: {
+          assets,
+          category,
+          code,
+          description: name,
+          id,
+          name,
+          svg: scopeBodyIds(normalizeSvg(svgContent), id),
+        },
         optimizedSvg,
       });
 

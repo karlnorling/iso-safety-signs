@@ -1,0 +1,113 @@
+---
+title: Getting started
+description: Install @iso-safety-signs packages and display your first sign in minutes.
+---
+
+import { Tabs, TabItem, Code } from '@astrojs/starlight/components';
+
+## Installation
+
+Pick the package for your framework:
+
+<Tabs>
+  <TabItem label="React">
+    ```sh
+    npm install @iso-safety-signs/react
+    ```
+  </TabItem>
+  <TabItem label="Vue 3">
+    ```sh
+    npm install @iso-safety-signs/vue
+    ```
+  </TabItem>
+  <TabItem label="Web Components">
+    ```sh
+    npm install @iso-safety-signs/elements
+    ```
+  </TabItem>
+  <TabItem label="CSS">
+    ```sh
+    npm install @iso-safety-signs/css
+    ```
+  </TabItem>
+</Tabs>
+
+## Quick start
+
+<Tabs>
+  <TabItem label="React">
+    ```tsx
+    import { E001EmergencyExit, SignById } from '@iso-safety-signs/react';
+
+    // Named component
+    <E001EmergencyExit width={64} />
+
+    // Dynamic by ID
+    <SignById id="e001-emergency-exit" width={64} />
+    ```
+  </TabItem>
+  <TabItem label="Vue 3">
+    ```vue
+    <script setup>
+    import { E001EmergencyExit, SignById } from '@iso-safety-signs/vue';
+    </script>
+
+    <template>
+      <!-- Named component -->
+      <E001EmergencyExit :width="64" />
+
+      <!-- Dynamic by ID -->
+      <SignById id="e001-emergency-exit" :width="64" />
+    </template>
+    ```
+  </TabItem>
+  <TabItem label="Web Components">
+    ```ts
+    import { defineCustomElements } from '@iso-safety-signs/elements';
+    defineCustomElements();
+    ```
+
+    ```html
+    <!-- Generic element -->
+    <iso-sign sign-id="e001-emergency-exit" width="64"></iso-sign>
+
+    <!-- Named element -->
+    <iso-e001-emergency-exit width="64"></iso-e001-emergency-exit>
+    ```
+  </TabItem>
+  <TabItem label="CSS">
+    ```js
+    import '@iso-safety-signs/css/sprite.css';
+    ```
+
+    ```html
+    <span
+      class="iso-e001"
+      style="display:inline-block;width:64px;height:64px"
+      role="img"
+      aria-label="Emergency exit"
+    ></span>
+    ```
+  </TabItem>
+</Tabs>
+
+## Finding sign IDs
+
+Every sign has a slug ID based on its ISO code and name. You can find the ID for any sign in the
+[Sign Gallery](/iso-safety-signs/gallery/) — hover over a card to see its description, and the code is shown below each sign.
+
+The ID format is: `{code-lowercase}-{name-slugified}`, e.g. `e001-emergency-exit`.
+
+## TypeScript
+
+All packages ship full TypeScript types. The `core` package exports the `Sign` type and
+`SignCategory` union if you need them:
+
+```ts
+import type { Sign, SignCategory } from '@iso-safety-signs/core';
+```
+
+## Next steps
+
+- See the full props/attributes for each package in the [Packages](/iso-safety-signs/packages/react/) section.
+- Browse all 332 signs in the [Sign Gallery](/iso-safety-signs/gallery/).

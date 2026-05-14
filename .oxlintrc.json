@@ -1,5 +1,15 @@
 {
-  "plugins": ["typescript"],
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "react",
+    "react-hooks",
+    "jsx-a11y",
+    "import",
+    "promise",
+    "vitest"
+  ],
+  "env": { "browser": true, "es2022": true },
   "rules": {
     "no-console": "off",
     "no-await-in-loop": "warn",
@@ -12,7 +22,8 @@
         "argsIgnorePattern": "^_",
         "varsIgnorePattern": "^_"
       }
-    ]
+    ],
+    "react/react-in-jsx-scope": "off"
   },
   "ignorePatterns": [
     "dist",
@@ -31,6 +42,7 @@
     "packages/@iso-safety-signs/react/src/index.ts",
     "packages/@iso-safety-signs/css/sprite.css",
     ".storybook",
-    "src"
+    "src",
+    "apps/docs/.astro"
   ]
 }

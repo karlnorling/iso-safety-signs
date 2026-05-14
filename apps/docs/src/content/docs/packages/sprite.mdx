@@ -1,0 +1,103 @@
+---
+title: "@iso-safety-signs/sprite"
+description: SVG sprite sheet for ISO 7010 safety signs — reference symbols by code with a single HTTP request.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/sprite
+```
+
+The package ships a single `sprite.svg` file containing all signs as `<symbol>` elements. Symbol IDs are the sign codes in lowercase (e.g. `e001`, `p001`, `m001`, `w001`, `f001`).
+
+## Usage
+
+<Tabs>
+  <TabItem label="External reference">
+Serve `sprite.svg` as a static asset and reference it with a full path. No inline HTML changes needed.
+
+```html
+<svg width="64" height="64" role="img" aria-label="Emergency exit">
+  <use href="/assets/sprite.svg#e001"></use>
+</svg>
+```
+  </TabItem>
+  <TabItem label="Inline sprite">
+Inline the sprite file once at the top of the page (hidden), then reference symbols with a fragment-only href anywhere on the page.
+
+```html
+<body>
+  <!-- Inline once, hidden -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none;">
+    <!-- contents of sprite.svg pasted here -->
+  </svg>
+
+  <!-- Reference anywhere on the page -->
+  <svg width="64" height="64" role="img" aria-label="Emergency exit">
+    <use href="#e001"></use>
+  </svg>
+  <svg width="64" height="64" role="img" aria-label="No smoking">
+    <use href="#p001"></use>
+  </svg>
+</body>
+```
+  </TabItem>
+  <TabItem label="React (createPortal)">
+Inject the sprite into `document.body` once using `createPortal`, then reference symbols normally.
+
+```tsx
+import { createPortal } from 'react-dom';
+import spriteContent from '@iso-safety-signs/sprite/sprite.svg?raw';
+
+function SpriteInjector() {
+  return createPortal(
+    <svg style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: spriteContent }} />,
+    document.body
+  );
+}
+
+export function App() {
+  return (
+    <>
+      <SpriteInjector />
+      <svg width="64" height="64" role="img" aria-label="Emergency exit">
+        <use href="#e001" />
+      </svg>
+    </>
+  );
+}
+```
+  </TabItem>
+</Tabs>
+
+## Symbol ID format
+
+Symbol IDs are the sign code lowercased with no additional segments:
+
+| Sign                  | Symbol ID |
+|-----------------------|-----------|
+| Emergency exit        | `e001`    |
+| No smoking            | `p001`    |
+| Wear eye protection   | `m001`    |
+| Flammable material    | `w001`    |
+| Fire extinguisher     | `f001`    |
+
+## Accessibility
+
+The `<use>` element does not inherit an accessible name from the referenced `<symbol>`. Always wrap `<use>` in an `<svg>` that carries `role="img"` and either `aria-label` or `aria-labelledby`.
+
+```html
+<!-- Correct -->
+<svg width="64" height="64" role="img" aria-label="Emergency exit">
+  <use href="/assets/sprite.svg#e001"></use>
+</svg>
+
+<!-- Also correct — label defined elsewhere -->
+<svg width="64" height="64" role="img" aria-labelledby="sign-label">
+  <use href="/assets/sprite.svg#e001"></use>
+</svg>
+<span id="sign-label">Emergency exit</span>
+```

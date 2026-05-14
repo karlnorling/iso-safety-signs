@@ -1,0 +1,78 @@
+---
+title: "@iso-safety-signs/core"
+description: Core API for querying ISO 7010 safety sign metadata — sign data, categories, and TypeScript types.
+---
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/core
+```
+
+## API reference
+
+| Function                        | Returns      | Description                                             |
+|---------------------------------|--------------|---------------------------------------------------------|
+| `getAllSigns()`                  | `Sign[]`     | Returns every sign in the library.                      |
+| `getSign(id)`                   | `Sign`       | Returns a single sign by its ID. Throws if not found.   |
+| `getSignsByCategory(category)`  | `Sign[]`     | Returns all signs belonging to the given category.      |
+
+```ts
+import { getAllSigns, getSign, getSignsByCategory } from '@iso-safety-signs/core';
+
+// All signs
+const signs = getAllSigns();
+
+// Single sign by ID
+const exit = getSign('e001-emergency-exit');
+
+// All emergency signs
+const emergencySigns = getSignsByCategory('emergency');
+```
+
+## TypeScript types
+
+```ts
+type SignCategory =
+  | 'emergency'
+  | 'fire'
+  | 'mandatory'
+  | 'prohibition'
+  | 'warning';
+
+type SignAssets = {
+  svg: string;
+  png: Record<240 | 512 | 768 | 1024 | 2048, string>;
+  webp: Record<240 | 512 | 768 | 1024 | 2048, string>;
+};
+
+type Sign = {
+  id: string;          // e.g. 'e001-emergency-exit'
+  code: string;        // e.g. 'E001'
+  name: string;        // e.g. 'Emergency exit'
+  description: string; // Plain-language description of the sign
+  category: SignCategory;
+  svg: string;         // Inline SVG markup
+  assets: SignAssets;
+};
+```
+
+## Category values
+
+| Value         | Description                                      |
+|---------------|--------------------------------------------------|
+| `emergency`   | Emergency escape, first aid, and evacuation signs |
+| `fire`        | Fire-fighting equipment signs                    |
+| `mandatory`   | Signs requiring specific behaviour or PPE        |
+| `prohibition` | Signs forbidding an action                       |
+| `warning`     | Hazard and caution signs                         |
+
+## ID format
+
+Sign IDs follow the pattern `{code-lowercase}-{kebab-name}`, e.g.:
+
+- `e001-emergency-exit`
+- `p001-no-smoking`
+- `m001-wear-eye-protection`
+- `w001-flammable-material`
+- `f001-fire-extinguisher`
