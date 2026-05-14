@@ -1,5 +1,14 @@
 {
-  "plugins": ["typescript", "unicorn", "react", "react-hooks", "jsx-a11y", "import", "promise", "vitest"],
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "react",
+    "react-hooks",
+    "jsx-a11y",
+    "import",
+    "promise",
+    "vitest"
+  ],
   "env": { "browser": true, "es2022": true },
   "rules": {
     "no-console": "off",
