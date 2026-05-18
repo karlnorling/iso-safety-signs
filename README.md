@@ -4,6 +4,7 @@ Accessible, framework-agnostic packages for all **ISO 7010** workplace safety si
 
 [![CI](https://github.com/karlnorling/iso-safety-signs/actions/workflows/ci.yml/badge.svg)](https://github.com/karlnorling/iso-safety-signs/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Storybook](https://img.shields.io/badge/Storybook-docs-FF4785)](https://karlnorling.github.io/iso-safety-signs/)
 
 ---
 
