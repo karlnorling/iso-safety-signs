@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/css",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CSS background-image sprite for ISO 7010 safety signs — class-based display, no JavaScript required",
   "keywords": [
     "background-image",
@@ -62,5 +62,9 @@
     "jest": "^30.3.0",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3"
+  },
+  "author": {
+    "name": "Karl Norling",
+    "url": "https://github.com/karlnorling"
   }
 }

@@ -1,0 +1,90 @@
+---
+title: "@iso-safety-signs/elements"
+description: Framework-agnostic Web Components for ISO 7010 safety signs, usable in any HTML environment.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/elements
+```
+
+## Registering elements
+
+Call `defineCustomElements()` once at your app's entry point before using any elements.
+
+```ts
+import { defineCustomElements } from '@iso-safety-signs/elements';
+
+defineCustomElements();
+```
+
+### Custom prefix
+
+By default elements are registered as `iso-*`. Pass a custom prefix to avoid collisions:
+
+```ts
+defineCustomElements('my-prefix');
+// Registers <my-prefix-sign sign-id="...">, <my-prefix-e001-emergency-exit>, etc.
+```
+
+## Generic element
+
+Use `<iso-sign>` when the sign is determined at runtime via the `sign-id` attribute.
+
+```html
+<iso-sign sign-id="e001-emergency-exit" width="64" title="Emergency exit"></iso-sign>
+```
+
+## Named elements
+
+Each sign also has a dedicated element named `iso-{code}` with no `sign-id` needed.
+
+```html
+<iso-e001-emergency-exit width="64" title="Emergency exit"></iso-e001-emergency-exit>
+<iso-p001-no-smoking width="48"></iso-p001-no-smoking>
+<iso-w001-flammable width="48"></iso-w001-flammable>
+```
+
+## Attributes
+
+| Attribute     | Type     | Required              | Description                                       |
+|---------------|----------|-----------------------|---------------------------------------------------|
+| `sign-id`     | `string` | Yes (`<iso-sign>` only) | Sign ID, e.g. `"e001-emergency-exit"`.           |
+| `width`       | `string` | No                    | Width in pixels as a string, e.g. `"64"`.         |
+| `height`      | `string` | No                    | Height in pixels as a string, e.g. `"64"`.        |
+| `title`       | `string` | No                    | Sets the SVG `<title>` for screen readers.        |
+| `description` | `string` | No                    | Sets the SVG `<desc>` for additional context.     |
+
+All attributes are reactive — changing them updates the rendered SVG immediately.
+
+## Framework usage
+
+<Tabs>
+  <TabItem label="Vue 3">
+```vue
+<!-- vite.config.ts: set compilerOptions.isCustomElement = (tag) => tag.startsWith('iso-') -->
+<template>
+  <iso-sign sign-id="e001-emergency-exit" width="64" title="Emergency exit" />
+</template>
+```
+  </TabItem>
+  <TabItem label="Angular">
+```ts
+// In your NgModule or standalone component, add CUSTOM_ELEMENTS_SCHEMA
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+@Component({
+  template: `<iso-sign sign-id="e001-emergency-exit" width="64" title="Emergency exit"></iso-sign>`,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppComponent {}
+```
+  </TabItem>
+</Tabs>
+
+## Accessibility
+
+Each element renders an `<svg>` with `role="img"`. Provide a `title` attribute to give the sign an accessible name. For decorative usage, omit `title` and set `aria-hidden="true"` on the element itself.

@@ -1,0 +1,91 @@
+---
+title: "@iso-safety-signs/vue"
+description: Vue 3 components for ISO 7010 safety signs — named components and a dynamic SignById loader.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/vue
+```
+
+## Named components
+
+Each sign is available as a PascalCase named export derived from its code and name.
+
+```vue
+<script setup lang="ts">
+import { E001EmergencyExit } from '@iso-safety-signs/vue';
+</script>
+
+<template>
+  <E001EmergencyExit :width="64" :height="64" title="Emergency exit" />
+</template>
+```
+
+The component name pattern is `{Code}{Name}` — e.g. `P001NoSmoking`, `W001Flammable`, `F001FireExtinguisher`, `M001WearEyeProtection`.
+
+## SignById component
+
+Use `SignById` when the sign is determined at runtime.
+
+```vue
+<script setup lang="ts">
+import { SignById } from '@iso-safety-signs/vue';
+
+const props = defineProps<{ id: string }>();
+</script>
+
+<template>
+  <SignById :id="props.id" :width="64" :height="64" title="Safety sign" />
+</template>
+```
+
+## Props
+
+### Named component props
+
+| Prop          | Type     | Required | Description                                           |
+|---------------|----------|----------|-------------------------------------------------------|
+| `width`       | `number` | No       | Width in pixels. Defaults to the SVG's intrinsic width. |
+| `height`      | `number` | No       | Height in pixels. Defaults to the SVG's intrinsic height. |
+| `title`       | `string` | No       | Sets the SVG `<title>` element for screen readers.    |
+| `description` | `string` | No       | Sets the SVG `<desc>` element for additional context. |
+
+Bind dynamic values with `:width="64"` syntax; pass static strings without the colon.
+
+### SignById additional prop
+
+| Prop | Type     | Required | Description                            |
+|------|----------|----------|----------------------------------------|
+| `id` | `string` | Yes      | Sign ID, e.g. `"e001-emergency-exit"`. |
+
+All named component props also apply to `SignById`.
+
+## TypeScript
+
+The package ships its own type declarations. Import the prop type if you need it:
+
+```ts
+import type { SignProps } from '@iso-safety-signs/vue';
+```
+
+## Accessibility
+
+Every component renders an `<svg>` with `role="img"`. When `title` is provided, the SVG receives an `aria-labelledby` attribute pointing to the generated `<title>` element. When both `title` and `description` are provided, both IDs are included in `aria-labelledby`.
+
+```vue
+<template>
+  <!-- Fully accessible -->
+  <E001EmergencyExit
+    :width="64"
+    title="Emergency exit"
+    description="Green sign showing a running figure with directional arrow"
+  />
+
+  <!-- Decorative — already labelled by surrounding text -->
+  <E001EmergencyExit :width="32" aria-hidden="true" />
+</template>
+```

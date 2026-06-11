@@ -1,4 +1,4 @@
-name: Deploy Storybook to GitHub Pages
+name: Deploy Docs to GitHub Pages
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Build and deploy Storybook
+    name: Build and deploy docs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,13 +34,11 @@ jobs:
       - name: Compile workspace packages
         run: yarn compile
 
-      - name: Build Storybook
-        run: yarn workspace @iso-storybook/app build-storybook
-        env:
-          STORYBOOK_BASE_PATH: /${{ github.event.repository.name }}/
+      - name: Build docs
+        run: yarn workspace @iso-docs/app build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: apps/storybook/storybook-static
+          publish_dir: apps/docs/dist

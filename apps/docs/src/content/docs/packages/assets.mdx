@@ -1,0 +1,81 @@
+---
+title: "@iso-safety-signs/assets"
+description: Raw SVG, PNG, and WebP asset files for ISO 7010 safety signs at multiple resolutions.
+---
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/assets
+```
+
+## Directory layout
+
+Assets are organised by category and sign code under the `assets/` directory:
+
+```
+assets/
+├── emergency/
+│   └── e001/
+│       ├── ISO_7010_E001.svg
+│       ├── ISO_7010_E001_240.png
+│       ├── ISO_7010_E001_512.png
+│       ├── ISO_7010_E001_768.png
+│       ├── ISO_7010_E001_1024.png
+│       ├── ISO_7010_E001_2048.png
+│       ├── ISO_7010_E001_240.webp
+│       └── ...
+├── fire/
+├── mandatory/
+├── prohibition/
+└── warning/
+```
+
+## Available sizes
+
+| Size    | Formats      |
+|---------|--------------|
+| SVG     | `.svg`       |
+| 240 px  | `.png`, `.webp` |
+| 512 px  | `.png`, `.webp` |
+| 768 px  | `.png`, `.webp` |
+| 1024 px | `.png`, `.webp` |
+| 2048 px | `.png`, `.webp` |
+
+## Import by path
+
+Reference a specific asset directly in your bundler:
+
+```ts
+import emergencyExitSvg from '@iso-safety-signs/assets/assets/emergency/e001/ISO_7010_E001.svg';
+import emergencyExitPng from '@iso-safety-signs/assets/assets/emergency/e001/ISO_7010_E001_512.png';
+```
+
+## Resolve paths via the core API
+
+Use `@iso-safety-signs/core` to look up asset paths programmatically without hardcoding directory structure:
+
+```ts
+import { getSign } from '@iso-safety-signs/core';
+
+const sign = getSign('e001-emergency-exit');
+
+// SVG path
+const svgPath = sign.assets.svg;
+// → 'assets/emergency/e001/ISO_7010_E001.svg'
+
+// PNG at a specific size
+const png512 = sign.assets.png[512];
+// → 'assets/emergency/e001/ISO_7010_E001_512.png'
+
+// WebP at a specific size
+const webp240 = sign.assets.webp[240];
+// → 'assets/emergency/e001/ISO_7010_E001_240.webp'
+```
+
+Combine with a base URL for use in `<img>` tags:
+
+```ts
+const baseUrl = 'https://cdn.example.com/iso-safety-signs/';
+const src = baseUrl + sign.assets.png[512];
+```

@@ -1,0 +1,80 @@
+---
+title: "@iso-safety-signs/react"
+description: React components for ISO 7010 safety signs — named components and a dynamic SignById loader.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Installation
+
+```sh
+npm install @iso-safety-signs/react
+```
+
+## Named components
+
+Each sign is available as a PascalCase named export derived from its code and name.
+
+```tsx
+import { E001EmergencyExit } from '@iso-safety-signs/react';
+
+export function App() {
+  return <E001EmergencyExit width={64} height={64} title="Emergency exit" />;
+}
+```
+
+The component name pattern is `{Code}{Name}` — e.g. `P001NoSmoking`, `W001Flammable`, `F001FireExtinguisher`, `M001WearEyeProtection`.
+
+## SignById component
+
+Use `SignById` when the sign is determined at runtime.
+
+```tsx
+import { SignById } from '@iso-safety-signs/react';
+
+export function DynamicSign({ id }: { id: string }) {
+  return <SignById id={id} width={64} height={64} title="Safety sign" />;
+}
+```
+
+## Props
+
+### Named component props
+
+| Prop          | Type     | Required | Description                                      |
+|---------------|----------|----------|--------------------------------------------------|
+| `width`       | `number` | No       | Width in pixels. Defaults to the SVG's intrinsic width. |
+| `height`      | `number` | No       | Height in pixels. Defaults to the SVG's intrinsic height. |
+| `title`       | `string` | No       | Sets the SVG `<title>` element for screen readers. |
+| `description` | `string` | No       | Sets the SVG `<desc>` element for additional context. |
+
+### SignById additional prop
+
+| Prop | Type     | Required | Description                                |
+|------|----------|----------|--------------------------------------------|
+| `id` | `string` | Yes      | Sign ID, e.g. `"e001-emergency-exit"`.     |
+
+All named component props also apply to `SignById`.
+
+## TypeScript
+
+The package ships its own type declarations. Import the prop type if you need it:
+
+```ts
+import type { SignProps } from '@iso-safety-signs/react';
+```
+
+## Accessibility
+
+Every component renders an `<svg>` with `role="img"`. When `title` is provided, the SVG receives an `aria-labelledby` attribute pointing to the generated `<title>` element. When both `title` and `description` are provided, both IDs are included in `aria-labelledby`.
+
+```tsx
+// Fully accessible
+<E001EmergencyExit
+  width={64}
+  title="Emergency exit"
+  description="Green sign showing a running figure with directional arrow"
+/>
+```
+
+Decorative signs that are already labelled by surrounding text should omit `title` and add `aria-hidden="true"`.
