@@ -1,8 +1,8 @@
 ---
-"@iso-safety-signs/css": patch
-"@iso-safety-signs/elements": patch
-"@iso-safety-signs/react": patch
-"@iso-safety-signs/vue": patch
+'@iso-safety-signs/css': patch
+'@iso-safety-signs/elements': patch
+'@iso-safety-signs/react': patch
+'@iso-safety-signs/vue': patch
 ---
 
 Replace `workspace:*` with `^1.0.0` for the `@iso-safety-signs/core` dependency.
