@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/elements",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Accessible Web Components (Custom Elements) for all ISO 7010 safety signs — framework-agnostic, zero runtime dependencies",
   "keywords": [
     "accessible",
