@@ -56,7 +56,7 @@
     "type-check": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@iso-safety-signs/core": "workspace:*"
+    "@iso-safety-signs/core": "^1.0.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
