@@ -12,6 +12,6 @@
   "dependencies": {
     "@astrojs/starlight": "^0.39.2",
     "@iso-safety-signs/core": "workspace:*",
-    "astro": "^6.3.2"
+    "astro": "^6.4.6"
   }
 }
