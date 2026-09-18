@@ -263,7 +263,7 @@ const createSVGSprite = async (): Promise<void> => {
   console.log(`SVG sprite written to ${spriteFile} (${ids.length} symbols)`);
 
   const idMapFile = path.join(spriteDir, 'sprite-ids.json');
-  await fs.promises.writeFile(idMapFile, JSON.stringify(ids, null, 2), 'utf-8');
+  await fs.promises.writeFile(idMapFile, JSON.stringify(ids, null, 2) + '\n', 'utf-8');
   console.log(`SVG sprite ID map written to ${idMapFile}`);
 };
 
