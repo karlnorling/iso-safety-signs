@@ -17,6 +17,6 @@ export interface SignProps {
   title?: string;
   /** Width applied to the `<svg>` element (pixels or any CSS length). */
   width?: number | string;
-  /** Overrides `aria-labelledby` with a direct label on the wrapping `<span>`. */
+  /** Labels the `<svg>` directly, replacing its `aria-labelledby` title/description reference. */
   'aria-label'?: string;
 }

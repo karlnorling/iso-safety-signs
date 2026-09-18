@@ -55,6 +55,7 @@
     "type-check": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
+    "@iso-safety-signs/assets": "^1.0.1",
     "@iso-safety-signs/core": "^1.0.0"
   },
   "devDependencies": {
@@ -66,5 +67,8 @@
   "author": {
     "name": "Karl Norling",
     "url": "https://github.com/karlnorling"
-  }
+  },
+  "sideEffects": [
+    "*.css"
+  ]
 }

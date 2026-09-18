@@ -75,5 +75,6 @@
   "author": {
     "name": "Karl Norling",
     "url": "https://github.com/karlnorling"
-  }
+  },
+  "sideEffects": false
 }

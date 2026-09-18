@@ -50,7 +50,7 @@ Use `SignById` when the sign ID comes from an API response or user input:
 ```tsx
 import { SignById } from '@iso-safety-signs/react';
 
-<SignById id="e001-emergency-exit" width={120} />
+<SignById id="e001-emergency-exit-left-hand" width={120} />
 <SignById id={signId} width={64} height={64} />
 ```
 
@@ -73,15 +73,15 @@ Every component and `SignById` accept the same props:
 
 `SignById` also requires:
 
-| Prop | Type     | Description                                |
-| ---- | -------- | ------------------------------------------ |
-| `id` | `string` | Sign slug ID, e.g. `"e001-emergency-exit"` |
+| Prop | Type     | Description                                          |
+| ---- | -------- | ---------------------------------------------------- |
+| `id` | `string` | Sign slug ID, e.g. `"e001-emergency-exit-left-hand"` |
 
 ---
 
 ## Accessibility
 
-Every component renders `role="img"` with `aria-labelledby` pointing to a `<title>` and `<desc>` injected inside the SVG. Screen readers announce the sign name and description automatically.
+Every component renders `role="img"` with `aria-labelledby` pointing to a `<title>` and `<desc>` injected inside the SVG. Screen readers announce the sign name and description automatically. Passing `aria-label` labels the `<svg>` directly instead. Ids are derived from `useId()`, so the same sign can appear any number of times on a page.
 
 Override defaults when needed:
 

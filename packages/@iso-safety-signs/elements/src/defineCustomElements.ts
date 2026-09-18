@@ -335,7 +335,7 @@ import { W087HighSoundVolumeLevels } from './W087HighSoundVolumeLevels';
 import { W088MovingBlades } from './W088MovingBlades';
 import { W089MovingGears } from './W089MovingGears';
 
-const _elements: Array<[typeof HTMLElement & { tagName: string }, string]> = [
+const _elements: Array<[CustomElementConstructor, string]> = [
   [IsoSign, IsoSign.tagName],
   [E001EmergencyExitLeftHand, E001EmergencyExitLeftHand.tagName],
   [E002EmergencyExitRightHand, E002EmergencyExitRightHand.tagName],
@@ -674,18 +674,28 @@ const _elements: Array<[typeof HTMLElement & { tagName: string }, string]> = [
 /**
  * Registers all ISO 7010 safety sign custom elements.
  *
+ * Safe to call more than once, including with different prefixes or after
+ * registering some classes yourself: tags that are already defined are skipped,
+ * and a class that is already registered under another name is registered via
+ * a subclass (the registry rejects one constructor under two names).
+ *
  * @param prefix — tag-name prefix (default `"iso"`). Each element is registered
- *   as `{prefix}-{id}`, e.g. `iso-e001-emergency-exit`.
+ *   as `{prefix}-{id}`, e.g. `iso-e001-emergency-exit-left-hand`, plus the generic `{prefix}-sign`.
  *   Pass a custom string to avoid conflicts with other libraries.
  * @example
  * ```ts
  * import { defineCustomElements } from '@iso-safety-signs/elements';
- * defineCustomElements(); // registers iso-e001-emergency-exit, iso-w001-flammable-material, etc.
+ * defineCustomElements(); // registers iso-sign, iso-e001-emergency-exit-left-hand, iso-e002-emergency-exit-right-hand, etc.
  * ```
  */
 export function defineCustomElements(prefix = 'iso'): void {
   for (const [cls, defaultTag] of _elements) {
     const tag = prefix === 'iso' ? defaultTag : `${prefix}-${defaultTag.replace(/^iso-/, '')}`;
-    if (!customElements.get(tag)) customElements.define(tag, cls);
+    if (customElements.get(tag)) continue;
+    try {
+      customElements.define(tag, cls);
+    } catch {
+      customElements.define(tag, class extends cls {});
+    }
   }
 }

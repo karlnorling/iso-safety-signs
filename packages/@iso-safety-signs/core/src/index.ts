@@ -12,11 +12,20 @@ import type { Sign, SignCategory } from './types';
 
 export type { Sign, SignAssets, SignCategory } from './types';
 export { signs } from './signs.generated';
+export {
+  createInstanceId,
+  escapeHtml,
+  parseSvg,
+  renderSvg,
+  scopeIds,
+  toInstanceId,
+} from './render';
+export type { ParsedSvg, RenderSvgOptions } from './render';
 
 /** Returns every sign in the registry. */
 export const getAllSigns = (): Sign[] => signs;
 
-/** Returns a sign by its slug ID (e.g. `"e001-emergency-exit"`). */
+/** Returns a sign by its slug ID (e.g. `"e001-emergency-exit-left-hand"`). */
 export const getSign = (id: string): Sign | undefined => signs.find((s) => s.id === id);
 
 /** Returns all signs that belong to the given category. */

@@ -26,7 +26,7 @@ import { getAllSigns, getSign, getSignsByCategory } from '@iso-safety-signs/core
 const all = getAllSigns();
 
 // Single sign by slug ID
-const sign = getSign('e001-emergency-exit');
+const sign = getSign('e001-emergency-exit-left-hand');
 // → Sign | undefined
 
 // Signs by category
@@ -44,7 +44,7 @@ Returns all ISO 7010 signs.
 
 ### `getSign(id: string): Sign | undefined`
 
-Returns a single sign by its slug ID (e.g. `"e001-emergency-exit"`), or `undefined` if not found.
+Returns a single sign by its slug ID (e.g. `"e001-emergency-exit-left-hand"`), or `undefined` if not found.
 
 ### `getSignsByCategory(category: SignCategory): Sign[]`
 
@@ -62,7 +62,7 @@ interface Sign {
   category: SignCategory;
   code: string; // e.g. "E001"
   description: string; // accessible description
-  id: string; // e.g. "e001-emergency-exit"
+  id: string; // e.g. "e001-emergency-exit-left-hand"
   name: string; // e.g. "Emergency exit"
   svg: string; // inline SVG markup
 }

@@ -1853,7 +1853,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@iso-safety-signs/assets@workspace:*, @iso-safety-signs/assets@workspace:packages/@iso-safety-signs/assets":
+"@iso-safety-signs/assets@npm:^1.0.1, @iso-safety-signs/assets@workspace:*, @iso-safety-signs/assets@workspace:packages/@iso-safety-signs/assets":
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/assets@workspace:packages/@iso-safety-signs/assets"
   languageName: unknown
@@ -1875,6 +1875,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/css@workspace:packages/@iso-safety-signs/css"
   dependencies:
+    "@iso-safety-signs/assets": "npm:^1.0.1"
     "@iso-safety-signs/core": "npm:^1.0.0"
     "@types/jest": "npm:^30.0.0"
     jest: "npm:^30.3.0"

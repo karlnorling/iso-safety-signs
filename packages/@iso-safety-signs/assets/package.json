@@ -35,6 +35,7 @@
   },
   "files": [
     "assets/",
+    "!assets/svg-map.json",
     "package.json",
     "README.md"
   ],

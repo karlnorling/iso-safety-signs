@@ -26,7 +26,7 @@ Serve `sprite.svg` as a static file and reference any symbol by ID:
 ```html
 <svg width="64" height="64" role="img" aria-label="Emergency exit">
   <title>Emergency exit</title>
-  <use href="/path/to/sprite.svg#e001-emergency-exit" />
+  <use href="/path/to/sprite.svg#e001" />
 </svg>
 ```
 
@@ -42,7 +42,7 @@ Embed the sprite once invisibly at the top of your document to avoid cross-origi
 <!-- Reference any symbol anywhere -->
 <svg width="64" height="64" role="img" aria-label="Emergency exit">
   <title>Emergency exit</title>
-  <use href="#e001-emergency-exit" />
+  <use href="#e001" />
 </svg>
 ```
 
@@ -55,7 +55,7 @@ function EmergencyExit() {
   return (
     <svg width={64} height={64} role="img" aria-label="Emergency exit">
       <title>Emergency exit</title>
-      <use href={`${spriteUrl}#e001-emergency-exit`} />
+      <use href={`${spriteUrl}#e001`} />
     </svg>
   );
 }
@@ -65,11 +65,11 @@ function EmergencyExit() {
 
 ## Symbol IDs
 
-Symbol IDs match the sign slug IDs from `@iso-safety-signs/core`. Use the `sprite-ids.json` file to enumerate all available IDs:
+Symbol IDs are the lowercase ISO 7010 codes, e.g. `e001` or `w021`. Use the `sprite-ids.json` file to enumerate all available IDs:
 
 ```ts
 import ids from '@iso-safety-signs/sprite/sprite-ids.json';
-// → string[]  e.g. ["e001-emergency-exit", "e002-emergency-exit-left", …]
+// → string[]  e.g. ["e001", "e002", …]
 ```
 
 ---
@@ -82,7 +82,7 @@ The sprite itself is presentational. Always add `role="img"`, `aria-label`, and 
 <svg width="64" height="64" role="img" aria-label="Warning — flammable material">
   <title>Warning — flammable material</title>
   <desc>Yellow triangle with flame symbol.</desc>
-  <use href="#w001-flammable-material" />
+  <use href="#w021" />
 </svg>
 ```
 

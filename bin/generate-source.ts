@@ -21,6 +21,8 @@ import path from 'path';
 import { optimize } from 'svgo';
 import type { ScrapedData, SignCategory } from './scrape';
 import type { Sign } from '../packages/@iso-safety-signs/core/src/types';
+import { parseSvg, scopeIds } from '../packages/@iso-safety-signs/core/src/render';
+import type { ParsedSvg } from '../packages/@iso-safety-signs/core/src/render';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -77,27 +79,10 @@ const normalizeSvg = (svg: string): string => {
   return cleaned.replace(/<svg\b/, `<svg viewBox="0 0 ${wm[1]} ${hm[1]}"`);
 };
 
+// `removeScripts` strips <script>, on* handlers and javascript: links: the
+// SVGs come from Wikimedia Commons and end up in innerHTML.
 const optimizeSvg = (svg: string): string =>
-  optimize(svg, { multipass: true, plugins: ['preset-default'] }).data;
-
-/** Prefix every internal SVG id with the sign slug to prevent DOM collisions. */
-const scopeBodyIds = (body: string, prefix: string): string => {
-  const ids = new Set<string>();
-  body.replace(/\bid="([^"]+)"/g, (_, id: string) => {
-    ids.add(id);
-    return _;
-  });
-  if (ids.size === 0) return body;
-  let out = body;
-  for (const id of ids) {
-    const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    out = out
-      .replace(new RegExp(`\\bid="${esc}"`, 'g'), `id="${prefix}-${id}"`)
-      .replace(new RegExp(`url\\(#${esc}\\)`, 'g'), `url(#${prefix}-${id})`)
-      .replace(new RegExp(`href="#${esc}"`, 'g'), `href="#${prefix}-${id}"`);
-  }
-  return out;
-};
+  optimize(svg, { multipass: true, plugins: ['preset-default', 'removeScripts'] }).data;
 
 const categoryFromCode = (code: string): SignCategory => {
   const letter = code.charAt(0).toUpperCase();
@@ -108,34 +93,39 @@ const categoryFromCode = (code: string): SignCategory => {
     P: 'prohibition',
     W: 'warning',
   };
-  return map[letter] ?? 'warning';
+  const category = map[letter];
+  if (!category) throw new Error(`Unknown ISO 7010 category letter in sign code "${code}"`);
+  return category;
 };
 
 // ---------------------------------------------------------------------------
 // Sign collection
 // ---------------------------------------------------------------------------
 
-interface SignEntry {
-  sign: Sign;
-  optimizedSvg: string;
-}
+/** Matches the pre-sized copies older pipeline runs wrote next to each source SVG. */
+const SIZED_SVG_RE = /_\d+x\d+\.svg$/;
 
-const collectEntries = (scraped: ScrapedData, svgMap: Record<string, string>): SignEntry[] => {
-  const entries: SignEntry[] = [];
-  const svgKeys = Object.keys(svgMap);
+const collectEntries = (scraped: ScrapedData, svgMap: Record<string, string>): Sign[] => {
+  const entries: Sign[] = [];
+  const svgKeys = Object.keys(svgMap)
+    .filter((k) => !SIZED_SVG_RE.test(k))
+    .sort();
 
-  const findSvgKey = (code: string): string | undefined => {
+  /** Finds the source SVG in the sign's own `{category}/{code}/` directory, preferring the canonical file name. */
+  const findSvgKey = (category: SignCategory, code: string): string | undefined => {
     const lowerCode = code.toLowerCase();
-    return svgKeys.find((k) => {
-      const base = path.basename(k, '.svg').toLowerCase();
-      return base.includes(lowerCode) || base === `iso_7010_${lowerCode}`;
-    });
+    const candidates = svgKeys.filter((k) => k.startsWith(`${category}/${lowerCode}/`));
+    return (
+      candidates.find((k) => path.basename(k, '.svg').toLowerCase() === `iso_7010_${lowerCode}`) ??
+      candidates[0]
+    );
   };
 
   for (const [, signs] of Object.entries(scraped)) {
     for (const sign of signs) {
       const { code, name } = sign;
-      const svgKey = findSvgKey(code);
+      const category = categoryFromCode(code);
+      const svgKey = findSvgKey(category, code);
 
       if (!svgKey) {
         console.warn(`  Warning: no SVG found for "${code}" (${name})`);
@@ -146,21 +136,14 @@ const collectEntries = (scraped: ScrapedData, svgMap: Record<string, string>): S
       if (!svgContent) continue;
 
       const id = slugify(`${code}-${name}`);
-      const category = categoryFromCode(code);
-      const assets = buildAssets(svgKey);
-
-      const optimizedSvg = cleanSvg(optimizeSvg(svgContent));
       entries.push({
-        sign: {
-          assets,
-          category,
-          code,
-          description: name,
-          id,
-          name,
-          svg: scopeBodyIds(normalizeSvg(svgContent), id),
-        },
-        optimizedSvg,
+        assets: buildAssets(svgKey),
+        category,
+        code,
+        description: name,
+        id,
+        name,
+        svg: scopeIds(normalizeSvg(optimizeSvg(svgContent)), id),
       });
 
       console.log(`  + ${id} (${category})`);
@@ -232,92 +215,59 @@ const generateReactPropsFile = (): string =>
     `  title?: string;`,
     `  /** Width applied to the \`<svg>\` element (pixels or any CSS length). */`,
     `  width?: number | string;`,
-    `  /** Overrides \`aria-labelledby\` with a direct label on the wrapping \`<span>\`. */`,
+    `  /** Labels the \`<svg>\` directly, replacing its \`aria-labelledby\` title/description reference. */`,
     `  'aria-label'?: string;`,
     `}`,
     ``,
   ].join('\n');
 
 // ---------------------------------------------------------------------------
+// Code generation — shared per-component constants
+// ---------------------------------------------------------------------------
+
+const HEADER = [
+  `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
+  `// Run 'yarn generate' to regenerate.`,
+  ``,
+];
+
+/**
+ * Module-level constants every generated component starts with: the parsed
+ * SVG plus the default title/description. Values go through JSON.stringify so
+ * any character in a scraped name is emitted safely.
+ */
+const componentConstants = (sign: Sign): string[] => {
+  const svg: ParsedSvg = parseSvg(sign.svg);
+  return [
+    `const _svg: ParsedSvg = {`,
+    `  attrs: ${JSON.stringify(svg.attrs)},`,
+    `  body: ${JSON.stringify(svg.body)},`,
+    `  height: ${JSON.stringify(svg.height)},`,
+    `  width: ${JSON.stringify(svg.width)},`,
+    `};`,
+    `const _title = ${JSON.stringify(sign.name)};`,
+    `const _description = ${JSON.stringify(sign.description)};`,
+  ];
+};
+
+// ---------------------------------------------------------------------------
 // Code generation — react/src/{ComponentName}.tsx
 // ---------------------------------------------------------------------------
 
-interface ComponentEntry {
-  id: string;
-  name: string;
-  description: string;
-  optimizedSvg: string;
-}
-
-const generateReactComponentFile = (entry: ComponentEntry): string => {
-  const { description, id, name, optimizedSvg } = entry;
-  const componentName = toComponentName(id);
-
-  const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
-  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
-  const svgBody = scopeBodyIds(svgBodyMatch ? svgBodyMatch[2] : optimizedSvg, id);
-
-  const esc = (s: string): string =>
-    s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
-
-  const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
-  const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = (widthMatch ? widthMatch[1] : '100%').replace(/px$/, '');
-  const defaultHeight = (heightMatch ? heightMatch[1] : '100%').replace(/px$/, '');
-
-  const hasViewBox = /\bviewBox="/.test(svgAttrs);
-  const syntheticViewBox =
-    !hasViewBox && /^\d+(\.\d+)?$/.test(defaultWidth) && /^\d+(\.\d+)?$/.test(defaultHeight)
-      ? ` viewBox="0 0 ${defaultWidth} ${defaultHeight}"`
-      : '';
-
-  const attrsWithoutSize =
-    svgAttrs
-      .replace(/\s*\bwidth="[^"]*"/, '')
-      .replace(/\s*\bheight="[^"]*"/, '')
-      .trim() + syntheticViewBox;
-
+const generateReactComponentFile = (sign: Sign): string => {
+  const componentName = toComponentName(sign.id);
   return [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
-    ``,
+    ...HEADER,
     `import * as React from 'react';`,
+    `import type { ParsedSvg } from '@iso-safety-signs/core';`,
     `import type { SignProps } from './SignProps';`,
+    `import { SignSvg } from './SignSvg';`,
     ``,
-    `const _Attrs = \`${esc(attrsWithoutSize)}\`;`,
-    `const _Body = \`${esc(svgBody)}\`;`,
-    `const _DefaultDesc = \`${esc(description.slice(0, 300))}\`;`,
-    `const _DefaultTitle = '${name.replace(/'/g, "\\'")}';`,
-    `const _DefaultWidth = \`${esc(defaultWidth)}\`;`,
-    `const _DefaultHeight = \`${esc(defaultHeight)}\`;`,
-    `const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');`,
+    ...componentConstants(sign),
     ``,
-    `export const ${componentName} = React.memo<SignProps>(({`,
-    `  'aria-label': ariaLabel,`,
-    `  className,`,
-    `  description = _DefaultDesc,`,
-    `  height,`,
-    `  style,`,
-    `  title = _DefaultTitle,`,
-    `  width,`,
-    `}) => {`,
-    `  const descId = \`iso-desc-${id}\`;`,
-    `  const titleId = \`iso-title-${id}\`;`,
-    `  const _w = width !== undefined ? _h(String(width)) : _DefaultWidth;`,
-    `  const _ht = height !== undefined ? _h(String(height)) : _DefaultHeight;`,
-    `  const svgHtml = \`<svg \${_Attrs} width="\${_w}" height="\${_ht}" role="img" aria-labelledby="\${titleId} \${descId}">`,
-    `  <title id="\${titleId}">\${_h(title)}</title>`,
-    `  <desc id="\${descId}">\${_h(description)}</desc>`,
-    `  \${_Body}</svg>\`;`,
-    `  return (`,
-    `    <span`,
-    `      aria-label={ariaLabel}`,
-    `      className={className}`,
-    `      dangerouslySetInnerHTML={{ __html: svgHtml }}`,
-    `      style={{ display: 'contents', ...style }}`,
-    `    />`,
-    `  );`,
-    `});`,
+    `export const ${componentName} = React.memo<SignProps>((props) => (`,
+    `  <SignSvg {...props} defaultDescription={_description} defaultTitle={_title} svg={_svg} />`,
+    `));`,
     `${componentName}.displayName = '${componentName}';`,
     ``,
   ].join('\n');
@@ -329,9 +279,7 @@ const generateReactComponentFile = (entry: ComponentEntry): string => {
 
 const generateReactIndex = (componentNames: string[]): string =>
   [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
-    ``,
+    ...HEADER,
     `export type { SignProps } from './SignProps';`,
     `export { SignById } from './Sign';`,
     `export type { SignByIdProps } from './Sign';`,
@@ -346,12 +294,13 @@ const generateReactIndex = (componentNames: string[]): string =>
 
 const generateVuePropsFile = (): string =>
   [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
-    ``,
+    ...HEADER,
     `import type { PropType } from 'vue';`,
     ``,
-    `/** Reusable Vue prop definitions shared by every generated ISO 7010 safety sign component. */`,
+    `/**`,
+    ` * Reusable Vue prop definitions shared by every generated ISO 7010 safety sign component.`,
+    ` * \`aria-label\` is read from fallthrough attributes and labels the \`<svg>\` directly.`,
+    ` */`,
     `export const signProps = {`,
     `  /** Accessible description injected as \`<desc>\` inside the SVG. Defaults to the sign name. */`,
     `  description: { type: String as PropType<string> },`,
@@ -369,73 +318,33 @@ const generateVuePropsFile = (): string =>
 // Code generation — vue/src/{ComponentName}.ts
 // ---------------------------------------------------------------------------
 
-const generateVueComponentFile = (entry: ComponentEntry): string => {
-  const { description, id, name, optimizedSvg } = entry;
-  const componentName = toComponentName(id);
-
-  const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
-  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
-  const svgBody = scopeBodyIds(svgBodyMatch ? svgBodyMatch[2] : optimizedSvg, id);
-
-  const esc = (s: string): string =>
-    s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
-
-  const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
-  const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = (widthMatch ? widthMatch[1] : '100%').replace(/px$/, '');
-  const defaultHeight = (heightMatch ? heightMatch[1] : '100%').replace(/px$/, '');
-
-  const hasViewBox = /\bviewBox="/.test(svgAttrs);
-  const syntheticViewBox =
-    !hasViewBox && /^\d+(\.\d+)?$/.test(defaultWidth) && /^\d+(\.\d+)?$/.test(defaultHeight)
-      ? ` viewBox="0 0 ${defaultWidth} ${defaultHeight}"`
-      : '';
-
-  const attrsWithoutSize =
-    svgAttrs
-      .replace(/\s*\bwidth="[^"]*"/, '')
-      .replace(/\s*\bheight="[^"]*"/, '')
-      .trim() + syntheticViewBox;
-
+const generateVueComponentFile = (sign: Sign): string => {
+  const componentName = toComponentName(sign.id);
   return [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
-    ``,
-    `import { defineComponent, h } from 'vue';`,
+    ...HEADER,
+    `import { defineComponent } from 'vue';`,
+    `import type { ParsedSvg } from '@iso-safety-signs/core';`,
     `import { signProps } from './SignProps';`,
+    `import { renderSign, useInstanceId } from './SignSvg';`,
     ``,
-    `const _Attrs = \`${esc(attrsWithoutSize)}\`;`,
-    `const _Body = \`${esc(svgBody)}\`;`,
-    `const _DefaultDesc = \`${esc(description.slice(0, 300))}\`;`,
-    `const _DefaultTitle = '${name.replace(/'/g, "\\'")}';`,
-    `const _DefaultWidth = \`${esc(defaultWidth)}\`;`,
-    `const _DefaultHeight = \`${esc(defaultHeight)}\`;`,
-    `const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');`,
+    ...componentConstants(sign),
     ``,
     `export const ${componentName} = defineComponent({`,
     `  name: '${componentName}',`,
     `  inheritAttrs: false,`,
-    `  props: {`,
-    `    ...signProps,`,
-    `  },`,
+    `  props: signProps,`,
     `  setup(props, { attrs }) {`,
-    `    return () => {`,
-    `      const descId = \`iso-desc-${id}\`;`,
-    `      const titleId = \`iso-title-${id}\`;`,
-    `      const _w = props.width !== undefined ? _h(String(props.width)) : _DefaultWidth;`,
-    `      const _ht = props.height !== undefined ? _h(String(props.height)) : _DefaultHeight;`,
-    `      const resolvedTitle = props.title ?? _DefaultTitle;`,
-    `      const resolvedDesc = props.description ?? _DefaultDesc;`,
-    `      const svgHtml = \`<svg \${_Attrs} width="\${_w}" height="\${_ht}" role="img" aria-labelledby="\${titleId} \${descId}">`,
-    `  <title id="\${titleId}">\${_h(resolvedTitle)}</title>`,
-    `  <desc id="\${descId}">\${_h(resolvedDesc)}</desc>`,
-    `  \${_Body}</svg>\`;`,
-    `      return h('span', {`,
-    `        ...attrs,`,
-    `        style: { display: 'contents', ...(typeof attrs.style === 'object' ? (attrs.style as Record<string, unknown>) : {}) },`,
-    `        innerHTML: svgHtml,`,
+    `    const instanceId = useInstanceId();`,
+    `    return () =>`,
+    `      renderSign({`,
+    `        attrs,`,
+    `        description: props.description ?? _description,`,
+    `        height: props.height,`,
+    `        instanceId,`,
+    `        svg: _svg,`,
+    `        title: props.title ?? _title,`,
+    `        width: props.width,`,
     `      });`,
-    `    };`,
     `  },`,
     `});`,
     ``,
@@ -448,9 +357,7 @@ const generateVueComponentFile = (entry: ComponentEntry): string => {
 
 const generateVueIndex = (componentNames: string[]): string =>
   [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
-    ``,
+    ...HEADER,
     `export { signProps } from './SignProps';`,
     `export { SignById } from './SignById';`,
     ...componentNames.map((name) => `export { ${name} } from './${name}';`),
@@ -462,65 +369,21 @@ const generateVueIndex = (componentNames: string[]): string =>
 // Code generation — elements/src/{ComponentName}.ts
 // ---------------------------------------------------------------------------
 
-const generateElementFile = (entry: ComponentEntry): string => {
-  const { description, id, name, optimizedSvg } = entry;
-  const componentName = toComponentName(id);
-
-  const svgBodyMatch = optimizedSvg.match(/^<svg([^>]*)>([\s\S]*)<\/svg>\s*$/i);
-  const svgAttrs = svgBodyMatch ? svgBodyMatch[1] : '';
-  const svgBody = scopeBodyIds(svgBodyMatch ? svgBodyMatch[2] : optimizedSvg, id);
-
-  const esc = (s: string): string =>
-    s.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$');
-
-  const widthMatch = svgAttrs.match(/\bwidth="([^"]+)"/);
-  const heightMatch = svgAttrs.match(/\bheight="([^"]+)"/);
-  const defaultWidth = (widthMatch ? widthMatch[1] : '100%').replace(/px$/, '');
-  const defaultHeight = (heightMatch ? heightMatch[1] : '100%').replace(/px$/, '');
-
-  const hasViewBox = /\bviewBox="/.test(svgAttrs);
-  const syntheticViewBox =
-    !hasViewBox && /^\d+(\.\d+)?$/.test(defaultWidth) && /^\d+(\.\d+)?$/.test(defaultHeight)
-      ? ` viewBox="0 0 ${defaultWidth} ${defaultHeight}"`
-      : '';
-
-  const attrsWithoutSize =
-    svgAttrs
-      .replace(/\s*\bwidth="[^"]*"/, '')
-      .replace(/\s*\bheight="[^"]*"/, '')
-      .trim() + syntheticViewBox;
-
+const generateElementFile = (sign: Sign): string => {
+  const componentName = toComponentName(sign.id);
   return [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
+    ...HEADER,
+    `import type { ParsedSvg } from '@iso-safety-signs/core';`,
+    `import { SignElement } from './SignElement';`,
+    `import type { SignElementContent } from './SignElement';`,
     ``,
-    `const _Attrs = \`${esc(attrsWithoutSize)}\`;`,
-    `const _Body = \`${esc(svgBody)}\`;`,
-    `const _DefaultDesc = \`${esc(description.slice(0, 300))}\`;`,
-    `const _DefaultTitle = '${name.replace(/'/g, "\\'")}';`,
-    `const _DefaultWidth = \`${esc(defaultWidth)}\`;`,
-    `const _DefaultHeight = \`${esc(defaultHeight)}\`;`,
-    `const _h = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');`,
+    ...componentConstants(sign),
     ``,
-    `export class ${componentName} extends HTMLElement {`,
-    `  static readonly tagName = 'iso-${id}';`,
-    `  static readonly observedAttributes = ['title', 'description', 'width', 'height'];`,
+    `export class ${componentName} extends SignElement {`,
+    `  static readonly tagName = 'iso-${sign.id}';`,
     ``,
-    `  connectedCallback(): void { this._render(); }`,
-    `  attributeChangedCallback(): void { this._render(); }`,
-    ``,
-    `  private _render(): void {`,
-    `    const descId = \`iso-desc-${id}\`;`,
-    `    const titleId = \`iso-title-${id}\`;`,
-    `    const _w = this.hasAttribute('width') ? _h(this.getAttribute('width')!) : _DefaultWidth;`,
-    `    const _ht = this.hasAttribute('height') ? _h(this.getAttribute('height')!) : _DefaultHeight;`,
-    `    const resolvedTitle = this.getAttribute('title') ?? _DefaultTitle;`,
-    `    const resolvedDesc = this.getAttribute('description') ?? _DefaultDesc;`,
-    `    this.style.display = 'contents';`,
-    `    this.innerHTML = \`<svg \${_Attrs} width="\${_w}" height="\${_ht}" role="img" aria-labelledby="\${titleId} \${descId}">`,
-    `  <title id="\${titleId}">\${_h(resolvedTitle)}</title>`,
-    `  <desc id="\${descId}">\${_h(resolvedDesc)}</desc>`,
-    `  \${_Body}</svg>\`;`,
+    `  protected content(): SignElementContent {`,
+    `    return { description: _description, svg: _svg, title: _title };`,
     `  }`,
     `}`,
     ``,
@@ -531,37 +394,43 @@ const generateElementFile = (entry: ComponentEntry): string => {
 // Code generation — elements/src/defineCustomElements.ts
 // ---------------------------------------------------------------------------
 
-const generateDefineCustomElements = (
-  entries: Array<{ id: string; componentName: string }>,
-): string =>
+const generateDefineCustomElements = (componentNames: string[], exampleIds: string[]): string =>
   [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
-    ``,
+    ...HEADER,
     `import { IsoSign } from './IsoSign';`,
-    ...entries.map(({ componentName }) => `import { ${componentName} } from './${componentName}';`),
+    ...componentNames.map((name) => `import { ${name} } from './${name}';`),
     ``,
-    `const _elements: Array<[typeof HTMLElement & { tagName: string }, string]> = [`,
+    `const _elements: Array<[CustomElementConstructor, string]> = [`,
     `  [IsoSign, IsoSign.tagName],`,
-    ...entries.map(({ componentName }) => `  [${componentName}, ${componentName}.tagName],`),
+    ...componentNames.map((name) => `  [${name}, ${name}.tagName],`),
     `];`,
     ``,
     `/**`,
     ` * Registers all ISO 7010 safety sign custom elements.`,
     ` *`,
+    ` * Safe to call more than once, including with different prefixes or after`,
+    ` * registering some classes yourself: tags that are already defined are skipped,`,
+    ` * and a class that is already registered under another name is registered via`,
+    ` * a subclass (the registry rejects one constructor under two names).`,
+    ` *`,
     ` * @param prefix — tag-name prefix (default \`"iso"\`). Each element is registered`,
-    ` *   as \`{prefix}-{id}\`, e.g. \`iso-e001-emergency-exit\`.`,
+    ` *   as \`{prefix}-{id}\`, e.g. \`iso-${exampleIds[0]}\`, plus the generic \`{prefix}-sign\`.`,
     ` *   Pass a custom string to avoid conflicts with other libraries.`,
     ` * @example`,
     ` * \`\`\`ts`,
     ` * import { defineCustomElements } from '@iso-safety-signs/elements';`,
-    ` * defineCustomElements(); // registers iso-e001-emergency-exit, iso-w001-flammable-material, etc.`,
+    ` * defineCustomElements(); // registers iso-sign, ${exampleIds.map((id) => `iso-${id}`).join(', ')}, etc.`,
     ` * \`\`\``,
     ` */`,
     `export function defineCustomElements(prefix = 'iso'): void {`,
     `  for (const [cls, defaultTag] of _elements) {`,
     `    const tag = prefix === 'iso' ? defaultTag : \`\${prefix}-\${defaultTag.replace(/^iso-/, '')}\`;`,
-    `    if (!customElements.get(tag)) customElements.define(tag, cls);`,
+    `    if (customElements.get(tag)) continue;`,
+    `    try {`,
+    `      customElements.define(tag, cls);`,
+    `    } catch {`,
+    `      customElements.define(tag, class extends cls {});`,
+    `    }`,
     `  }`,
     `}`,
     ``,
@@ -573,10 +442,10 @@ const generateDefineCustomElements = (
 
 const generateElementsIndex = (componentNames: string[]): string =>
   [
-    `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
-    `// Run 'yarn generate' to regenerate.`,
-    ``,
+    ...HEADER,
     `export { IsoSign } from './IsoSign';`,
+    `export { SignElement } from './SignElement';`,
+    `export type { SignElementContent } from './SignElement';`,
     `export { defineCustomElements } from './defineCustomElements';`,
     ...componentNames.map((name) => `export { ${name} } from './${name}';`),
     `export type { Sign, SignAssets, SignCategory } from '@iso-safety-signs/core';`,
@@ -603,93 +472,43 @@ export const generateSource = async (): Promise<void> => {
 
   console.log(`Loaded ${Object.keys(svgMap).length} SVGs from svg-map.json`);
 
-  const entries = collectEntries(scraped, svgMap);
-  console.log(`Collected ${entries.length} sign entries`);
+  const signs = collectEntries(scraped, svgMap);
+  console.log(`Collected ${signs.length} sign entries`);
+  const componentNames = signs.map((s) => toComponentName(s.id));
 
-  const signs = entries.map((e) => e.sign);
-  const componentEntries: ComponentEntry[] = entries.map((e) => ({
-    id: e.sign.id,
-    name: e.sign.name,
-    description: e.sign.description,
-    optimizedSvg: e.optimizedSvg,
-  }));
+  const write = (file: string, content: string): void => {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, content, 'utf-8');
+    console.log(`Written: ${file}`);
+  };
+  const pkgSrc = (pkg: string, file: string): string =>
+    path.join('packages', '@iso-safety-signs', pkg, 'src', file);
 
-  // core/src/signs.generated.ts
-  const coreOut = path.join('packages', '@iso-safety-signs', 'core', 'src', 'signs.generated.ts');
-  fs.writeFileSync(coreOut, generateSignsFile(signs), 'utf-8');
-  console.log(`Written: ${coreOut}`);
+  write(pkgSrc('core', 'signs.generated.ts'), generateSignsFile(signs));
 
-  // react/src/
-  const reactDir = path.join('packages', '@iso-safety-signs', 'react', 'src');
-  fs.mkdirSync(reactDir, { recursive: true });
-
-  fs.writeFileSync(path.join(reactDir, 'SignProps.ts'), generateReactPropsFile(), 'utf-8');
-  console.log(`Written: ${path.join(reactDir, 'SignProps.ts')}`);
-
-  const componentNames: string[] = [];
-  for (const entry of componentEntries) {
-    const componentName = toComponentName(entry.id);
-    componentNames.push(componentName);
-    fs.writeFileSync(
-      path.join(reactDir, `${componentName}.tsx`),
-      generateReactComponentFile(entry),
-      'utf-8',
-    );
-    console.log(`Written: ${path.join(reactDir, `${componentName}.tsx`)}`);
+  write(pkgSrc('react', 'SignProps.ts'), generateReactPropsFile());
+  for (const sign of signs) {
+    write(pkgSrc('react', `${toComponentName(sign.id)}.tsx`), generateReactComponentFile(sign));
   }
+  write(pkgSrc('react', 'index.ts'), generateReactIndex(componentNames));
 
-  fs.writeFileSync(path.join(reactDir, 'index.ts'), generateReactIndex(componentNames), 'utf-8');
-  console.log(`Written: ${path.join(reactDir, 'index.ts')}`);
-
-  // vue/src/
-  const vueDir = path.join('packages', '@iso-safety-signs', 'vue', 'src');
-  fs.mkdirSync(vueDir, { recursive: true });
-
-  fs.writeFileSync(path.join(vueDir, 'SignProps.ts'), generateVuePropsFile(), 'utf-8');
-  console.log(`Written: ${path.join(vueDir, 'SignProps.ts')}`);
-
-  for (const entry of componentEntries) {
-    const componentName = toComponentName(entry.id);
-    fs.writeFileSync(
-      path.join(vueDir, `${componentName}.ts`),
-      generateVueComponentFile(entry),
-      'utf-8',
-    );
-    console.log(`Written: ${path.join(vueDir, `${componentName}.ts`)}`);
+  write(pkgSrc('vue', 'SignProps.ts'), generateVuePropsFile());
+  for (const sign of signs) {
+    write(pkgSrc('vue', `${toComponentName(sign.id)}.ts`), generateVueComponentFile(sign));
   }
+  write(pkgSrc('vue', 'index.ts'), generateVueIndex(componentNames));
 
-  fs.writeFileSync(path.join(vueDir, 'index.ts'), generateVueIndex(componentNames), 'utf-8');
-  console.log(`Written: ${path.join(vueDir, 'index.ts')}`);
-
-  // elements/src/
-  const elementsDir = path.join('packages', '@iso-safety-signs', 'elements', 'src');
-  fs.mkdirSync(elementsDir, { recursive: true });
-
-  const elementEntries: Array<{ id: string; componentName: string }> = [];
-  for (const entry of componentEntries) {
-    const componentName = toComponentName(entry.id);
-    elementEntries.push({ id: entry.id, componentName });
-    fs.writeFileSync(
-      path.join(elementsDir, `${componentName}.ts`),
-      generateElementFile(entry),
-      'utf-8',
-    );
-    console.log(`Written: ${path.join(elementsDir, `${componentName}.ts`)}`);
+  for (const sign of signs) {
+    write(pkgSrc('elements', `${toComponentName(sign.id)}.ts`), generateElementFile(sign));
   }
-
-  fs.writeFileSync(
-    path.join(elementsDir, 'defineCustomElements.ts'),
-    generateDefineCustomElements(elementEntries),
-    'utf-8',
+  write(
+    pkgSrc('elements', 'defineCustomElements.ts'),
+    generateDefineCustomElements(
+      componentNames,
+      signs.slice(0, 2).map((s) => s.id),
+    ),
   );
-  console.log(`Written: ${path.join(elementsDir, 'defineCustomElements.ts')}`);
-
-  fs.writeFileSync(
-    path.join(elementsDir, 'index.ts'),
-    generateElementsIndex(elementEntries.map((e) => e.componentName)),
-    'utf-8',
-  );
-  console.log(`Written: ${path.join(elementsDir, 'index.ts')}`);
+  write(pkgSrc('elements', 'index.ts'), generateElementsIndex(componentNames));
 
   console.log('\nDone.');
 };

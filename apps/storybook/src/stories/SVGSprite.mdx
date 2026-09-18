@@ -30,7 +30,7 @@ npm install @iso-safety-signs/sprite
 ```html
 <svg width="64" height="64" role="img" aria-label="Emergency exit">
   <title>Emergency exit</title>
-  <use href="/assets/sprites/sprite.svg#e001-emergency-exit" />
+  <use href="/assets/sprites/sprite.svg#e001" />
 </svg>
 ```
 
@@ -43,7 +43,7 @@ npm install @iso-safety-signs/sprite
 
 <svg width="64" height="64" role="img" aria-label="Emergency exit">
   <title>Emergency exit</title>
-  <use href="#e001-emergency-exit" />
+  <use href="#e001" />
 </svg>
 ```
 
@@ -54,7 +54,7 @@ import spriteUrl from '@iso-safety-signs/sprite/sprite.svg';
 
 <svg width={64} height={64} role="img" aria-label="Emergency exit">
   <title>Emergency exit</title>
-  <use href={`${spriteUrl}#e001-emergency-exit`} />
+  <use href={`${spriteUrl}#e001`} />
 </svg>
 ```
 
@@ -62,7 +62,7 @@ import spriteUrl from '@iso-safety-signs/sprite/sprite.svg';
 
 ## Symbol ID pattern
 
-Symbol IDs match the sign slug IDs: `e001-emergency-exit`, `w001-flammable-material`, `p001-no-smoking`, etc. Enumerate all IDs from `sprite-ids.json`:
+Symbol IDs are the lowercase ISO 7010 codes: `e001`, `w021`, `p002`, etc. Enumerate all IDs from `sprite-ids.json`:
 
 ```ts
 import ids from '@iso-safety-signs/sprite/sprite-ids.json';

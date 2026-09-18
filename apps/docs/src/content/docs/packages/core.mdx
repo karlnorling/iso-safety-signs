@@ -24,7 +24,7 @@ import { getAllSigns, getSign, getSignsByCategory } from '@iso-safety-signs/core
 const signs = getAllSigns();
 
 // Single sign by ID
-const exit = getSign('e001-emergency-exit');
+const exit = getSign('e001-emergency-exit-left-hand');
 
 // All emergency signs
 const emergencySigns = getSignsByCategory('emergency');
@@ -47,7 +47,7 @@ type SignAssets = {
 };
 
 type Sign = {
-  id: string;          // e.g. 'e001-emergency-exit'
+  id: string;          // e.g. 'e001-emergency-exit-left-hand'
   code: string;        // e.g. 'E001'
   name: string;        // e.g. 'Emergency exit'
   description: string; // Plain-language description of the sign
@@ -71,8 +71,8 @@ type Sign = {
 
 Sign IDs follow the pattern `{code-lowercase}-{kebab-name}`, e.g.:
 
-- `e001-emergency-exit`
-- `p001-no-smoking`
-- `m001-wear-eye-protection`
-- `w001-flammable-material`
+- `e001-emergency-exit-left-hand`
+- `p002-no-smoking`
+- `m004-wear-eye-protection`
+- `w021-flammable-material`
 - `f001-fire-extinguisher`

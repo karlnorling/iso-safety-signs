@@ -2,6 +2,8 @@
 // Run 'yarn generate' to regenerate.
 
 export { IsoSign } from './IsoSign';
+export { SignElement } from './SignElement';
+export type { SignElementContent } from './SignElement';
 export { defineCustomElements } from './defineCustomElements';
 export { E001EmergencyExitLeftHand } from './E001EmergencyExitLeftHand';
 export { E002EmergencyExitRightHand } from './E002EmergencyExitRightHand';

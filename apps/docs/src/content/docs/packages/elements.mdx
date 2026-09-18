@@ -26,8 +26,8 @@ defineCustomElements();
 By default elements are registered as `iso-*`. Pass a custom prefix to avoid collisions:
 
 ```ts
-defineCustomElements('my-prefix');
-// Registers <my-prefix-sign sign-id="...">, <my-prefix-e001-emergency-exit>, etc.
+defineCustomElements('my-prefix'); // safe to combine with defineCustomElements()
+// Registers <my-prefix-sign sign-id="...">, <my-prefix-e001-emergency-exit-left-hand>, etc.
 ```
 
 ## Generic element
@@ -35,7 +35,7 @@ defineCustomElements('my-prefix');
 Use `<iso-sign>` when the sign is determined at runtime via the `sign-id` attribute.
 
 ```html
-<iso-sign sign-id="e001-emergency-exit" width="64" title="Emergency exit"></iso-sign>
+<iso-sign sign-id="e001-emergency-exit-left-hand" width="64" title="Emergency exit"></iso-sign>
 ```
 
 ## Named elements
@@ -43,20 +43,21 @@ Use `<iso-sign>` when the sign is determined at runtime via the `sign-id` attrib
 Each sign also has a dedicated element named `iso-{code}` with no `sign-id` needed.
 
 ```html
-<iso-e001-emergency-exit width="64" title="Emergency exit"></iso-e001-emergency-exit>
-<iso-p001-no-smoking width="48"></iso-p001-no-smoking>
-<iso-w001-flammable width="48"></iso-w001-flammable>
+<iso-e001-emergency-exit-left-hand width="64" title="Emergency exit"></iso-e001-emergency-exit-left-hand>
+<iso-p002-no-smoking width="48"></iso-p002-no-smoking>
+<iso-w021-flammable-material width="48"></iso-w021-flammable-material>
 ```
 
 ## Attributes
 
 | Attribute     | Type     | Required              | Description                                       |
 |---------------|----------|-----------------------|---------------------------------------------------|
-| `sign-id`     | `string` | Yes (`<iso-sign>` only) | Sign ID, e.g. `"e001-emergency-exit"`.           |
+| `sign-id`     | `string` | Yes (`<iso-sign>` only) | Sign ID, e.g. `"e001-emergency-exit-left-hand"`.           |
 | `width`       | `string` | No                    | Width in pixels as a string, e.g. `"64"`.         |
 | `height`      | `string` | No                    | Height in pixels as a string, e.g. `"64"`.        |
 | `title`       | `string` | No                    | Sets the SVG `<title>` for screen readers.        |
 | `description` | `string` | No                    | Sets the SVG `<desc>` for additional context.     |
+| `aria-label`  | `string` | No                    | Labels the `<svg>` directly instead of via `<title>`/`<desc>`. |
 
 All attributes are reactive — changing them updates the rendered SVG immediately.
 
@@ -67,7 +68,7 @@ All attributes are reactive — changing them updates the rendered SVG immediate
 ```vue
 <!-- vite.config.ts: set compilerOptions.isCustomElement = (tag) => tag.startsWith('iso-') -->
 <template>
-  <iso-sign sign-id="e001-emergency-exit" width="64" title="Emergency exit" />
+  <iso-sign sign-id="e001-emergency-exit-left-hand" width="64" title="Emergency exit" />
 </template>
 ```
   </TabItem>
@@ -77,7 +78,7 @@ All attributes are reactive — changing them updates the rendered SVG immediate
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @Component({
-  template: `<iso-sign sign-id="e001-emergency-exit" width="64" title="Emergency exit"></iso-sign>`,
+  template: `<iso-sign sign-id="e001-emergency-exit-left-hand" width="64" title="Emergency exit"></iso-sign>`,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent {}

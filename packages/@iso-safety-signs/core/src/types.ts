@@ -22,7 +22,7 @@ export interface SignAssets {
   jpg: Record<number, string>;
   /** Map of pixel size to relative path for PNG variants. */
   png: Record<number, string>;
-  /** Relative path to the original SVG source file. */
+  /** Relative path to the SVG source file. */
   svg: string;
   /** Map of pixel size to relative path for WebP variants. */
   webp: Record<number, string>;
@@ -40,10 +40,10 @@ export interface Sign {
   code: string;
   /** Human-readable description of the sign. */
   description: string;
-  /** Slug identifier used to look up the sign, e.g. `"e001-emergency-exit"`. */
+  /** Slug identifier used to look up the sign, e.g. `"e001-emergency-exit-left-hand"`. */
   id: string;
   /** Human-readable name, e.g. `"Emergency exit"`. */
   name: string;
-  /** Full inline SVG string (optimised by SVGO). */
+  /** Full inline SVG string, optimised by SVGO, with internal ids prefixed by the sign `id`. */
   svg: string;
 }

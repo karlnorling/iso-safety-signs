@@ -70,11 +70,11 @@ export default meta;
 type Story = StoryObj<typeof SignById>;
 
 export const EmergencyExit: Story = {
-  args: { id: 'e001-emergency-exit', width: 128 },
+  args: { id: 'e001-emergency-exit-left-hand', width: 128 },
 };
 
 export const FlammableMaterial: Story = {
-  args: { id: 'w001-flammable-material', width: 128 },
+  args: { id: 'w021-flammable-material', width: 128 },
 };
 
 export const UnknownId: Story = {

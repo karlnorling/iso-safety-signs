@@ -28,4 +28,7 @@ import { generateSource } from './generate-source';
   await generateSource();
 
   console.log('\nAll done!');
-})();
+})().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
