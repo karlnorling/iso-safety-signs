@@ -1757,13 +1757,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@iso-safety-signs/assets@npm:^1.0.1, @iso-safety-signs/assets@workspace:*, @iso-safety-signs/assets@workspace:packages/@iso-safety-signs/assets":
+"@iso-safety-signs/assets@npm:^2.0.0, @iso-safety-signs/assets@workspace:*, @iso-safety-signs/assets@workspace:packages/@iso-safety-signs/assets":
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/assets@workspace:packages/@iso-safety-signs/assets"
   languageName: unknown
   linkType: soft
 
-"@iso-safety-signs/core@npm:^1.0.0, @iso-safety-signs/core@workspace:*, @iso-safety-signs/core@workspace:packages/@iso-safety-signs/core":
+"@iso-safety-signs/core@npm:^1.1.0, @iso-safety-signs/core@workspace:*, @iso-safety-signs/core@workspace:packages/@iso-safety-signs/core":
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/core@workspace:packages/@iso-safety-signs/core"
   dependencies:
@@ -1779,8 +1779,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/css@workspace:packages/@iso-safety-signs/css"
   dependencies:
-    "@iso-safety-signs/assets": "npm:^1.0.1"
-    "@iso-safety-signs/core": "npm:^1.0.0"
+    "@iso-safety-signs/assets": "npm:^2.0.0"
+    "@iso-safety-signs/core": "npm:^1.1.0"
     "@types/jest": "npm:^30.0.0"
     jest: "npm:^30.5.2"
     ts-jest: "npm:^29.4.12"
@@ -1792,7 +1792,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/elements@workspace:packages/@iso-safety-signs/elements"
   dependencies:
-    "@iso-safety-signs/core": "npm:^1.0.0"
+    "@iso-safety-signs/core": "npm:^1.1.0"
     "@types/jest": "npm:^30.0.0"
     jest: "npm:^30.5.2"
     jest-environment-jsdom: "npm:^30.5.2"
@@ -1805,7 +1805,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/react@workspace:packages/@iso-safety-signs/react"
   dependencies:
-    "@iso-safety-signs/core": "npm:^1.0.0"
+    "@iso-safety-signs/core": "npm:^1.1.0"
     "@types/jest": "npm:^30.0.0"
     "@types/react": "npm:^19.3.0"
     "@types/react-dom": "npm:^19"
@@ -1830,7 +1830,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@iso-safety-signs/vue@workspace:packages/@iso-safety-signs/vue"
   dependencies:
-    "@iso-safety-signs/core": "npm:^1.0.0"
+    "@iso-safety-signs/core": "npm:^1.1.0"
     "@types/jest": "npm:^30.0.0"
     "@vue/compiler-dom": "npm:^3.5.43"
     "@vue/test-utils": "npm:^2.5.1"
