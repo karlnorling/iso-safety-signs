@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/vue",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Accessible Vue 3 components for all ISO 7010 safety signs — fully typed, zero runtime dependencies beyond Vue",
   "keywords": [
     "accessible",
@@ -54,7 +54,7 @@
     "type-check": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@iso-safety-signs/core": "^1.0.0"
+    "@iso-safety-signs/core": "^1.1.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
