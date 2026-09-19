@@ -62,15 +62,15 @@ Returns `null` for unrecognised IDs.
 
 `SignById` also requires:
 
-| Prop | Type     | Description                                |
-| ---- | -------- | ------------------------------------------ |
-| `id` | `string` | Sign slug ID, e.g. `"e001-emergency-exit"` |
+| Prop | Type     | Description                                          |
+| ---- | -------- | ---------------------------------------------------- |
+| `id` | `string` | Sign slug ID, e.g. `"e001-emergency-exit-left-hand"` |
 
 ---
 
 ## Accessibility
 
-Every component renders with `role="img"` and `aria-labelledby` pointing to `<title>` and `<desc>` elements injected inside the SVG.
+Every component renders with `role="img"` and `aria-labelledby` pointing to `<title>` and `<desc>` elements injected inside the SVG. Passing an `aria-label` attribute labels the `<svg>` directly instead. Ids are unique per instance (via `useId()` on Vue 3.5+), so the same sign can appear any number of times on a page.
 
 ---
 

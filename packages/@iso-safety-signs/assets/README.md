@@ -58,7 +58,7 @@ import emergencyExit from '@iso-safety-signs/assets/assets/emergency/e001/ISO_70
 ```ts
 import { getSign } from '@iso-safety-signs/core';
 
-const sign = getSign('e001-emergency-exit');
+const sign = getSign('e001-emergency-exit-left-hand');
 if (sign) {
   console.log(sign.assets.svg); // 'emergency/e001/ISO_7010_E001.svg'
   console.log(sign.assets.png[512]); // 'emergency/e001/ISO_7010_E001_512x512.png'

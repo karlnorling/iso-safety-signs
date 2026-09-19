@@ -40,10 +40,10 @@ const all = getAllSigns();
 Look up a single sign by its slug ID.
 
 ```ts
-const exit = getSign('e001-emergency-exit');
+const exit = getSign('e001-emergency-exit-left-hand');
 // → Sign | undefined
 
-const flammable = getSign('w001-flammable-material');
+const flammable = getSign('w021-flammable-material');
 ```
 
 ### `getSignsByCategory(category)`
@@ -64,7 +64,7 @@ const warning     = getSignsByCategory('warning');      // W-series (yellow)
 
 ```ts
 interface Sign {
-  id: string;          // e.g. 'e001-emergency-exit'
+  id: string;          // e.g. 'e001-emergency-exit-left-hand'
   code: string;        // e.g. 'E001'
   name: string;        // e.g. 'Emergency exit'
   category: SignCategory;
@@ -130,7 +130,7 @@ assets/
 ```ts
 import { getSign } from '@iso-safety-signs/core';
 
-const sign = getSign('e001-emergency-exit');
+const sign = getSign('e001-emergency-exit-left-hand');
 if (sign) {
   console.log(sign.assets.svg);       // 'emergency/e001/ISO_7010_E001.svg'
   console.log(sign.assets.png[512]);  // 'emergency/e001/ISO_7010_E001_512x512.png'

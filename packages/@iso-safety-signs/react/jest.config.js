@@ -16,6 +16,7 @@ const config = {
           jsx: 'react-jsx',
           esModuleInterop: true,
           skipLibCheck: true,
+          types: ['jest', 'node'],
         },
       },
     ],

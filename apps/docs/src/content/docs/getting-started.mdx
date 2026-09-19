@@ -43,7 +43,7 @@ Pick the package for your framework:
     <E001EmergencyExit width={64} />
 
     // Dynamic by ID
-    <SignById id="e001-emergency-exit" width={64} />
+    <SignById id="e001-emergency-exit-left-hand" width={64} />
     ```
   </TabItem>
   <TabItem label="Vue 3">
@@ -57,7 +57,7 @@ Pick the package for your framework:
       <E001EmergencyExit :width="64" />
 
       <!-- Dynamic by ID -->
-      <SignById id="e001-emergency-exit" :width="64" />
+      <SignById id="e001-emergency-exit-left-hand" :width="64" />
     </template>
     ```
   </TabItem>
@@ -69,10 +69,10 @@ Pick the package for your framework:
 
     ```html
     <!-- Generic element -->
-    <iso-sign sign-id="e001-emergency-exit" width="64"></iso-sign>
+    <iso-sign sign-id="e001-emergency-exit-left-hand" width="64"></iso-sign>
 
     <!-- Named element -->
-    <iso-e001-emergency-exit width="64"></iso-e001-emergency-exit>
+    <iso-e001-emergency-exit-left-hand width="64"></iso-e001-emergency-exit-left-hand>
     ```
   </TabItem>
   <TabItem label="CSS">
@@ -96,7 +96,7 @@ Pick the package for your framework:
 Every sign has a slug ID based on its ISO code and name. You can find the ID for any sign in the
 [Sign Gallery](/iso-safety-signs/gallery/) — hover over a card to see its description, and the code is shown below each sign.
 
-The ID format is: `{code-lowercase}-{name-slugified}`, e.g. `e001-emergency-exit`.
+The ID format is: `{code-lowercase}-{name-slugified}`, e.g. `e001-emergency-exit-left-hand`.
 
 ## TypeScript
 

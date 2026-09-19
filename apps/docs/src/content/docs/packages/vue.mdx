@@ -60,7 +60,7 @@ Bind dynamic values with `:width="64"` syntax; pass static strings without the c
 
 | Prop | Type     | Required | Description                            |
 |------|----------|----------|----------------------------------------|
-| `id` | `string` | Yes      | Sign ID, e.g. `"e001-emergency-exit"`. |
+| `id` | `string` | Yes      | Sign ID, e.g. `"e001-emergency-exit-left-hand"`. |
 
 All named component props also apply to `SignById`.
 
@@ -74,7 +74,7 @@ import type { SignProps } from '@iso-safety-signs/vue';
 
 ## Accessibility
 
-Every component renders an `<svg>` with `role="img"`. When `title` is provided, the SVG receives an `aria-labelledby` attribute pointing to the generated `<title>` element. When both `title` and `description` are provided, both IDs are included in `aria-labelledby`.
+Every component renders an `<svg>` with `role="img"` and an `aria-labelledby` attribute pointing to the generated `<title>` and `<desc>` elements, which default to the sign name. Passing `aria-label` labels the `<svg>` directly instead. Ids are unique per instance, so the same sign can appear any number of times on a page.
 
 ```vue
 <template>

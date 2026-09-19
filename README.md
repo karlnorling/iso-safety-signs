@@ -46,7 +46,7 @@ npm install @iso-safety-signs/react
 import { SignById } from '@iso-safety-signs/react';
 
 export default function SafetyLabel() {
-  return <SignById id="e001-emergency-exit" width={120} />;
+  return <SignById id="e001-emergency-exit-left-hand" width={120} />;
 }
 ```
 
@@ -70,7 +70,7 @@ npm install @iso-safety-signs/vue
 import { SignById } from '@iso-safety-signs/vue';
 </script>
 <template>
-  <SignById id="e001-emergency-exit" :width="120" />
+  <SignById id="e001-emergency-exit-left-hand" :width="120" />
 </template>
 ```
 
@@ -86,8 +86,8 @@ defineCustomElements();
 ```
 
 ```html
-<iso-sign sign-id="e001-emergency-exit" width="64"></iso-sign>
-<iso-e001-emergency-exit width="64"></iso-e001-emergency-exit>
+<iso-sign sign-id="e001-emergency-exit-left-hand" width="64"></iso-sign>
+<iso-e001-emergency-exit-left-hand width="64"></iso-e001-emergency-exit-left-hand>
 ```
 
 ### CSS sprite
@@ -118,7 +118,7 @@ npm install @iso-safety-signs/sprite
 ```html
 <svg width="64" height="64" role="img" aria-label="Emergency exit">
   <title>Emergency exit</title>
-  <use href="/path/to/sprite.svg#e001-emergency-exit" />
+  <use href="/path/to/sprite.svg#e001" />
 </svg>
 ```
 
@@ -128,7 +128,7 @@ npm install @iso-safety-signs/sprite
 import { getAllSigns, getSign, getSignsByCategory } from '@iso-safety-signs/core';
 
 const allSigns = getAllSigns();
-const sign = getSign('e001-emergency-exit');
+const sign = getSign('e001-emergency-exit-left-hand');
 const warnings = getSignsByCategory('warning');
 ```
 

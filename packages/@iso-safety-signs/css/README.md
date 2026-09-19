@@ -44,7 +44,7 @@ Apply a class to any block element with explicit dimensions:
 ></span>
 
 <span
-  class="iso-w001"
+  class="iso-w021"
   style="display:inline-block; width:64px; height:64px"
   role="img"
   aria-label="Flammable material"
@@ -56,7 +56,7 @@ Apply a class to any block element with explicit dimensions:
 ```ts
 import { getCssClassName } from '@iso-safety-signs/css';
 
-const cls = getCssClassName('e001-emergency-exit'); // → 'iso-e001'
+const cls = getCssClassName('e001-emergency-exit-left-hand'); // → 'iso-e001'
 element.className = cls;
 ```
 
@@ -68,10 +68,10 @@ CSS class names follow the pattern `iso-{code}` where `{code}` is the lowercase 
 
 | Sign                          | CSS class  |
 | ----------------------------- | ---------- |
-| E001 Emergency exit           | `iso-e001` |
-| E002 Emergency exit — left    | `iso-e002` |
-| W001 Flammable material       | `iso-w001` |
-| P001 No smoking               | `iso-p001` |
+| E001 Emergency exit (left)    | `iso-e001` |
+| E002 Emergency exit (right)   | `iso-e002` |
+| W021 Flammable material       | `iso-w021` |
+| P002 No smoking               | `iso-p002` |
 | M001 General mandatory action | `iso-m001` |
 | F001 Fire extinguisher        | `iso-f001` |
 

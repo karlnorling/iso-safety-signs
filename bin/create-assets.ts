@@ -27,14 +27,23 @@ import type { ScrapedData } from './scrape';
 const USER_AGENT =
   'iso-safety-signs/0.0.0 (https://github.com/karlnorling/iso-safety-signs; build-script)';
 
+// SVG is resolution-independent, so only raster formats get per-size files.
 const IMAGE_TYPES_MAP = [
-  { sizes: [240, 512, 768, 1024, 2048], type: 'svg' },
   { sizes: [240, 512, 768, 1024, 2048], type: 'jpg' },
   { sizes: [240, 512, 768, 1024, 2048], type: 'png' },
   { sizes: [240, 512, 768, 1024, 2048], type: 'webp' },
 ] as const;
 
 const ASSETS_ROOT = path.join('packages', '@iso-safety-signs', 'assets', 'assets');
+
+/** Matches pre-sized SVG copies written by older pipeline runs; never treated as a source. */
+const SIZED_SVG_RE = /_\d+x\d+\.svg$/;
+
+/** Source SVGs under ASSETS_ROOT, sorted so output does not depend on filesystem order. */
+const sourceSvgFiles = (): string[] =>
+  globSync(path.join(ASSETS_ROOT, '**', '*.svg'))
+    .filter((f) => !SIZED_SVG_RE.test(f))
+    .sort();
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -80,28 +89,18 @@ const fetchWithRetry = async (
   throw new Error(`All retries exhausted for ${url}`);
 };
 
-const downloadImagePage = async (url: string): Promise<string | undefined> => {
-  try {
-    const res = await fetchWithRetry(url);
-    const data = await res.text();
-    const htmlData = parse(data);
-    const imageSrcUrl = htmlData.querySelector('.fullImageLink a')?.getAttribute('href');
-    return imageSrcUrl ? `https:${imageSrcUrl}` : undefined;
-  } catch (err) {
-    console.error(`  Error fetching image page ${url}:`, (err as Error).message);
-    return undefined;
-  }
+const downloadImagePage = async (url: string): Promise<string> => {
+  const res = await fetchWithRetry(url);
+  const htmlData = parse(await res.text());
+  const imageSrcUrl = htmlData.querySelector('.fullImageLink a')?.getAttribute('href');
+  if (!imageSrcUrl) throw new Error(`No full-size image link on ${url}`);
+  return `https:${imageSrcUrl}`;
 };
 
 const downloadImage = async (dest: string, url: string): Promise<void> => {
-  try {
-    const res = await fetchWithRetry(url, { headers: { Accept: 'image/svg+xml,image/*' } });
-    const data = await res.text();
-    await fs.promises.writeFile(dest, data);
-    console.log(`  Downloaded: ${path.basename(dest)}`);
-  } catch (err) {
-    console.error(`  Error downloading ${url}:`, (err as Error).message);
-  }
+  const res = await fetchWithRetry(url, { headers: { Accept: 'image/svg+xml,image/*' } });
+  await fs.promises.writeFile(dest, await res.text());
+  console.log(`  Downloaded: ${path.basename(dest)}`);
 };
 
 // ---------------------------------------------------------------------------
@@ -127,10 +126,7 @@ const convertImages = async (image: string): Promise<void> => {
 
       const pipeline = sharp(inputBuffer).resize(size, size);
 
-      if (typeObj.type === 'svg') {
-        if (inputExt !== '.svg') continue;
-        await fs.promises.copyFile(image, outputFile);
-      } else if (typeObj.type === 'jpg') {
+      if (typeObj.type === 'jpg') {
         await pipeline.jpeg({ quality: 90 }).toFile(outputFile);
       } else if (typeObj.type === 'png') {
         await pipeline.png({ quality: 90 }).toFile(outputFile);
@@ -163,11 +159,9 @@ const processImage = async (destDir: string, imagePageUrl: string): Promise<void
   }
 
   const imageUrl = await downloadImagePage(imagePageUrl);
-  if (imageUrl) {
-    await downloadImage(dest, imageUrl);
-    await sleep(300);
-    await convertImages(dest);
-  }
+  await downloadImage(dest, imageUrl);
+  await sleep(300);
+  await convertImages(dest);
 };
 
 // ---------------------------------------------------------------------------
@@ -176,9 +170,7 @@ const processImage = async (destDir: string, imagePageUrl: string): Promise<void
 
 const createSVGMap = async (): Promise<void> => {
   const svgMap: Record<string, string> = {};
-  const svgFiles = globSync(path.join(ASSETS_ROOT, '**', '*.svg'));
-
-  for (const file of svgFiles) {
+  for (const file of sourceSvgFiles()) {
     const svgContent = await fs.promises.readFile(file, 'utf-8');
     const key = path.relative(ASSETS_ROOT, file).replace(/\\/g, '/');
     svgMap[key] = svgContent;
@@ -193,9 +185,7 @@ const createSVGSprite = async (): Promise<void> => {
   const spriteDir = path.join('packages', '@iso-safety-signs', 'sprite');
   await fs.promises.mkdir(spriteDir, { recursive: true });
 
-  const svgFiles = globSync(path.join(ASSETS_ROOT, '**', '*.svg')).filter(
-    (f) => !f.includes('sprites') && !/_\d+x\d+\.svg$/.test(f),
-  );
+  const svgFiles = sourceSvgFiles().filter((f) => !f.includes('sprites'));
 
   const seen = new Set<string>();
   const ids: string[] = [];
@@ -215,7 +205,10 @@ const createSVGSprite = async (): Promise<void> => {
     seen.add(id);
     ids.push(id);
 
-    const optimized = optimize(raw, { multipass: true, plugins: ['preset-default'] });
+    const optimized = optimize(raw, {
+      multipass: true,
+      plugins: ['preset-default', 'removeScripts'],
+    });
     const svgContent = optimized.data
       .replace(/<\?xml[^>]*\?>/g, '')
       .replace(/<!DOCTYPE[^>]*>/g, '')
@@ -270,7 +263,7 @@ const createSVGSprite = async (): Promise<void> => {
   console.log(`SVG sprite written to ${spriteFile} (${ids.length} symbols)`);
 
   const idMapFile = path.join(spriteDir, 'sprite-ids.json');
-  await fs.promises.writeFile(idMapFile, JSON.stringify(ids, null, 2), 'utf-8');
+  await fs.promises.writeFile(idMapFile, JSON.stringify(ids, null, 2) + '\n', 'utf-8');
   console.log(`SVG sprite ID map written to ${idMapFile}`);
 };
 
@@ -278,9 +271,7 @@ const createCSSSprite = async (): Promise<void> => {
   const cssPkgDir = path.join('packages', '@iso-safety-signs', 'css');
   await fs.promises.mkdir(cssPkgDir, { recursive: true });
 
-  const svgFiles = globSync(path.join(ASSETS_ROOT, '**', '*.svg'))
-    .filter((f) => !f.includes('sprites'))
-    .filter((f) => !/_\d+x\d+\.svg$/.test(f));
+  const svgFiles = sourceSvgFiles().filter((f) => !f.includes('sprites'));
 
   const seen = new Set<string>();
   const cssRules: string[] = [
@@ -321,21 +312,42 @@ const createCSSSprite = async (): Promise<void> => {
 // Public API
 // ---------------------------------------------------------------------------
 
+/** Rebuilds svg-map.json, the SVG sprite and the CSS sprite from the SVGs on disk. */
+export const buildDerivedAssets = async (): Promise<void> => {
+  await createSVGMap();
+  await createSVGSprite();
+  await createCSSSprite();
+};
+
 const createAssets = async (res: ScrapedData): Promise<void> => {
+  const failures: string[] = [];
+
   for (const [category, signs] of Object.entries(res)) {
     const catDir = path.join(ASSETS_ROOT, category);
     await fs.promises.mkdir(catDir, { recursive: true });
 
     for (const sign of signs) {
-      if (!sign.imageUrl) continue;
+      if (!sign.imageUrl) {
+        failures.push(`${sign.code}: no image URL scraped`);
+        continue;
+      }
       const signDir = path.join(catDir, sign.code.toLowerCase());
-      await processImage(signDir, sign.imageUrl);
+      try {
+        await processImage(signDir, sign.imageUrl);
+      } catch (err) {
+        console.error(`  Error processing ${sign.code}:`, (err as Error).message);
+        failures.push(`${sign.code}: ${(err as Error).message}`);
+      }
     }
   }
 
-  await createSVGMap();
-  await createSVGSprite();
-  await createCSSSprite();
+  await buildDerivedAssets();
+
+  // Every sign was attempted and the outputs rebuilt from what is on disk;
+  // now fail the run so missing or stale assets never go unnoticed.
+  if (failures.length > 0) {
+    throw new Error(`Failed to process ${failures.length} sign(s):\n  ${failures.join('\n  ')}`);
+  }
 };
 
 export default createAssets;

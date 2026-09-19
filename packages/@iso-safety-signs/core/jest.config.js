@@ -12,6 +12,7 @@ const config = {
         tsconfig: {
           esModuleInterop: true,
           skipLibCheck: true,
+          types: ['jest', 'node'],
         },
       },
     ],

@@ -96,6 +96,9 @@ jobs:
       - name: Create Version PR or Publish to npm
         uses: changesets/action@v1
         with:
+          # Format the bumped manifests and changelogs before the action commits
+          # them to the Version Packages PR, so no follow-up commit is needed.
+          version: yarn version-packages
           # Yarn Berry's `yarn npm publish` uses its own HTTP client and does not
           # invoke npm CLI, so it cannot pick up the OIDC token automatically.
           # This script uses `npm publish` directly, which handles the OIDC token
@@ -104,13 +107,3 @@ jobs:
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-
-      - name: Format generated changelogs
-        run: |
-          yarn format
-          git diff --quiet || git commit -am "chore: format generated changelogs"
-        env:
-          GIT_AUTHOR_NAME: github-actions[bot]
-          GIT_AUTHOR_EMAIL: github-actions[bot]@users.noreply.github.com
-          GIT_COMMITTER_NAME: github-actions[bot]
-          GIT_COMMITTER_EMAIL: github-actions[bot]@users.noreply.github.com
