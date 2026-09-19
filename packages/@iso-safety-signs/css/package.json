@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/css",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CSS background-image sprite for ISO 7010 safety signs — class-based display, no JavaScript required",
   "keywords": [
     "background-image",
@@ -55,8 +55,8 @@
     "type-check": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@iso-safety-signs/assets": "^1.0.1",
-    "@iso-safety-signs/core": "^1.0.0"
+    "@iso-safety-signs/assets": "^2.0.0",
+    "@iso-safety-signs/core": "^1.1.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
