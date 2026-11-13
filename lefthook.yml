@@ -13,4 +13,4 @@ pre-push:
     test:
       run: yarn test
     lint:
-      run: yarn lint
+      run: yarn lint && yarn lint:css
