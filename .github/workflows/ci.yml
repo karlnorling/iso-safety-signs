@@ -49,6 +49,9 @@ jobs:
       - name: Lint (oxlint)
         run: yarn lint
 
+      - name: Lint CSS (stylelint)
+        run: yarn lint:css
+
       - name: Type check
         run: yarn type-check
 
