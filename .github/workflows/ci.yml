@@ -17,15 +17,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Enable Corepack (Yarn 4)
         run: corepack enable
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version-file: .nvmrc
           cache: 'yarn'
 
       - name: Install dependencies
@@ -33,6 +33,15 @@ jobs:
 
       - name: Workspace integrity check (manypkg)
         run: yarn check
+
+      # GitHub Actions only *warns* when an action is passed an input it does
+      # not declare, so an action major bump that renames inputs fails silently
+      # -- and the release job only runs on push to main, where it is too late.
+      # Fails on an undeclared input; deprecations only warn.
+      - name: Audit GitHub Action inputs
+        run: yarn audit-actions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check formatting (oxfmt)
         run: yarn format:check
@@ -65,13 +74,13 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.ISO_SAFETY_SIGNS_APP_ID }}
           private-key: ${{ secrets.ISO_SAFETY_SIGNS_PRIVATE_KEY }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Full history so changesets can compare package versions across tags.
           fetch-depth: 0
@@ -81,9 +90,9 @@ jobs:
         run: corepack enable
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '24'
+          node-version-file: .nvmrc
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
@@ -94,16 +103,18 @@ jobs:
         run: yarn compile
 
       - name: Create Version PR or Publish to npm
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
+          # v2 takes the token as an input and refuses to run when a mismatched
+          # GITHUB_TOKEN is also present in the environment. Setting the env var
+          # does not configure the action at all, which is how v1 did it.
+          github-token: ${{ steps.app-token.outputs.token }}
           # Format the bumped manifests and changelogs before the action commits
           # them to the Version Packages PR, so no follow-up commit is needed.
-          version: yarn version-packages
+          version-script: yarn version-packages
           # Yarn Berry's `yarn npm publish` uses its own HTTP client and does not
           # invoke npm CLI, so it cannot pick up the OIDC token automatically.
           # This script uses `npm publish` directly, which handles the OIDC token
           # exchange with the npm registry natively (npm CLI v9+).
-          publish: bash scripts/publish.sh
-          createGithubReleases: true
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          publish-script: bash scripts/publish.sh
+          create-github-releases: true
