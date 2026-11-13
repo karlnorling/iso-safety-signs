@@ -19,6 +19,7 @@
     "format:check": "oxfmt --check --ignore-path=.oxfmtignore .",
     "generate": "tsx bin/generate-source.ts",
     "lint": "oxlint .",
+    "lint:css": "stylelint 'packages/@iso-safety-signs/css/sprite.css'",
     "prepare": "lefthook install",
     "publish": "yarn changeset publish",
     "storybook": "yarn workspace @iso-storybook/app storybook",
