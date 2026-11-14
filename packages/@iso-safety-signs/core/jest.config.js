@@ -17,6 +17,9 @@ const config = {
       },
     ],
   },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
 };
 
 module.exports = config;

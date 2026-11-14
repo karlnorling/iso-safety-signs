@@ -21,6 +21,7 @@ const config = {
     ],
   },
   moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
     '^@iso-safety-signs/core$': '<rootDir>/../core/src/index.ts',
   },
 };

@@ -7,11 +7,11 @@
  * @module @iso-safety-signs/core
  */
 
-import { signs } from './signs.generated';
-import type { Sign, SignCategory } from './types';
+import { signs } from './signs.generated.js';
+import type { Sign, SignCategory } from './types.js';
 
-export type { Sign, SignAssets, SignCategory } from './types';
-export { signs } from './signs.generated';
+export type { Sign, SignAssets, SignCategory } from './types.js';
+export { signs } from './signs.generated.js';
 export {
   createInstanceId,
   escapeHtml,
@@ -19,8 +19,8 @@ export {
   renderSvg,
   scopeIds,
   toInstanceId,
-} from './render';
-export type { ParsedSvg, RenderSvgOptions } from './render';
+} from './render.js';
+export type { ParsedSvg, RenderSvgOptions } from './render.js';
 
 /** Returns every sign in the registry. */
 export const getAllSigns = (): Sign[] => signs;

@@ -1,8 +1,8 @@
 import { defineComponent } from 'vue';
 import type { PropType } from 'vue';
 import { getSign, parseSvg } from '@iso-safety-signs/core';
-import { signProps } from './SignProps';
-import { renderSign, useInstanceId } from './SignSvg';
+import { signProps } from './SignProps.js';
+import { renderSign, useInstanceId } from './SignSvg.js';
 
 /**
  * Renders any ISO 7010 safety sign by slug ID.

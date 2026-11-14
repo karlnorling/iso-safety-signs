@@ -1,6 +1,6 @@
 import { getSign, parseSvg } from '@iso-safety-signs/core';
-import { SignElement } from './SignElement';
-import type { SignElementContent } from './SignElement';
+import { SignElement } from './SignElement.js';
+import type { SignElementContent } from './SignElement.js';
 
 /**
  * Generic ISO 7010 safety sign custom element — renders any sign by slug ID.

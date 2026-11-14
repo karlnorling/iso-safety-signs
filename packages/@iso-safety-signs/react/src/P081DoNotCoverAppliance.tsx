@@ -3,8 +3,8 @@
 
 import * as React from 'react';
 import type { ParsedSvg } from '@iso-safety-signs/core';
-import type { SignProps } from './SignProps';
-import { SignSvg } from './SignSvg';
+import type { SignProps } from './SignProps.js';
+import { SignSvg } from './SignSvg.js';
 
 const _svg: ParsedSvg = {
   attrs: "xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 69.49 69.49\"",
