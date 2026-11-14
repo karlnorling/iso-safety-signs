@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { renderSvg, toInstanceId } from '@iso-safety-signs/core';
 import type { ParsedSvg } from '@iso-safety-signs/core';
-import type { SignProps } from './SignProps';
+import type { SignProps } from './SignProps.js';
 
 /** Props for the internal {@link SignSvg} renderer shared by every sign component. */
 export interface SignSvgProps extends SignProps {

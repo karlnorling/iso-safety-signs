@@ -13,6 +13,7 @@
     "build-storybook": "yarn workspace @iso-storybook/app build-storybook",
     "changeset": "changeset",
     "check": "manypkg check",
+    "check:esm": "node scripts/check-esm.mjs",
     "compile": "yarn workspaces foreach -A --topological-dev run compile",
     "docs": "yarn workspace @iso-docs/app dev",
     "format": "oxfmt --write --ignore-path=.oxfmtignore .",

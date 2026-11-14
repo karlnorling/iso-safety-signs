@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getSign, parseSvg } from '@iso-safety-signs/core';
-import type { SignProps } from './SignProps';
-import { SignSvg } from './SignSvg';
+import type { SignProps } from './SignProps.js';
+import { SignSvg } from './SignSvg.js';
 
 /** Props for the generic {@link SignById} component. */
 export interface SignByIdProps extends SignProps {

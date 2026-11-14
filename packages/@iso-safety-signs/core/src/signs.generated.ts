@@ -1,7 +1,7 @@
 // THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.
 // Run 'yarn generate' to regenerate.
 
-import type { Sign } from './types';
+import type { Sign } from './types.js';
 
 export const signs: Sign[] = [
   {

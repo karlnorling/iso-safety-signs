@@ -162,7 +162,7 @@ const generateSignsFile = (signs: Sign[]): string => {
     `// THIS FILE IS AUTO-GENERATED. DO NOT EDIT MANUALLY.`,
     `// Run 'yarn generate' to regenerate.`,
     ``,
-    `import type { Sign } from './types';`,
+    `import type { Sign } from './types.js';`,
     ``,
     `export const signs: Sign[] = [`,
   ];
@@ -260,8 +260,8 @@ const generateReactComponentFile = (sign: Sign): string => {
     ...HEADER,
     `import * as React from 'react';`,
     `import type { ParsedSvg } from '@iso-safety-signs/core';`,
-    `import type { SignProps } from './SignProps';`,
-    `import { SignSvg } from './SignSvg';`,
+    `import type { SignProps } from './SignProps.js';`,
+    `import { SignSvg } from './SignSvg.js';`,
     ``,
     ...componentConstants(sign),
     ``,
@@ -280,10 +280,10 @@ const generateReactComponentFile = (sign: Sign): string => {
 const generateReactIndex = (componentNames: string[]): string =>
   [
     ...HEADER,
-    `export type { SignProps } from './SignProps';`,
-    `export { SignById } from './Sign';`,
-    `export type { SignByIdProps } from './Sign';`,
-    ...componentNames.map((name) => `export { ${name} } from './${name}';`),
+    `export type { SignProps } from './SignProps.js';`,
+    `export { SignById } from './Sign.js';`,
+    `export type { SignByIdProps } from './Sign.js';`,
+    ...componentNames.map((name) => `export { ${name} } from './${name}.js';`),
     `export type { Sign, SignAssets, SignCategory } from '@iso-safety-signs/core';`,
     ``,
   ].join('\n');
@@ -324,8 +324,8 @@ const generateVueComponentFile = (sign: Sign): string => {
     ...HEADER,
     `import { defineComponent } from 'vue';`,
     `import type { ParsedSvg } from '@iso-safety-signs/core';`,
-    `import { signProps } from './SignProps';`,
-    `import { renderSign, useInstanceId } from './SignSvg';`,
+    `import { signProps } from './SignProps.js';`,
+    `import { renderSign, useInstanceId } from './SignSvg.js';`,
     ``,
     ...componentConstants(sign),
     ``,
@@ -358,9 +358,9 @@ const generateVueComponentFile = (sign: Sign): string => {
 const generateVueIndex = (componentNames: string[]): string =>
   [
     ...HEADER,
-    `export { signProps } from './SignProps';`,
-    `export { SignById } from './SignById';`,
-    ...componentNames.map((name) => `export { ${name} } from './${name}';`),
+    `export { signProps } from './SignProps.js';`,
+    `export { SignById } from './SignById.js';`,
+    ...componentNames.map((name) => `export { ${name} } from './${name}.js';`),
     `export type { Sign, SignAssets, SignCategory } from '@iso-safety-signs/core';`,
     ``,
   ].join('\n');
@@ -374,8 +374,8 @@ const generateElementFile = (sign: Sign): string => {
   return [
     ...HEADER,
     `import type { ParsedSvg } from '@iso-safety-signs/core';`,
-    `import { SignElement } from './SignElement';`,
-    `import type { SignElementContent } from './SignElement';`,
+    `import { SignElement } from './SignElement.js';`,
+    `import type { SignElementContent } from './SignElement.js';`,
     ``,
     ...componentConstants(sign),
     ``,
@@ -397,8 +397,8 @@ const generateElementFile = (sign: Sign): string => {
 const generateDefineCustomElements = (componentNames: string[], exampleIds: string[]): string =>
   [
     ...HEADER,
-    `import { IsoSign } from './IsoSign';`,
-    ...componentNames.map((name) => `import { ${name} } from './${name}';`),
+    `import { IsoSign } from './IsoSign.js';`,
+    ...componentNames.map((name) => `import { ${name} } from './${name}.js';`),
     ``,
     `const _elements: Array<[CustomElementConstructor, string]> = [`,
     `  [IsoSign, IsoSign.tagName],`,
@@ -443,11 +443,11 @@ const generateDefineCustomElements = (componentNames: string[], exampleIds: stri
 const generateElementsIndex = (componentNames: string[]): string =>
   [
     ...HEADER,
-    `export { IsoSign } from './IsoSign';`,
-    `export { SignElement } from './SignElement';`,
-    `export type { SignElementContent } from './SignElement';`,
-    `export { defineCustomElements } from './defineCustomElements';`,
-    ...componentNames.map((name) => `export { ${name} } from './${name}';`),
+    `export { IsoSign } from './IsoSign.js';`,
+    `export { SignElement } from './SignElement.js';`,
+    `export type { SignElementContent } from './SignElement.js';`,
+    `export { defineCustomElements } from './defineCustomElements.js';`,
+    ...componentNames.map((name) => `export { ${name} } from './${name}.js';`),
     `export type { Sign, SignAssets, SignCategory } from '@iso-safety-signs/core';`,
     ``,
   ].join('\n');

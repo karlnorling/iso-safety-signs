@@ -2,8 +2,8 @@
 // Run 'yarn generate' to regenerate.
 
 import type { ParsedSvg } from '@iso-safety-signs/core';
-import { SignElement } from './SignElement';
-import type { SignElementContent } from './SignElement';
+import { SignElement } from './SignElement.js';
+import type { SignElementContent } from './SignElement.js';
 
 const _svg: ParsedSvg = {
   attrs: "xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 265 265\" xml:space=\"preserve\" style=\"fill-rule:evenodd;clip-rule:evenodd;stroke-miterlimit:10\"",

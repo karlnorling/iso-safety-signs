@@ -3,8 +3,8 @@
 
 import { defineComponent } from 'vue';
 import type { ParsedSvg } from '@iso-safety-signs/core';
-import { signProps } from './SignProps';
-import { renderSign, useInstanceId } from './SignSvg';
+import { signProps } from './SignProps.js';
+import { renderSign, useInstanceId } from './SignSvg.js';
 
 const _svg: ParsedSvg = {
   attrs: "xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 264.568 264.567\" xml:space=\"preserve\"",
