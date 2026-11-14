@@ -1,6 +1,6 @@
 {
   "name": "@iso-safety-signs/elements",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Accessible Web Components (Custom Elements) for all ISO 7010 safety signs — framework-agnostic, zero runtime dependencies",
   "keywords": [
     "accessible",
@@ -52,7 +52,7 @@
     "type-check": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@iso-safety-signs/core": "^1.1.0"
+    "@iso-safety-signs/core": "^1.1.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
