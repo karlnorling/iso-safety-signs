@@ -1,5 +1,11 @@
 # @iso-safety-signs/core
 
+## 1.1.1
+
+### Patch Changes
+
+- 787c2ca: Fix ESM builds failing to load in Node with `ERR_MODULE_NOT_FOUND`. Relative imports in `dist/esm` now carry `.js` extensions, so `import { getAllSigns } from '@iso-safety-signs/core'` works without a bundler (#69).
+
 ## 1.1.0
 
 ### Minor Changes
