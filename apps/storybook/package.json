@@ -22,13 +22,13 @@
     "@typescript/native": "npm:typescript@^7.0.2",
     "@vitest/browser-playwright": "^5.1.0",
     "@vitest/coverage-v8": "^5.1.0",
-    "playwright": "^1.63.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "playwright": "^1.65.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "remark-gfm": "^4.0.1",
     "storybook": "^10.6.6",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "vite": "^8.3.3",
+    "vite": "^8.3.6",
     "vitest": "^5.1.0"
   }
 }
