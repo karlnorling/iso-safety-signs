@@ -82,7 +82,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.ISO_SAFETY_SIGNS_APP_ID }}
+          client-id: ${{ secrets.ISO_SAFETY_SIGNS_CLIENT_ID }}
           private-key: ${{ secrets.ISO_SAFETY_SIGNS_PRIVATE_KEY }}
 
       - name: Checkout
